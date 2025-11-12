@@ -1265,22 +1265,22 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  return (
  <div className={containerClasses}>
  {/* Enhanced Header */}
- <div className={`text-white p-2.5 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
+ <div className={`text-white p-3 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
  <div className="flex items-center justify-between">
  <button className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10">
- <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
  </svg>
  </button>
  <div className="flex items-center justify-center flex-1">
- <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={110} height={28} className="drop-shadow-sm" />
+ <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={120} height={30} className="drop-shadow-sm" />
  </div>
  {!isIframe && (
  <button
  onClick={onToggle}
  className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10"
  >
- <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
  </svg>
  </button>
@@ -1804,7 +1804,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {/* Enhanced Bottom Navigation */}
- <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-1">
+ <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-1.5">
  <div className="flex justify-around">
  {[
  { key: 'home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', label: 'Home' },
@@ -1815,16 +1815,16 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  key={key}
  onClick={() => handleTabChange(key as 'home' | 'chat' | 'faq' | 'articles')}
- className={`flex flex-col items-center space-y-0 p-0.5 rounded transition-all duration-200 ${
+ className={`flex flex-col items-center space-y-0.5 p-1 rounded transition-all duration-200 ${
  activeTab === key 
  ? 'text-[#2d4891] bg-blue-50' 
  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
  }`}
  >
- <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
  </svg>
- <span className="text-[8px] font-medium leading-tight">{label}</span>
+ <span className="text-[7px] font-medium leading-none">{label}</span>
  </button>
  ))}
  </div>
