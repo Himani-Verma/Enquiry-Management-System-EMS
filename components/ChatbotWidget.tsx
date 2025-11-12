@@ -1577,7 +1577,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </div>
- <h3 className="font-bold text-gray-800 text-lg">Search FAQ</h3>
+ <h3 className="font-bold text-gray-800 text-sm">Search FAQ</h3>
  </div>
  
  {/* Search Bar */}
@@ -1657,7 +1657,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
  ) : (
  <div className="text-center py-4">
- <p className="text-gray-700 text-sm">Type in the search bar above to find FAQs</p>
+ <p className="text-gray-700 text-xs">Type in the search bar above to find FAQs</p>
  </div>
  )}
  </div>
@@ -1672,7 +1672,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 20h9M12 4h9M3 8h18M3 16h18" />
  </svg>
  </div>
- <h3 className="font-bold text-gray-800 text-lg">Search Articles</h3>
+ <h3 className="font-bold text-gray-800 text-sm">Search Articles</h3>
  </div>
  
  {/* Search Bar */}
