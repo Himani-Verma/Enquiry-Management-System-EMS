@@ -1273,7 +1273,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </svg>
  </button>
  <div className="flex items-center justify-center flex-1">
- <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={120} height={30} className="drop-shadow-sm" />
+ <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={140} height={35} className="drop-shadow-sm" />
  </div>
  {!isIframe && (
  <button
@@ -1821,7 +1821,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
  }`}
  >
- <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
  </svg>
  <span className="text-[7px] font-medium leading-none">{label}</span>
