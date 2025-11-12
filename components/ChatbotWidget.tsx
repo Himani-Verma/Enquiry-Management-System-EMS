@@ -1804,7 +1804,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {/* Enhanced Bottom Navigation */}
- <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-1">
+ <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2">
  <div className="flex justify-around">
  {[
  { key: 'home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', label: 'Home' },
@@ -1815,16 +1815,16 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  key={key}
  onClick={() => handleTabChange(key as 'home' | 'chat' | 'faq' | 'articles')}
- className={`flex flex-col items-center space-y-0 p-0.5 rounded transition-all duration-200 ${
+ className={`flex flex-col items-center space-y-0.5 p-1 rounded transition-all duration-200 ${
  activeTab === key 
  ? 'text-[#2d4891] bg-blue-50' 
  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
  }`}
  >
- <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
  </svg>
- <span className="text-[5px] font-medium leading-none">{label}</span>
+ <span className="text-[6px] font-medium leading-none">{label}</span>
  </button>
  ))}
  </div>
