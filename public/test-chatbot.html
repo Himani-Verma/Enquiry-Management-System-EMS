@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Chatbot Integration - Envirocare Labs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 800px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      color: #2d4891;
+      margin-bottom: 10px;
+      font-size: 2.5rem;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+    
+    .info-box {
+      background: #f8f9fa;
+      border-left: 4px solid #2d4891;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    
+    .info-box h3 {
+      color: #2d4891;
+      margin-bottom: 10px;
+    }
+    
+    .info-box p {
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .info-box code {
+      background: #e9ecef;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      color: #d63384;
+    }
+    
+    .button-demo {
+      display: inline-block;
+      background: linear-gradient(135deg, #2d4891 0%, #1e3a8a 100%);
+      color: white;
+      padding: 15px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 10px 10px 10px 0;
+      transition: transform 0.2s;
+    }
+    
+    .button-demo:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(45, 72, 145, 0.4);
+    }
+    
+    .status {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 10px 0;
+    }
+    
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .status.warning {
+      background: #fff3cd;
+      color: #856404;
+    }
+    
+    ul {
+      margin: 15px 0;
+      padding-left: 25px;
+    }
+    
+    li {
+      margin: 8px 0;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    /* Chatbot Button */
+    #envirocare-chatbot-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2d4891 0%, #1e3a8a 100%);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(45, 72, 145, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 9998;
+    }
+    
+    #envirocare-chatbot-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(45, 72, 145, 0.5);
+    }
+    
+    #envirocare-chatbot-button svg {
+      width: 28px;
+      height: 28px;
+      color: white;
+    }
+    
+    /* Chatbot Container */
+    #envirocare-chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 400px;
+      height: 600px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 9999;
+      display: none;
+      background: white;
+    }
+    
+    #envirocare-chatbot-container.open {
+      display: block;
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    #envirocare-chatbot-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .container {
+        padding: 30px 20px;
+      }
+      
+      #envirocare-chatbot-container {
+        bottom: 90px;
+        right: 12px;
+        left: 12px;
+        width: auto;
+        height: 500px;
+      }
+      
+      #envirocare-chatbot-button {
+        bottom: 16px;
+        right: 16px;
+        width: 56px;
+        height: 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 Chatbot Integration Test</h1>
+    <p class="subtitle">Testing the Envirocare Labs chatbot iframe integration</p>
+    
+    <div class="info-box">
+      <h3>📋 Test Instructions</h3>
+      <p>This page demonstrates how the chatbot will appear on your WordPress site. Look for the blue chat button in the bottom-right corner.</p>
+    </div>
+    
+    <div class="info-box">
+      <h3>✅ What to Test</h3>
+      <ul>
+        <li>Click the chat button to open the chatbot</li>
+        <li>Fill in your details to start a conversation</li>
+        <li>Test sending messages</li>
+        <li>Try the quick reply buttons</li>
+        <li>Check if chat history persists on page reload</li>
+        <li>Test on mobile devices (responsive design)</li>
+        <li>Click outside the chatbot to close it</li>
+      </ul>
+    </div>
+    
+    <div class="info-box">
+      <h3>⚙️ Configuration</h3>
+      <p>The chatbot is loading from: <code id="iframe-url">Loading...</code></p>
+      <p style="margin-top: 10px;">
+        <span class="status warning" id="status">Checking connection...</span>
+      </p>
+    </div>
+    
+    <div class="info-box">
+      <h3>🔗 Quick Links</h3>
+      <a href="/chatbot" class="button-demo" target="_blank">Open Chatbot Page</a>
+      <a href="/dashboard" class="button-demo">Go to Dashboard</a>
+    </div>
+    
+    <div class="info-box">
+      <h3>📝 Next Steps</h3>
+      <ol style="padding-left: 25px;">
+        <li>Test the chatbot functionality on this page</li>
+        <li>If everything works, copy the code from <code>wordpress-chatbot-snippet.txt</code></li>
+        <li>Add the code to your WordPress site using WPCode plugin</li>
+        <li>Update the iframe URL to your production domain</li>
+        <li>Test on your live WordPress site</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Chatbot Button -->
+  <button id="envirocare-chatbot-button" aria-label="Chat with Eva">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+    </svg>
+  </button>
+
+  <!-- Chatbot Container -->
+  <div id="envirocare-chatbot-container">
+    <iframe 
+      id="envirocare-chatbot-iframe" 
+      src="/chatbot"
+      title="Envirocare Labs Chatbot"
+      allow="clipboard-write"
+    ></iframe>
+  </div>
+
+  <script>
+    (function() {
+      // Update iframe URL display
+      const iframeUrl = window.location.origin + '/chatbot';
+      document.getElementById('iframe-url').textContent = iframeUrl;
+      
+      // Check if chatbot page is accessible
+      fetch('/chatbot')
+        .then(response => {
+          if (response.ok) {
+            document.getElementById('status').textContent = '✓ Chatbot is ready';
+            document.getElementById('status').className = 'status success';
+          } else {
+            document.getElementById('status').textContent = '✗ Chatbot page not found';
+            document.getElementById('status').className = 'status warning';
+          }
+        })
+        .catch(() => {
+          document.getElementById('status').textContent = '✗ Connection error';
+          document.getElementById('status').className = 'status warning';
+        });
+      
+      // Chatbot toggle functionality
+      const button = document.getElementById('envirocare-chatbot-button');
+      const container = document.getElementById('envirocare-chatbot-container');
+      let isOpen = false;
+
+      button.addEventListener('click', function() {
+        isOpen = !isOpen;
+        if (isOpen) {
+          container.classList.add('open');
+          button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+        } else {
+          container.classList.remove('open');
+          button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>';
+        }
+      });
+
+      // Close chatbot when clicking outside
+      document.addEventListener('click', function(event) {
+        if (isOpen && !container.contains(event.target) && !button.contains(event.target)) {
+          isOpen = false;
+          container.classList.remove('open');
+          button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

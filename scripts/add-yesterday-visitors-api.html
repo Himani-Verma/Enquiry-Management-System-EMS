@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Yesterday's Visitors</title>
+</head>
+<body>
+    <h1>Adding Yesterday's Visitors...</h1>
+    <pre id="output">Starting...</pre>
+    
+    <script>
+        const output = document.getElementById('output');
+        
+        async function addVisitors() {
+            try {
+                const token = localStorage.getItem('ems_token');
+                
+                if (!token) {
+                    output.textContent = '❌ No auth token found. Please login first.';
+                    return;
+                }
+                
+                // Get yesterday's date
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayISO = yesterday.toISOString();
+                
+                output.textContent = `Creating 2 visitors for ${yesterday.toDateString()}...\n\n`;
+                
+                // Visitor 1
+                const visitor1 = {
+                    name: 'Priya Mehta',
+                    email: 'priya.mehta@techcorp.com',
+                    phone: '+91 98765 12345',
+                    organization: 'TechCorp Industries',
+                    region: 'Mumbai',
+                    service: 'Water Quality Testing',
+                    subservice: 'Industrial Water Analysis',
+                    enquiryDetails: 'Need comprehensive water quality testing for manufacturing facility.',
+                    source: 'chatbot',
+                    status: 'enquiry_required',
+                    agentName: 'Sanjana Pawar',
+                    amount: 15000,
+                    isConverted: false,
+                    createdAt: yesterdayISO
+                };
+                
+                // Visitor 2
+                const visitor2 = {
+                    name: 'Amit Sharma',
+                    email: 'amit.sharma@greenenergy.in',
+                    phone: '+91 98765 67890',
+                    organization: 'Green Energy Solutions',
+                    region: 'Pune',
+                    service: 'Air Quality Monitoring',
+                    subservice: 'Ambient Air Quality',
+                    enquiryDetails: 'Require air quality monitoring for solar plant site.',
+                    source: 'website',
+                    status: 'contact_initiated',
+                    agentName: 'Sanjana Pawar',
+                    salesExecutiveName: 'Shreyas',
+                    amount: 25000,
+                    isConverted: false,
+                    createdAt: yesterdayISO
+                };
+                
+                // Add visitor 1
+                output.textContent += 'Adding visitor 1: Priya Mehta...\n';
+                const response1 = await fetch('http://localhost:3000/api/visitors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(visitor1)
+                });
+                
+                const result1 = await response1.json();
+                if (result1.success || result1.visitor) {
+                    output.textContent += '✅ Visitor 1 created successfully!\n\n';
+                } else {
+                    output.textContent += '⚠️  Visitor 1: ' + JSON.stringify(result1) + '\n\n';
+                }
+                
+                // Add visitor 2
+                output.textContent += 'Adding visitor 2: Amit Sharma...\n';
+                const response2 = await fetch('http://localhost:3000/api/visitors', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(visitor2)
+                });
+                
+                const result2 = await response2.json();
+                if (result2.success || result2.visitor) {
+                    output.textContent += '✅ Visitor 2 created successfully!\n\n';
+                } else {
+                    output.textContent += '⚠️  Visitor 2: ' + JSON.stringify(result2) + '\n\n';
+                }
+                
+                output.textContent += '🎉 Done! 2 visitors added for yesterday.\n';
+                output.textContent += '📊 Your Daily Visitors graph will now show data!\n';
+                output.textContent += '\n🔄 Refreshing dashboard in 3 seconds...';
+                
+                setTimeout(() => {
+                    window.location.href = 'http://localhost:3000/dashboard/admin/overview';
+                }, 3000);
+                
+            } catch (error) {
+                output.textContent += '\n\n❌ Error: ' + error.message;
+            }
+        }
+        
+        addVisitors();
+    </script>
+</body>
+</html>
+

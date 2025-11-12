@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UBO / Controlling Person Declaration - Flexura Pvt. Ltd.</title>
+  <style>
+    :root{
+      --text:#222;
+      --muted:#666;
+      --border:#bbb;
+      --accent:#5b5b5b;
+      --paper-width:800px;
+    }
+    html,body{
+      margin:0;
+      padding:20px;
+      font-family: "Segoe UI", Roboto, -apple-system, "Helvetica Neue", Arial;
+      color:var(--text);
+      background:#f6f6f6;
+      -webkit-print-color-adjust: exact;
+    }
+    .sheet{
+      width:100%;
+      max-width:var(--paper-width);
+      margin:20px auto;
+      background:#fff;
+      padding:36px 56px;
+      box-shadow:0 6px 18px rgba(0,0,0,0.08);
+      box-sizing:border-box;
+    }
+
+    /* Header / Title */
+    .title{
+      text-align:center;
+      font-size:28px;
+      font-weight:700;
+      color:var(--accent);
+      margin-bottom:28px;
+    }
+
+    /* top fields */
+    .row{
+      display:flex;
+      gap:28px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+      align-items:flex-start;
+    }
+    .col{
+      flex:1 1 320px;
+    }
+    label{
+      display:block;
+      font-weight:700;
+      margin-bottom:6px;
+    }
+    .field{
+      font-size:15px;
+      padding:10px 12px;
+      border-radius:6px;
+      border:1px solid var(--border);
+      background:#fafafa;
+    }
+    .inline{
+      display:flex;
+      gap:16px;
+      align-items:center;
+    }
+
+    /* UBO table */
+    table.ubotable{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:8px;
+      margin-bottom:18px;
+    }
+    table.ubotable th, table.ubotable td{
+      border:1px solid var(--border);
+      padding:10px 8px;
+      text-align:left;
+      vertical-align:top;
+      font-size:14px;
+    }
+    table.ubotable th{
+      background:#f2f2f2;
+      font-weight:700;
+    }
+    table.ubotable td.center{
+      text-align:center;
+    }
+
+    /* note and declaration */
+    .note{
+      font-size:13px;
+      color:var(--muted);
+      margin:6px 0 16px 0;
+    }
+    .declaration{
+      font-size:14px;
+      line-height:1.5;
+      margin-bottom:36px;
+    }
+
+    /* signature area */
+    .signature{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+    }
+    .sig-left{
+      flex:1;
+      font-style:italic;
+      color:var(--muted);
+    }
+    .sig-right{
+      text-align:right;
+      min-width:260px;
+    }
+    .sig-block{
+      border-top:1px solid #000;
+      padding-top:6px;
+      font-weight:700;
+    }
+
+    /* Print tweaks */
+    @media print{
+      body{background:white;}
+      .sheet{box-shadow:none; margin:0; padding:24mm;}
+    }
+  </style>
+</head>
+<body>
+  <div class="sheet">
+    <div class="title">On Company Letterhead</div>
+
+    <div class="row" style="margin-bottom:10px;">
+      <div class="col">
+        <label>Date:</label>
+        <div class="field">04/11/2025</div>
+      </div>
+
+      <div class="col">
+        <label>Name of the Merchant:</label>
+        <div class="field">ANISHKUMAR ADVISORY (OPC) PRIVATE LIMITED</div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-bottom:6px;">
+      <div class="col" style="flex:0 0 420px;">
+        <label>PAN:</label>
+        <div class="field">HEKPK6377H</div>
+      </div>
+
+      <div class="col" style="flex:1 1 260px;">
+        <label>Entity Type:</label>
+        <div class="field">Private Company</div>
+      </div>
+    </div>
+
+    <h3 style="margin:20px 0 8px 0; font-size:16px; color:var(--accent);">UBO / Controlling Person Details</h3>
+
+    <table class="ubotable" aria-label="UBO details">
+      <thead>
+        <tr>
+          <th style="width:44px">S.No</th>
+          <th>Name of the UBO/Controlling Person</th>
+          <th style="width:120px">% of beneficial interest of the UBO</th>
+          <th style="width:160px">PAN Number of the UBO</th>
+          <th style="width:120px">DOB of the UBO</th>
+          <th style="width:150px">Country of Tax Residency of the UBO</th>
+          <th>Registered Address of the UBO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="center">1</td>
+          <td>ANISH KUMAR</td>
+          <td class="center">100%</td>
+          <td>HEKPK6377H</td>
+          <td class="center">15/10/1992</td>
+          <td class="center">India</td>
+          <td>DABTHU GANGAPUR. HULASGANJ JEHANMABAD, Jehanabad, Bihar, India. 804407</td>
+        </tr>
+        <!-- blank rows in case additional entries are needed when printing -->
+        <tr>
+          <td class="center">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="center">&nbsp;</td>
+          <td class="center">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td class="center">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td class="center">&nbsp;</td>
+          <td class="center">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note"><strong>*</strong> No Individual or entity holds more than 10% shareholding.</div>
+
+    <div class="declaration">
+      I/We acknowledge and confirm that the information provided above is true and correct to the best of my/our knowledge and belief. Except for the individuals or entities mentioned above, no individual or entity holds more than 10% of the total shareholding in the company. In any case of the above specified information being found to be false, untrue, misleading or misrepresenting, I/We shall be liable for it.
+    </div>
+
+    
+
+  </div>
+</body>
+</html>

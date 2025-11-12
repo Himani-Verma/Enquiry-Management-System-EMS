@@ -1,0 +1,185 @@
+WORDPRESS CHATBOT INTEGRATION GUIDE
+====================================
+
+OPTION 1: Using WPCode Plugin (Recommended)
+--------------------------------------------
+1. Install "WPCode" plugin from WordPress admin
+2. Go to Code Snippets > Add Snippet
+3. Choose "Add Your Custom Code (New Snippet)"
+4. Set title: "Envirocare Chatbot Widget"
+5. Choose code type: "HTML Snippet"
+6. Paste the code below:
+
+<!-- Envirocare Labs Chatbot Widget -->
+<style>
+  #envirocare-chatbot-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2d4891 0%, #1e3a8a 100%);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(45, 72, 145, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 9998;
+  }
+  
+  #envirocare-chatbot-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(45, 72, 145, 0.5);
+  }
+  
+  #envirocare-chatbot-button svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+  }
+  
+  #envirocare-chatbot-container {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    width: 400px;
+    height: 600px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    z-index: 9999;
+    display: none;
+    background: white;
+  }
+  
+  #envirocare-chatbot-container.open {
+    display: block;
+    animation: envirocareSlideUp 0.3s ease-out;
+  }
+  
+  #envirocare-chatbot-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  @keyframes envirocareSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    #envirocare-chatbot-container {
+      bottom: 90px;
+      right: 12px;
+      left: 12px;
+      width: auto;
+      height: 500px;
+    }
+    
+    #envirocare-chatbot-button {
+      bottom: 16px;
+      right: 16px;
+      width: 56px;
+      height: 56px;
+    }
+  }
+</style>
+
+<button id="envirocare-chatbot-button" aria-label="Chat with Eva">
+  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+  </svg>
+</button>
+
+<div id="envirocare-chatbot-container">
+  <iframe 
+    id="envirocare-chatbot-iframe" 
+    src="https://YOUR-DOMAIN.com/chatbot"
+    title="Envirocare Labs Chatbot"
+    allow="clipboard-write"
+  ></iframe>
+</div>
+
+<script>
+(function() {
+  const button = document.getElementById('envirocare-chatbot-button');
+  const container = document.getElementById('envirocare-chatbot-container');
+  let isOpen = false;
+
+  button.addEventListener('click', function() {
+    isOpen = !isOpen;
+    if (isOpen) {
+      container.classList.add('open');
+      button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+    } else {
+      container.classList.remove('open');
+      button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>';
+    }
+  });
+
+  document.addEventListener('click', function(event) {
+    if (isOpen && !container.contains(event.target) && !button.contains(event.target)) {
+      isOpen = false;
+      container.classList.remove('open');
+      button.innerHTML = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>';
+    }
+  });
+})();
+</script>
+
+7. Set location: "Site Wide Footer"
+8. Click "Save Snippet" and activate it
+
+
+OPTION 2: Manual Theme Integration
+-----------------------------------
+1. Go to Appearance > Theme File Editor
+2. Select footer.php (or your theme's footer file)
+3. Paste the code above before the closing </body> tag
+4. Click "Update File"
+
+
+OPTION 3: Using a Custom HTML Widget
+-------------------------------------
+1. Go to Appearance > Widgets
+2. Add a "Custom HTML" widget to your footer
+3. Paste the code above
+4. Save the widget
+
+
+IMPORTANT: Replace YOUR-DOMAIN.com
+----------------------------------
+In the iframe src attribute, replace:
+  https://YOUR-DOMAIN.com/chatbot
+  
+With your actual Next.js deployment URL, for example:
+  https://nablscope.envirocarelabs.com/chatbot
+  or
+  https://cms.envirocarelabs.com/chatbot
+
+
+TESTING
+-------
+1. Deploy your Next.js app with the new /chatbot route
+2. Test the chatbot page directly: https://YOUR-DOMAIN.com/chatbot
+3. Add the snippet to WordPress
+4. Visit your WordPress site and click the chat button
+5. The chatbot should open in an iframe
+
+
+TROUBLESHOOTING
+---------------
+- If the chatbot doesn't load, check browser console for CORS errors
+- Make sure your Next.js app allows iframe embedding
+- Verify the iframe src URL is correct and accessible
+- Check that the chatbot page loads independently first
