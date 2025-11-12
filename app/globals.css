@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -293,13 +293,15 @@ nav[class*="bg-[#022a7a]"] {
 body {
   color: #1f2937;
   background: #ffffff;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   font-variation-settings: normal;
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @layer utilities {
@@ -571,4 +573,236 @@ rint Styles for Quotations */
   tr {
     page-break-inside: avoid;
   }
+}
+
+
+/* ========================================
+   CHATBOT ENHANCED TYPOGRAPHY
+   ======================================== */
+
+/* Chatbot container font improvements */
+.font-poppins,
+[class*="ChatbotWidget"] {
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif !important;
+}
+
+/* Chatbot headings - more prominent and readable */
+.font-poppins h1,
+.font-poppins h2,
+.font-poppins h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.3 !important;
+}
+
+/* Main chatbot heading */
+.font-poppins h2 {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #1f2937 !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Subheadings */
+.font-poppins h3 {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+}
+
+/* Body text - more readable */
+.font-poppins p {
+  font-size: 1rem !important;
+  line-height: 1.65 !important;
+  color: #4b5563 !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Button text - bold and clear */
+.font-poppins button span,
+.font-poppins button {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Input labels - clear and readable */
+.font-poppins label {
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Input fields - comfortable reading */
+.font-poppins input,
+.font-poppins select,
+.font-poppins textarea {
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.5 !important;
+}
+
+/* Chat messages - optimized for conversation */
+.font-poppins [class*="message"] {
+  font-size: 0.9375rem !important;
+  line-height: 1.6 !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Quick reply buttons - clear and tappable */
+.font-poppins [class*="quick-reply"],
+.font-poppins [class*="quickReply"] {
+  font-size: 0.9375rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Error messages - attention-grabbing but not harsh */
+.font-poppins [class*="error"],
+.font-poppins [class*="text-red"] {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* Success messages - friendly and clear */
+.font-poppins [class*="success"],
+.font-poppins [class*="text-green"] {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+}
+
+/* Navigation tabs - clear hierarchy */
+.font-poppins nav span,
+.font-poppins [role="tab"] {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.005em !important;
+}
+
+/* FAQ and Articles - readable content */
+.font-poppins [class*="faq"] h4,
+.font-poppins [class*="article"] h4 {
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  color: #1f2937 !important;
+}
+
+.font-poppins [class*="faq"] p,
+.font-poppins [class*="article"] p {
+  font-size: 0.9375rem !important;
+  line-height: 1.65 !important;
+  color: #6b7280 !important;
+}
+
+/* Improve text contrast for better readability */
+.font-poppins .text-gray-700 {
+  color: #374151 !important;
+}
+
+.font-poppins .text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.font-poppins .text-gray-500 {
+  color: #6b7280 !important;
+}
+
+/* Make white text on blue background more readable */
+.font-poppins .text-white {
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Improve number and stat readability */
+.font-poppins [class*="stat"],
+.font-poppins [class*="count"] {
+  font-variant-numeric: tabular-nums !important;
+  font-feature-settings: 'tnum' !important;
+}
+
+/* Better link styling */
+.font-poppins a {
+  font-weight: 600 !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 2px !important;
+}
+
+/* Placeholder text - subtle but readable */
+.font-poppins ::placeholder {
+  color: #9ca3af !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+}
+
+/* Improve readability on small screens */
+@media (max-width: 640px) {
+  .font-poppins h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .font-poppins p {
+    font-size: 0.9375rem !important;
+  }
+  
+  .font-poppins button {
+    font-size: 0.9375rem !important;
+  }
+}
+
+/* Add subtle text shadows for depth */
+.font-poppins h1,
+.font-poppins h2,
+.font-poppins h3 {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Improve code/monospace text if used */
+.font-poppins code,
+.font-poppins pre {
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace !important;
+  font-size: 0.875em !important;
+}
+
+/* Better list styling */
+.font-poppins ul,
+.font-poppins ol {
+  line-height: 1.75 !important;
+}
+
+.font-poppins li {
+  font-size: 0.9375rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Improve form helper text */
+.font-poppins [class*="helper"],
+.font-poppins [class*="hint"] {
+  font-size: 0.8125rem !important;
+  line-height: 1.5 !important;
+  color: #6b7280 !important;
+  font-weight: 500 !important;
+}
+
+/* Badge and tag typography */
+.font-poppins [class*="badge"],
+.font-poppins [class*="tag"] {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em !important;
+  text-transform: uppercase !important;
+}
+
+/* Timestamp and meta text */
+.font-poppins [class*="timestamp"],
+.font-poppins [class*="meta"] {
+  font-size: 0.8125rem !important;
+  color: #9ca3af !important;
+  font-weight: 500 !important;
 }
