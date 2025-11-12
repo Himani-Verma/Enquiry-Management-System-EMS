@@ -1,217 +1,213 @@
-# Deployment Checklist - Agent Performance Tracking
+# ✅ Netlify Deployment Checklist
 
-## Pre-Deployment
+## Before Deployment
 
-### 1. Code Review
-- [ ] Review all modified files
-- [ ] Check TypeScript compilation errors
-- [ ] Verify no syntax errors
-- [ ] Review database model changes
+### 1. Code Changes
+- [x] Updated `netlify.toml` with correct configuration
+- [ ] Committed and pushed all changes to GitHub
 
-### 2. Testing (Local)
-- [ ] Test `/api/auth/me` endpoint
-- [ ] Test `/api/analytics/add-enquiry` with `addedBy` fields
-- [ ] Test `/api/analytics/agent-performance` returns real data
-- [ ] Verify database indexes are created
-- [ ] Run test script: `node scripts/test-agent-performance.js`
+### 2. Environment Variables to Add in Netlify
 
-### 3. Database Backup
-- [ ] Create full database backup before deployment
-- [ ] Document backup location and timestamp
-- [ ] Test backup restoration process
+Go to: **Netlify Dashboard → Site settings → Environment variables**
 
+Add these 4 variables:
+
+| Variable | Value | Status |
+|----------|-------|--------|
+| `MONGODB_URI` | `mongodb+srv://himani:ems@ems.z3zxn2h.mongodb.net/?retryWrites=true&w=majority&appName=EMS` | ⬜ |
+| `JWT_SECRET` | Generate new strong secret (see below) | ⬜ |
+| `NODE_ENV` | `production` | ⬜ |
+| `NEXT_PUBLIC_API_BASE` | Your Netlify URL (update after first deploy) | ⬜ |
+
+#### Generate JWT_SECRET:
 ```bash
-# MongoDB backup command
-mongodump --uri="your-connection-string" --out=backup-$(date +%Y%m%d-%H%M%S)
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 
-## Deployment Steps
+### 3. Build Settings in Netlify
 
-### Step 1: Deploy Backend Changes
-- [ ] Deploy updated API files
-  - `cms/app/api/analytics/agent-performance/route.ts`
-  - `cms/app/api/analytics/add-enquiry/route.ts`
-  - `cms/app/api/auth/me/route.ts`
-- [ ] Deploy updated model
-  - `cms/lib/models/Enquiry.ts`
-- [ ] Verify deployment successful
-- [ ] Check server logs for errors
+Verify these settings in Netlify:
 
-### Step 2: Verify Database Indexes
-- [ ] Connect to production database
-- [ ] Verify indexes are created:
-  ```javascript
-  db.enquiries.getIndexes()
-  // Should show indexes on: addedBy, assignedAgent, visitorId, status, createdAt
-  
-  db.visitors.getIndexes()
-  // Should show indexes on: assignedAgent, salesExecutive, email, phone, status, createdAt
-  ```
-- [ ] If indexes missing, create them manually:
-  ```javascript
-  db.enquiries.createIndex({ addedBy: 1 })
-  db.enquiries.createIndex({ assignedAgent: 1 })
-  db.visitors.createIndex({ assignedAgent: 1 })
-  db.visitors.createIndex({ salesExecutive: 1 })
-  ```
-
-### Step 3: Test Backend in Production
-- [ ] Test `/api/auth/me` endpoint
-  ```bash
-  curl -H "Authorization: Bearer YOUR_TOKEN" https://your-domain.com/api/auth/me
-  ```
-- [ ] Test `/api/analytics/agent-performance` endpoint
-  ```bash
-  curl https://your-domain.com/api/analytics/agent-performance
-  ```
-- [ ] Verify response contains real data (not sample data)
-- [ ] Check server logs for any errors
-
-### Step 4: Run Migration (If Needed)
-Only if you have existing enquiries that need agent tracking:
-
-- [ ] Update MongoDB URI in migration script
-- [ ] Run migration script:
-  ```bash
-  export MONGODB_URI="your-production-connection-string"
-  node scripts/migrate-enquiry-tracking.js
-  ```
-- [ ] Verify migration results
-- [ ] Check database for updated records
-
-### Step 5: Update Frontend
-- [ ] Update enquiry forms to call `/api/auth/me`
-- [ ] Update enquiry submission to include `addedBy` and `addedByName`
-- [ ] Test adding enquiries in production
-- [ ] Verify enquiries are saved with agent tracking
-
-### Step 6: Verify Agent Performance Page
-- [ ] Login as admin
-- [ ] Navigate to Agents & Users page
-- [ ] Verify numbers are displayed (not all zeros)
-- [ ] Check browser console for any errors
-- [ ] Verify numbers match database counts
-
-## Post-Deployment Verification
-
-### 1. Smoke Tests
-- [ ] Login as different agent roles
-- [ ] Add test enquiries
-- [ ] Assign test visitors
-- [ ] View agent performance page
-- [ ] Verify all numbers update correctly
-
-### 2. Data Validation
-- [ ] Run test script in production:
-  ```bash
-  export MONGODB_URI="your-production-connection-string"
-  node scripts/test-agent-performance.js
-  ```
-- [ ] Compare API results with database counts
-- [ ] Verify no data loss occurred
-- [ ] Check for any missing agent tracking
-
-### 3. Performance Check
-- [ ] Monitor API response times
-- [ ] Check database query performance
-- [ ] Verify indexes are being used
-- [ ] Monitor server resource usage
-
-### 4. User Acceptance Testing
-- [ ] Have agents test adding enquiries
-- [ ] Have admins verify performance metrics
-- [ ] Collect feedback on accuracy
-- [ ] Address any issues found
-
-## Rollback Plan
-
-If issues occur, follow this rollback procedure:
-
-### Option 1: Quick Rollback (Frontend Only)
-If only frontend has issues:
-- [ ] Revert frontend changes
-- [ ] Backend will continue to work with old frontend
-- [ ] No data loss
-
-### Option 2: Full Rollback (Backend + Frontend)
-If backend has critical issues:
-- [ ] Restore database from backup
-- [ ] Revert backend code to previous version
-- [ ] Revert frontend code to previous version
-- [ ] Verify system is working
-
-### Option 3: Partial Rollback (Keep Data, Revert Code)
-If you want to keep new data but revert code:
-- [ ] Revert backend code (old API will ignore new fields)
-- [ ] Revert frontend code
-- [ ] New database fields will remain but won't be used
-- [ ] Can re-deploy later without data loss
-
-## Monitoring
-
-### What to Monitor
-- [ ] API response times for `/api/analytics/agent-performance`
-- [ ] Database query performance
-- [ ] Error rates in server logs
-- [ ] User complaints about incorrect numbers
-- [ ] Database size growth
-
-### Key Metrics
-- [ ] Agent performance API response time < 2 seconds
-- [ ] No increase in error rates
-- [ ] All agents show non-zero metrics (if they have activity)
-- [ ] Numbers match manual database counts
-
-## Troubleshooting
-
-### Issue: All agents show 0 enquiries
-**Cause:** Frontend not passing `addedBy` fields  
-**Fix:** Update frontend to include `addedBy` and `addedByName`
-
-### Issue: All agents show 0 visitors
-**Cause:** Visitors not assigned to agents  
-**Fix:** Ensure visitor assignment workflow is working
-
-### Issue: API is slow
-**Cause:** Missing database indexes  
-**Fix:** Create indexes on `addedBy`, `assignedAgent` fields
-
-### Issue: Numbers don't match expectations
-**Cause:** Data inconsistency or migration issues  
-**Fix:** Run test script to verify database state
-
-## Success Criteria
-
-Deployment is successful when:
-- ✅ All API endpoints return 200 status
-- ✅ Agent performance page shows real numbers
-- ✅ New enquiries are tracked with agent info
-- ✅ No increase in error rates
-- ✅ Response times are acceptable
-- ✅ Test script passes all checks
-- ✅ Users confirm numbers are accurate
-
-## Documentation
-
-Ensure team has access to:
-- [ ] `QUICK_START.md` - Quick reference guide
-- [ ] `IMPLEMENTATION_SUMMARY.md` - What changed
-- [ ] `AGENT_TRACKING_IMPLEMENTATION.md` - Technical details
-- [ ] `DATA_FLOW_DIAGRAM.md` - System architecture
-- [ ] `scripts/README.md` - How to use scripts
-
-## Sign-off
-
-- [ ] Backend developer verified deployment
-- [ ] Frontend developer verified integration
-- [ ] QA tested all functionality
-- [ ] Product owner approved metrics
-- [ ] DevOps confirmed monitoring is active
+- [ ] **Base directory:** (empty)
+- [ ] **Build command:** `npm run build`
+- [ ] **Publish directory:** `.next`
+- [ ] **Node version:** 18
 
 ---
 
-**Deployment Date:** _______________  
-**Deployed By:** _______________  
-**Verified By:** _______________  
-**Issues Found:** _______________  
-**Status:** ⬜ Success | ⬜ Partial | ⬜ Rollback Required
+## Deployment Steps
+
+### Option 1: Deploy via Netlify Dashboard (Recommended)
+
+1. [ ] Go to https://app.netlify.com/
+2. [ ] Click "Add new site" → "Import an existing project"
+3. [ ] Choose "GitHub"
+4. [ ] Select repository: `Himani-Verma/Enquiry-Management-System-`
+5. [ ] Configure build settings (see above)
+6. [ ] Add environment variables
+7. [ ] Click "Deploy site"
+8. [ ] Wait for build to complete (5-10 minutes)
+
+### Option 2: Deploy via Netlify CLI
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Login to Netlify
+netlify login
+
+# Initialize site
+netlify init
+
+# Deploy to production
+netlify deploy --prod
+```
+
+---
+
+## After First Deployment
+
+### 1. Get Your Site URL
+Your site will be at: `https://[random-name].netlify.app`
+
+Example: `https://enquiry-management-system-ems.netlify.app`
+
+### 2. Update Environment Variable
+- [ ] Go to Netlify → Site settings → Environment variables
+- [ ] Update `NEXT_PUBLIC_API_BASE` with your actual URL
+- [ ] Trigger a new deploy (Deploys → Trigger deploy → Deploy site)
+
+### 3. Test Your Deployment
+
+#### Test Main App:
+- [ ] Visit: `https://your-site.netlify.app`
+- [ ] Login page loads
+- [ ] Can log in successfully
+- [ ] Dashboard displays correctly
+- [ ] API calls work
+
+#### Test Chatbot:
+- [ ] Visit: `https://your-site.netlify.app/chatbot`
+- [ ] Chatbot interface loads
+- [ ] Can register as visitor
+- [ ] Can send messages
+- [ ] Messages persist
+
+#### Test Chatbot Embed:
+- [ ] Visit: `https://your-site.netlify.app/test-chatbot.html`
+- [ ] Chat button appears
+- [ ] Clicking opens chatbot
+- [ ] Chatbot works in iframe
+
+---
+
+## WordPress Integration
+
+### Update WordPress Snippet
+
+In your WordPress chatbot snippet, update the iframe URL:
+
+```html
+<iframe 
+  id="envirocare-chatbot-iframe" 
+  src="https://YOUR-ACTUAL-NETLIFY-URL.netlify.app/chatbot"
+  title="Envirocare Labs Chatbot"
+  allow="clipboard-write"
+></iframe>
+```
+
+Replace `YOUR-ACTUAL-NETLIFY-URL` with your real Netlify URL.
+
+---
+
+## Security Checklist
+
+- [ ] Changed `JWT_SECRET` from default value
+- [ ] Using HTTPS (automatic with Netlify)
+- [ ] MongoDB connection string is secure
+- [ ] Environment variables are not in code
+- [ ] `.env.local` is in `.gitignore`
+
+---
+
+## Optional: Custom Domain
+
+If you want to use a custom domain like `cms.envirocarelabs.com`:
+
+1. [ ] Netlify Dashboard → Domain settings
+2. [ ] Add custom domain
+3. [ ] Update DNS records (Netlify provides instructions)
+4. [ ] Wait for DNS propagation (up to 24 hours)
+5. [ ] Update `NEXT_PUBLIC_API_BASE` environment variable
+6. [ ] Redeploy
+
+---
+
+## Troubleshooting
+
+### Build Fails?
+- Check build logs in Netlify dashboard
+- Verify all dependencies are in `package.json`
+- Try building locally: `npm run build`
+
+### Environment Variables Not Working?
+- Check variable names match exactly (case-sensitive)
+- Redeploy after adding variables
+- Check Netlify function logs
+
+### API Routes Return 404?
+- Verify `@netlify/plugin-nextjs` is in dependencies
+- Check `netlify.toml` configuration
+- Redeploy
+
+### Chatbot Iframe Blocked?
+- Check browser console for errors
+- Verify headers in `netlify.toml`
+- Clear browser cache
+
+---
+
+## Quick Commands
+
+```bash
+# Push changes to GitHub
+git add .
+git commit -m "Prepare for Netlify deployment"
+git push origin main
+
+# Generate JWT secret
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+
+# Test build locally
+npm run build
+npm start
+
+# Deploy via CLI
+netlify deploy --prod
+```
+
+---
+
+## Support
+
+- **Netlify Docs:** https://docs.netlify.com/
+- **Deployment Guide:** See `NETLIFY_DEPLOYMENT_GUIDE.md`
+- **Environment Variables:** See `.env.production.example`
+
+---
+
+## Status
+
+- [ ] Pre-deployment setup complete
+- [ ] Deployed to Netlify
+- [ ] Environment variables configured
+- [ ] Testing complete
+- [ ] WordPress integration updated
+- [ ] Production ready ✅
+
+---
+
+**Current Step:** _______________
+
+**Notes:** _______________
