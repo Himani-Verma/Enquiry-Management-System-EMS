@@ -1293,17 +1293,18 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
  <div className="text-center space-y-8 py-4">
  {/* Animated Welcome Section */}
- <div className="space-y-5 animate-fade-in">
+ <div className="space-y-7 animate-fade-in">
  <div className="inline-block">
- <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl px-6 py-3 mb-4">
- <span className="text-sm font-semibold text-blue-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
+ <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-2xl px-8 py-4 mb-4 shadow-md border border-blue-100">
+ <span className="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wider">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-3xl font-bold text-gray-900 leading-tight tracking-tight">
+ <h2 className="text-5xl md:text-6xl font-black text-gray-900 leading-[1.1] tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Hey! How can we<br />help you today?
  </h2>
- <p className="text-lg text-gray-600 font-medium max-w-sm mx-auto">
- I'm <span className="text-blue-600 font-bold">Eva</span>, your AI assistant.<br />Let's get started! ✨
+ <p className="text-xl text-gray-600 font-semibold max-w-sm mx-auto leading-relaxed">
+ I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 font-black text-2xl">Eva</span>, your AI assistant.<br />
+ <span className="text-lg">Let's get started! ✨</span>
  </p>
  </div>
 
@@ -1352,14 +1353,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showVisitorForm && (
- <div className="space-y-5">
+ <div className="space-y-6">
  <div className="text-center">
- <h3 className="text-xl font-bold text-gray-800 mb-2">Welcome to Envirocare Labs!</h3>
- <p className="text-gray-900 text-sm">Please provide your details to start the conversation!</p>
+ <h3 className="text-4xl font-black text-gray-900 mb-4 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
+ <p className="text-gray-700 text-lg font-semibold leading-relaxed">Please provide your details to start the conversation!</p>
  </div>
  <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4" noValidate>
  <div>
- <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+ <label htmlFor="name" className="block text-base font-bold text-gray-800 mb-2 tracking-wide">
  Name
  </label>
  <div className="relative">
@@ -1371,7 +1372,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Name"
  aria-invalid={errors.name ? 'true' : 'false'}
  aria-describedby={errors.name ? 'name-error' : undefined}
- className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 ${getFieldStateClass('name')}`}
+ className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-base font-medium ${getFieldStateClass('name')}`}
  />
  {isFieldValid('name') && <SuccessIcon />}
  </div>
@@ -1382,7 +1383,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+ <label htmlFor="email" className="block text-base font-bold text-gray-800 mb-2 tracking-wide">
  Email
  </label>
  <div className="relative">
@@ -1395,7 +1396,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Email"
  aria-invalid={errors.email ? 'true' : 'false'}
  aria-describedby={errors.email ? 'email-error' : undefined}
- className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 ${getFieldStateClass('email')}`}
+ className={`w-full px-4 py-3.5 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-base font-medium ${getFieldStateClass('email')}`}
  />
  {isFieldValid('email') && <SuccessIcon />}
  </div>
@@ -1406,7 +1407,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+ <label htmlFor="phone" className="block text-base font-bold text-gray-800 mb-2 tracking-wide">
  Phone Number
  </label>
  <div className="relative">
