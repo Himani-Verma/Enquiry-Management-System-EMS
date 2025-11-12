@@ -1291,26 +1291,62 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  {/* Enhanced Content Area */}
  <div className="flex-1 p-5 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
- <div className="text-center space-y-6">
- <div className="space-y-4">
- <h2 className="text-2xl font-semibold text-gray-700 leading-relaxed">
- Hey! How can we help you today?
- </h2>
- <p className="text-gray-900 text-base font-medium">I&apos;m Eva, your AI assistant. Let&apos;s get started!</p>
+ <div className="text-center space-y-8 py-4">
+ {/* Animated Welcome Section */}
+ <div className="space-y-5 animate-fade-in">
+ <div className="inline-block">
+ <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl px-6 py-3 mb-4">
+ <span className="text-sm font-semibold text-blue-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
- <div className="space-y-3">
+ </div>
+ <h2 className="text-3xl font-bold text-gray-900 leading-tight tracking-tight">
+ Hey! How can we<br />help you today?
+ </h2>
+ <p className="text-lg text-gray-600 font-medium max-w-sm mx-auto">
+ I'm <span className="text-blue-600 font-bold">Eva</span>, your AI assistant.<br />Let's get started! ✨
+ </p>
+ </div>
+
+ {/* Enhanced Action Buttons */}
+ <div className="space-y-4 px-2">
  <button
  onClick={() => handleTabChange('chat')}
- className="w-full bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white py-4 px-6 rounded-xl hover:from-[#1e3a8a] hover:to-[#1e3a8a] transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+ className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-5 px-6 rounded-2xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-3 shadow-xl hover:scale-[1.02] active:scale-[0.98] relative overflow-hidden"
  >
- <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+ <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+ <svg className="w-6 h-6 relative z-10 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
  </svg>
- <span className="font-semibold">Chat with Eva now</span>
+ <span className="text-lg font-bold relative z-10 tracking-wide">Chat with Eva now</span>
+ <svg className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+ </svg>
  </button>
- <button className="w-full bg-white text-gray-700 py-4 px-6 rounded-xl hover:bg-gray-50 transition-all duration-200 border-2 border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md">
- <span className="font-medium">Blogs / Events</span>
+
+ <button className="group w-full bg-white text-gray-700 py-5 px-6 rounded-2xl hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 border-2 border-gray-200 hover:border-blue-300 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-3">
+ <svg className="w-5 h-5 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+ </svg>
+ <span className="text-base font-bold">Blogs / Events</span>
  </button>
+ </div>
+
+ {/* Trust Indicators */}
+ <div className="pt-4 border-t border-gray-100">
+ <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
+ <div className="flex items-center space-x-1">
+ <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+ <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+ </svg>
+ <span className="font-medium">24/7 Available</span>
+ </div>
+ <div className="flex items-center space-x-1">
+ <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+ <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+ </svg>
+ <span className="font-medium">Instant Replies</span>
+ </div>
+ </div>
  </div>
  </div>
  )}
