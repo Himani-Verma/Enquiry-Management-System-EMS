@@ -1260,7 +1260,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  // Iframe mode: fixed dimensions with border and shadow
  const containerClasses = isIframe 
  ? "w-full h-full bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col font-poppins overflow-hidden"
- : "fixed top-20 bottom-20 right-6 w-96 h-[500px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95";
+ : "fixed top-20 bottom-20 right-6 w-80 h-[500px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95";
 
  return (
  <div className={containerClasses}>
