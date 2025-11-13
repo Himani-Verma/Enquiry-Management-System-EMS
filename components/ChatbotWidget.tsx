@@ -1501,11 +1501,11 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showChat && isRegistered && (
- <div className="space-y-4">
- <div className="flex justify-end mb-3">
+ <div className="space-y-2">
+ <div className="flex justify-end mb-2">
  <button
  onClick={resetChat}
- className="text-sm text-[#2d4891] hover:text-[#1e3a8a] hover:underline transition-colors duration-200 px-3 py-1 rounded-lg hover:bg-blue-50"
+ className="text-[9px] text-[#2d4891] hover:text-[#1e3a8a] hover:underline transition-colors duration-200 px-2 py-0.5 rounded-lg hover:bg-blue-50 font-semibold"
  >
  Start New Chat
  </button>
@@ -1516,14 +1516,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  className={`flex ${message.is_visitor ? 'justify-end' : 'justify-start'}`}
  >
  <div
- className={`max-w-xs px-4 py-3 rounded-2xl ${
+ className={`max-w-xs px-2.5 py-2 rounded-lg ${
  message.is_visitor
- ? 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white shadow-lg'
- : 'bg-white text-gray-800 shadow-md border border-gray-100'
+ ? 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white shadow-md'
+ : 'bg-white text-gray-800 shadow-sm border border-gray-100'
  }`}
  >
- <p className="text-sm whitespace-pre-line leading-relaxed">{message.message}</p>
- <p className={`text-xs mt-2 ${message.is_visitor ? 'text-blue-100' : 'text-gray-700'}`}>
+ <p className="text-[9px] whitespace-pre-line leading-relaxed">{message.message}</p>
+ <p className={`text-[7px] mt-1 ${message.is_visitor ? 'text-blue-100' : 'text-gray-500'}`}>
  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
  </p>
  </div>
@@ -1531,24 +1531,24 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  ))}
  {(isLoading || isFetchingMessages) && (
  <div className="flex justify-start">
- <div className="bg-white text-gray-800 px-4 py-3 rounded-2xl shadow-md border border-gray-100">
+ <div className="bg-white text-gray-800 px-2.5 py-2 rounded-lg shadow-sm border border-gray-100">
  <div className="flex space-x-1">
- <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
- <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
- <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+ <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"></div>
+ <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+ <div className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
  </div>
  </div>
  </div>
  )}
  {quickReplies.length > 0 && !isLoading && !isFetchingMessages && (
- <div className="flex justify-start mt-4">
- <div className="grid grid-cols-2 gap-2 w-full">
+ <div className="flex justify-start mt-2">
+ <div className="grid grid-cols-2 gap-1.5 w-full">
  {quickReplies.map((reply, index) => (
  <button
  key={index}
  onClick={() => handleQuickReply(reply)}
  disabled={isLoading}
- className={`px-4 py-3 rounded-xl border-2 transition-all duration-200 shadow-sm text-sm font-medium text-center ${
+ className={`px-2.5 py-2 rounded-lg border-2 transition-all duration-200 shadow-sm text-[9px] font-semibold text-center ${
  ['Previous', 'Next', 'Back'].includes(reply) 
  ? 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400' 
  : 'bg-white text-[#2d4891] border-[#2d4891] hover:bg-[#2d4891] hover:text-white hover:shadow-md'
@@ -1805,7 +1805,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  { key: 'home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', label: 'Home' },
  { key: 'chat', icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z', label: 'Chat' },
  { key: 'faq', icon: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z', label: 'FAQ' },
- { key: 'articles', icon: 'M12 20h9M12 4h9M3 8h18M3 16h18', label: 'Articles' }
+ { key: 'articles', icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', label: 'Articles' }
  ].map(({ key, icon, label }) => (
  <button
  key={key}
