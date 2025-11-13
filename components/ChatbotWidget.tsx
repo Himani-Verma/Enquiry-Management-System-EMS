@@ -1518,12 +1518,12 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <div
  className={`max-w-xs px-2.5 py-2 rounded-lg ${
  message.is_visitor
- ? 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white shadow-md'
- : 'bg-white text-gray-800 shadow-sm border border-gray-100'
+ ? 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] shadow-md'
+ : 'bg-white shadow-sm border border-gray-100'
  }`}
  >
- <p className="text-[9px] whitespace-pre-line leading-relaxed">{message.message}</p>
- <p className={`text-[7px] mt-1 ${message.is_visitor ? 'text-blue-100' : 'text-gray-500'}`}>
+ <p className={`text-[9px] whitespace-pre-line leading-relaxed ${message.is_visitor ? 'text-white' : 'text-gray-800'}`}>{message.message}</p>
+ <p className={`text-[7px] mt-1 ${message.is_visitor ? 'text-white opacity-80' : 'text-gray-500'}`}>
  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
  </p>
  </div>
