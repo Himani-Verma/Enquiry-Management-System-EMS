@@ -1523,14 +1523,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  }`}
  >
  <p 
- className={`text-[9px] whitespace-pre-line leading-relaxed font-semibold ${message.is_visitor ? '' : 'text-gray-800'}`}
- style={message.is_visitor ? { color: '#ffffff' } : {}}
+ className={`text-[9px] whitespace-pre-line leading-relaxed font-bold ${message.is_visitor ? '!text-white' : 'text-gray-800'}`}
+ style={message.is_visitor ? { color: '#ffffff !important' } : {}}
  >
  {message.message}
  </p>
  <p 
- className={`text-[7px] mt-1 font-medium ${message.is_visitor ? '' : 'text-gray-500'}`}
- style={message.is_visitor ? { color: '#ffffff' } : {}}
+ className={`text-[7px] mt-1 font-bold ${message.is_visitor ? '!text-white' : 'text-gray-500'}`}
+ style={message.is_visitor ? { color: '#ffffff !important' } : {}}
  >
  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
  </p>
