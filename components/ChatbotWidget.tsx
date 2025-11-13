@@ -1292,7 +1292,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <span className="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-xs font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <h2 className="text-[11px] font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Hey! How can we<br />help you today?
  </h2>
  <p className="text-xs text-gray-600 font-semibold max-w-sm mx-auto leading-tight">
