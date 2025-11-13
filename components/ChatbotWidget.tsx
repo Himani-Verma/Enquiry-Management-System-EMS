@@ -1565,20 +1565,20 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showFAQ && (
- <div className="space-y-4">
- <div className="flex items-center space-x-3 mb-5">
- <div className="w-10 h-10 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center">
- <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+ <div className="space-y-2">
+ <div className="flex items-center space-x-2 mb-3">
+ <div className="w-8 h-8 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
+ <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
  </div>
- <h3 className="font-bold text-gray-800 text-sm">Search FAQ</h3>
+ <h3 className="font-extrabold text-gray-900 text-[11px]" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search FAQ</h3>
  </div>
  
  {/* Search Bar */}
  <div className="relative">
- <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
- <svg className="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+ <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </div>
@@ -1587,23 +1587,23 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  placeholder="Search FAQs..."
  value={faqSearchQuery}
  onChange={(e) => setFaqSearchQuery(e.target.value)}
- className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900"
+ className="w-full pl-9 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-[10px] placeholder:text-gray-400"
  />
  </div>
 
  {/* Search Results Count */}
  {faqSearchQuery && (
- <div className="text-sm text-gray-800 text-center py-2">
+ <div className="text-[9px] text-gray-600 text-center py-1">
  Found {filteredFaqs.length} FAQ{filteredFaqs.length !== 1 ? 's' : ''} for &quot;{faqSearchQuery}&quot;
  </div>
  )}
 
  {/* FAQ List */}
- <div className="space-y-3 max-h-64 overflow-y-auto">
+ <div className="space-y-2 max-h-64 overflow-y-auto">
  {filteredFaqs.length > 0 ? (
  filteredFaqs.map((faq) => (
- <div key={faq.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200">
- <div className="p-4 cursor-pointer group" onClick={() => {
+ <div key={faq.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md hover:border-[#2d4891] transition-all duration-200">
+ <div className="p-2.5 cursor-pointer group" onClick={() => {
  const element = document.getElementById(`faq-answer-${faq.id}`);
  if (element) {
  element.classList.toggle('hidden');
@@ -1611,27 +1611,27 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  }}>
  <div className="flex items-center justify-between">
  <div className="flex-1">
- <h4 className="text-sm font-semibold text-gray-800 group-hover:text-[#2d4891] transition-colors duration-200">
+ <h4 className="text-[10px] font-bold text-gray-900 group-hover:text-[#2d4891] transition-colors duration-200 leading-tight">
  {faq.question}
  </h4>
- <div className="flex items-center space-x-2 mt-1">
- <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-[#2d4891]">
+ <div className="flex items-center space-x-1.5 mt-1">
+ <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-semibold bg-blue-50 text-[#2d4891] border border-blue-200">
  {faq.category}
  </span>
- <span className="text-xs text-gray-700">{faq.tags.slice(0, 2).join(', ')}</span>
+ <span className="text-[8px] text-gray-500">{faq.tags.slice(0, 2).join(', ')}</span>
  </div>
  </div>
- <svg className="w-5 h-5 text-gray-700 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+ <svg className="w-4 h-4 text-gray-500 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
  </svg>
  </div>
  </div>
- <div id={`faq-answer-${faq.id}`} className="hidden px-4 pb-4">
+ <div id={`faq-answer-${faq.id}`} className="hidden px-2.5 pb-2.5">
  <div className="pt-2 border-t border-gray-100">
- <p className="text-sm text-gray-700 leading-relaxed">{faq.answer}</p>
- <div className="flex flex-wrap gap-1 mt-3">
+ <p className="text-[9px] text-gray-700 leading-relaxed">{faq.answer}</p>
+ <div className="flex flex-wrap gap-1 mt-2">
  {faq.tags.map((tag, index) => (
- <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+ <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
  ))}
@@ -1641,18 +1641,18 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
  ))
  ) : faqSearchQuery ? (
- <div className="text-center py-8">
- <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
- <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="text-center py-6">
+ <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+ <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
  </svg>
  </div>
- <p className="text-gray-700 text-sm">No FAQs found for &quot;{faqSearchQuery}&quot;</p>
- <p className="text-gray-900 text-xs mt-1">Try different keywords or browse all FAQs</p>
+ <p className="text-gray-700 text-[10px] font-semibold">No FAQs found for &quot;{faqSearchQuery}&quot;</p>
+ <p className="text-gray-500 text-[8px] mt-0.5">Try different keywords or browse all FAQs</p>
  </div>
  ) : (
- <div className="text-center py-4">
- <p className="text-gray-700 text-xs">Type in the search bar above to find FAQs</p>
+ <div className="text-center py-3">
+ <p className="text-gray-500 text-[9px]">Type in the search bar above to find FAQs</p>
  </div>
  )}
  </div>
@@ -1660,20 +1660,20 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showArticles && (
- <div className="space-y-4">
- <div className="flex items-center space-x-3 mb-5">
- <div className="w-10 h-10 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center">
- <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 20h9M12 4h9M3 8h18M3 16h18" />
+ <div className="space-y-2">
+ <div className="flex items-center space-x-2 mb-3">
+ <div className="w-8 h-8 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
+ <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
  </svg>
  </div>
- <h3 className="font-bold text-gray-800 text-sm">Search Articles</h3>
+ <h3 className="font-extrabold text-gray-900 text-[11px]" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search Articles</h3>
  </div>
  
  {/* Search Bar */}
  <div className="relative">
- <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
- <svg className="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+ <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </div>
@@ -1682,23 +1682,23 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  placeholder="Search articles..."
  value={articlesSearchQuery}
  onChange={(e) => setArticlesSearchQuery(e.target.value)}
- className="w-full pl-10 pr-4 py-2.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900"
+ className="w-full pl-9 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-[10px] placeholder:text-gray-400"
  />
  </div>
 
  {/* Search Results Count */}
  {articlesSearchQuery && (
- <div className="text-sm text-gray-800 text-center py-2">
+ <div className="text-[9px] text-gray-600 text-center py-1">
  Found {filteredArticles.length} article{filteredArticles.length !== 1 ? 's' : ''} for &quot;{articlesSearchQuery}&quot;
  </div>
  )}
 
  {/* Articles List */}
- <div className="space-y-3 max-h-64 overflow-y-auto">
+ <div className="space-y-2 max-h-64 overflow-y-auto">
  {filteredArticles.length > 0 ? (
  filteredArticles.map((article) => (
- <div key={article.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200">
- <div className="p-4 cursor-pointer group" onClick={() => {
+ <div key={article.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md hover:border-[#2d4891] transition-all duration-200">
+ <div className="p-2.5 cursor-pointer group" onClick={() => {
  const element = document.getElementById(`article-excerpt-${article.id}`);
  if (element) {
  element.classList.toggle('hidden');
@@ -1706,46 +1706,46 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  }}>
  <div className="flex items-start justify-between">
  <div className="flex-1">
- <h4 className="text-sm font-semibold text-gray-800 group-hover:text-[#2d4891] transition-colors duration-200 leading-tight">
+ <h4 className="text-[10px] font-bold text-gray-900 group-hover:text-[#2d4891] transition-colors duration-200 leading-tight">
  {article.title}
  </h4>
- <div className="flex items-center space-x-2 mt-2">
- <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-[#2d4891]">
+ <div className="flex items-center space-x-1.5 mt-1">
+ <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-semibold bg-blue-50 text-[#2d4891] border border-blue-200">
  {article.category}
  </span>
- <span className="text-xs text-gray-700">{article.readTime}</span>
+ <span className="text-[8px] text-gray-500">{article.readTime}</span>
  </div>
- <div className="flex flex-wrap gap-1 mt-2">
- {article.tags.slice(0, 3).map((tag, index) => (
- <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+ <div className="flex flex-wrap gap-1 mt-1">
+ {article.tags.slice(0, 2).map((tag, index) => (
+ <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
  ))}
- {article.tags.length > 3 && (
- <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-200 text-gray-900">
- +{article.tags.length - 3} more
+ {article.tags.length > 2 && (
+ <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-200 text-gray-700">
+ +{article.tags.length - 2}
  </span>
  )}
  </div>
  </div>
- <svg className="w-5 h-5 text-gray-700 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180 ml-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+ <svg className="w-4 h-4 text-gray-500 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
  </svg>
  </div>
  </div>
- <div id={`article-excerpt-${article.id}`} className="hidden px-4 pb-4">
+ <div id={`article-excerpt-${article.id}`} className="hidden px-2.5 pb-2.5">
  <div className="pt-2 border-t border-gray-100">
- <p className="text-sm text-gray-700 leading-relaxed mb-3">{article.excerpt}</p>
+ <p className="text-[9px] text-gray-700 leading-relaxed mb-2">{article.excerpt}</p>
  <div className="flex items-center justify-between">
  <div className="flex flex-wrap gap-1">
- {article.tags.map((tag, index) => (
- <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+ {article.tags.slice(0, 3).map((tag, index) => (
+ <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
  ))}
  </div>
- <button className="inline-flex items-center px-3 py-1.5 rounded-lg text-xs font-medium bg-[#2d4891] text-white hover:bg-[#1e3a8a] transition-colors duration-200">
- Read Full Article
+ <button className="inline-flex items-center px-2 py-1 rounded-lg text-[8px] font-bold bg-[#2d4891] text-white hover:bg-[#1e3a8a] transition-colors duration-200 shadow-sm">
+ Read More
  </button>
  </div>
  </div>
@@ -1753,18 +1753,18 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
  ))
  ) : articlesSearchQuery ? (
- <div className="text-center py-8">
- <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
- <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="text-center py-6">
+ <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+ <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
  </svg>
  </div>
- <p className="text-gray-700 text-sm">No articles found for &quot;{articlesSearchQuery}&quot;</p>
- <p className="text-gray-700 text-xs mt-1">Try different keywords or browse all articles</p>
+ <p className="text-gray-700 text-[10px] font-semibold">No articles found for &quot;{articlesSearchQuery}&quot;</p>
+ <p className="text-gray-500 text-[8px] mt-0.5">Try different keywords or browse all articles</p>
  </div>
  ) : (
- <div className="text-center py-4">
- <p className="text-gray-700 text-sm">Type in the search bar above to find articles</p>
+ <div className="text-center py-3">
+ <p className="text-gray-500 text-[9px]">Type in the search bar above to find articles</p>
  </div>
  )}
  </div>
