@@ -1266,19 +1266,12 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <div className={containerClasses}>
  {/* Enhanced Header */}
  <div className={`text-white p-3 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
- <div className="flex items-center justify-between">
- <button className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10">
- <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
- </svg>
- </button>
- <div className="flex items-center justify-center flex-1">
+ <div className="flex items-center justify-center">
  <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={180} height={45} className="drop-shadow-sm" />
- </div>
  {!isIframe && (
  <button
  onClick={onToggle}
- className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10"
+ className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10 absolute right-3"
  >
  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
