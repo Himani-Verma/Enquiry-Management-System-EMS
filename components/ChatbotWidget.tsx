@@ -1282,65 +1282,65 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
 
  {/* Enhanced Content Area */}
- <div className="flex-1 p-2 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+ <div className="flex-1 p-1.5 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
- <div className="text-center space-y-2 py-1">
+ <div className="text-center space-y-1 py-0.5">
  {/* Animated Welcome Section */}
- <div className="space-y-1.5 animate-fade-in">
+ <div className="space-y-0.5 animate-fade-in">
  <div className="inline-block">
- <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded px-2 py-1 mb-0.5 shadow-sm border border-blue-100">
- <span className="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
+ <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded px-1.5 py-0.5 mb-0 shadow-sm border border-blue-100">
+ <span className="text-[8px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-[11px] font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <h2 className="text-[10px] font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Hey! How can we<br />help you today?
  </h2>
- <p className="text-xs text-gray-600 font-semibold max-w-sm mx-auto leading-tight">
- I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 font-extrabold text-sm">Eva</span>, your AI assistant.<br />
- <span className="text-[10px]">Let's get started! ✨</span>
+ <p className="text-[9px] text-gray-600 font-semibold max-w-sm mx-auto leading-tight">
+ I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 font-extrabold text-[10px]">Eva</span>, your AI assistant.<br />
+ <span className="text-[8px]">Let's get started! ✨</span>
  </p>
  </div>
 
  {/* Enhanced Action Buttons */}
- <div className="space-y-1.5 px-0.5">
+ <div className="space-y-1 px-0.5">
  <button
  onClick={() => handleTabChange('chat')}
- className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-2 px-3 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-1.5 shadow-md hover:scale-[1.01] active:scale-[0.99] relative overflow-hidden"
+ className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-1.5 px-2 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-1 shadow-md hover:scale-[1.01] active:scale-[0.99] relative overflow-hidden"
  >
  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
- <svg className="w-3.5 h-3.5 relative z-10 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-3 h-3 relative z-10 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
  </svg>
- <span className="text-xs font-bold relative z-10">Chat with Eva now</span>
- <svg className="w-3 h-3 relative z-10 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-[10px] font-bold relative z-10">Chat with Eva now</span>
+ <svg className="w-2.5 h-2.5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
  </svg>
  </button>
 
  <button 
  onClick={() => window.open('https://envirocarelabs.com/blogs/', '_blank')}
- className="group w-full bg-white text-gray-700 py-2 px-3 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-1.5">
- <svg className="w-3 h-3 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ className="group w-full bg-white text-gray-700 py-1.5 px-2 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-1">
+ <svg className="w-2.5 h-2.5 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
  </svg>
- <span className="text-[10px] font-bold">Blogs / Events</span>
+ <span className="text-[9px] font-bold">Blogs / Events</span>
  </button>
  </div>
 
  {/* Trust Indicators */}
- <div className="pt-1.5 border-t border-gray-100">
- <div className="flex items-center justify-center space-x-3 text-xs text-gray-500">
+ <div className="pt-1 border-t border-gray-100">
+ <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
  <div className="flex items-center space-x-0.5">
- <svg className="w-2.5 h-2.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+ <svg className="w-2 h-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[9px]">24/7 Available</span>
+ <span className="font-medium text-[7px]">24/7 Available</span>
  </div>
  <div className="flex items-center space-x-0.5">
- <svg className="w-2.5 h-2.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+ <svg className="w-2 h-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[9px]">Instant Replies</span>
+ <span className="font-medium text-[7px]">Instant Replies</span>
  </div>
  </div>
  </div>
@@ -1348,12 +1348,12 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showVisitorForm && (
- <div className="space-y-2">
+ <div className="space-y-1">
  <div className="text-center">
- <h3 className="text-lg font-extrabold text-gray-900 mb-1 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
- <p className="text-gray-700 text-[10px] font-medium leading-tight">Please provide your details to start the conversation!</p>
+ <h3 className="text-sm font-extrabold text-gray-900 mb-0.5 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
+ <p className="text-gray-700 text-[8px] font-medium leading-tight">Please provide your details to start the conversation!</p>
  </div>
- <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-2" noValidate>
+ <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-1.5" noValidate>
  <div>
  <label htmlFor="name" className="block text-xs font-bold text-gray-800 mb-1">
  Name
