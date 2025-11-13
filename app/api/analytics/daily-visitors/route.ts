@@ -5,15 +5,36 @@ import { addEventDateStage } from "@/lib/mongoDate";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
  try {
  console.log('📊 Daily Visitors API: Attempting to fetch data...');
  await connectMongo();
 
- // Last 7 full days (including today) - using UTC to avoid timezone issues
+ // Get time range from query params (default to 7 days)
+ const { searchParams } = new URL(request.url);
+ const range = searchParams.get('range') || '7d';
+ 
+ let daysToFetch = 7;
+ switch (range) {
+ case '7d':
+ daysToFetch = 7;
+ break;
+ case '30d':
+ daysToFetch = 30;
+ break;
+ case '90d':
+ daysToFetch = 90;
+ break;
+ default:
+ daysToFetch = 7;
+ }
+
+ console.log(`📊 Fetching data for range: ${range} (${daysToFetch} days)`);
+
+ // Calculate date range using UTC to avoid timezone issues
  const now = new Date();
  const start = new Date();
- start.setUTCDate(now.getUTCDate() - 6);
+ start.setUTCDate(now.getUTCDate() - (daysToFetch - 1));
  start.setUTCHours(0,0,0,0);
  
  const end = new Date();
@@ -51,17 +72,19 @@ export async function GET() {
  const series = await Visitor.aggregate(pipeline as any);
  console.log('📊 Raw aggregation result:', series);
 
- // Generate 7 days array (including today) - using UTC dates
+ // Generate days array for the requested range - using UTC dates
  const days: string[] = [];
- for (let i = 0; i < 7; i++) {
+ for (let i = 0; i < daysToFetch; i++) {
  const d = new Date(start);
  d.setUTCDate(start.getUTCDate() + i);
  const dateStr = d.toISOString().slice(0,10);
  days.push(dateStr);
+ if (i < 3 || i >= daysToFetch - 3) { // Log first and last 3 days
  console.log(`📊 Day ${i}: ${dateStr} (${d.toUTCString()})`);
  }
+ }
  
- console.log('📊 Generated days array:', days);
+ console.log(`📊 Generated ${days.length} days array`);
  console.log('📊 Today (UTC):', now.toISOString().slice(0,10));
  console.log('📊 First day in array:', days[0]);
  console.log('📊 Last day in array:', days[days.length - 1]);

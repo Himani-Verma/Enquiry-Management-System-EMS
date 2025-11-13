@@ -55,6 +55,8 @@ export default function EnhancedDailyVisitorsChart({
  const [timeRange, setTimeRange] = useState<'7d' | '30d' | '90d'>('7d');
  const [processedData, setProcessedData] = useState<DailyVisitorsData[]>([]);
  const [generatedData, setGeneratedData] = useState<DailyVisitorsData[]>([]);
+ const [liveData, setLiveData] = useState<DailyVisitorsData[]>([]);
+ const [isLoadingLiveData, setIsLoadingLiveData] = useState(false);
 
  // Color schemes
  const colorSchemes = {
@@ -106,6 +108,30 @@ export default function EnhancedDailyVisitorsChart({
 
  const scheme = colorSchemes[color];
 
+ // Fetch live data when time range changes
+ useEffect(() => {
+ const fetchLiveData = async () => {
+ try {
+ setIsLoadingLiveData(true);
+ console.log(`📊 Fetching live data for range: ${timeRange}`);
+ const response = await fetch(`/api/analytics/daily-visitors?range=${timeRange}`, {
+ cache: 'no-store'
+ });
+ if (response.ok) {
+ const liveDataResult = await response.json();
+ console.log(`📊 Received live data:`, liveDataResult);
+ setLiveData(liveDataResult);
+ }
+ } catch (error) {
+ console.error('Error fetching live data:', error);
+ } finally {
+ setIsLoadingLiveData(false);
+ }
+ };
+ 
+ fetchLiveData();
+ }, [timeRange]);
+
  // Generate sample data for visualization when no real data available
  useEffect(() => {
  const now = new Date();
@@ -149,52 +175,22 @@ export default function EnhancedDailyVisitorsChart({
  useEffect(() => {
  console.log('📊 EnhancedDailyVisitorsChart: Processing data effect triggered');
  console.log('📊 EnhancedDailyVisitorsChart: Input data:', data);
+ console.log('📊 EnhancedDailyVisitorsChart: Live data:', liveData);
  console.log('📊 EnhancedDailyVisitorsChart: Generated data:', generatedData);
  
- // If we have real data from the API, use it
- if (data && data.length > 0) {
- console.log('📊 EnhancedDailyVisitorsChart: Processing real data', data.length, 'items');
- const now = new Date();
- let daysToShow = 7;
- let startDate: Date;
-
- switch (timeRange) {
- case '7d':
- daysToShow = 7;
- startDate = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000);
- break;
- case '30d':
- daysToShow = 30;
- startDate = new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000);
- break;
- case '90d':
- daysToShow = 90;
- startDate = new Date(now.getTime() - 89 * 24 * 60 * 60 * 1000);
- break;
- default:
- daysToShow = 7;
- startDate = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000);
- }
-
- // Create a map of existing data
- const dataMap = new Map<string, number>();
- data.forEach(item => {
- const dateKey = item.date.split('T')[0]; // Normalize date to YYYY-MM-DD
- dataMap.set(dateKey, item.visitors);
- });
-
- // Fill in all days in the range, even if missing
- const completeData: DailyVisitorsData[] = [];
- for (let i = 0; i < daysToShow; i++) {
- const currentDate = new Date(startDate);
- currentDate.setDate(startDate.getDate() + i);
- const dateString = currentDate.toISOString().split('T')[0];
+ // Priority: liveData > data prop > generatedData
+ const dataToUse = liveData.length > 0 ? liveData : (data && data.length > 0 ? data : null);
  
- completeData.push({
- date: dateString,
- visitors: dataMap.get(dateString) || 0
- });
- }
+ // If we have real data (from live fetch or prop), use it
+ if (dataToUse && dataToUse.length > 0) {
+ console.log('📊 EnhancedDailyVisitorsChart: Processing real data', dataToUse.length, 'items');
+ 
+ // The API already returns complete data with all days filled in
+ // Just use it directly
+ const completeData = dataToUse.map(item => ({
+ date: item.date.split('T')[0], // Normalize date to YYYY-MM-DD
+ visitors: item.visitors
+ }));
  
  console.log('📊 EnhancedDailyVisitorsChart: Complete data with all days:', completeData);
  console.log('✅ Using complete data:', completeData.length, 'data points');
@@ -204,7 +200,7 @@ export default function EnhancedDailyVisitorsChart({
  console.log('⚠️ No real data provided, using generated data');
  setProcessedData(generatedData);
  }
- }, [data, timeRange, generatedData]);
+ }, [data, liveData, timeRange, generatedData]);
 
  // Generate labels and chart data
  const labels = processedData.map(item => {

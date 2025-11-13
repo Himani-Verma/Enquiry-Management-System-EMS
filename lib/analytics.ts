@@ -42,8 +42,9 @@ export const getSummary = () => j<Summary>("/api/analytics/summary");
 
 /**
  * Fetch daily time series data from live MongoDB
+ * @param range - Time range: '7d', '30d', or '90d' (default: '7d')
  */
-export const getDaily = () => j<DailyPoint[]>("/api/analytics/daily-visitors");
+export const getDaily = (range: '7d' | '30d' | '90d' = '7d') => j<DailyPoint[]>(`/api/analytics/daily-visitors?range=${range}`);
 
 /**
  * Fetch recent conversations from live MongoDB
