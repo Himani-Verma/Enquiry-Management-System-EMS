@@ -1282,7 +1282,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
 
  {/* Enhanced Content Area */}
- <div className="flex-1 p-1.5 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
+ <div className="flex-1 p-1.5 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
  <div className="text-center space-y-1 py-0.5">
  {/* Animated Welcome Section */}
