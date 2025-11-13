@@ -1273,7 +1273,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </svg>
  </button>
  <div className="flex items-center justify-center flex-1">
- <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={140} height={35} className="drop-shadow-sm" />
+ <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={180} height={45} className="drop-shadow-sm" />
  </div>
  {!isIframe && (
  <button
@@ -1299,7 +1299,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <span className="text-[10px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-xl font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <h2 className="text-base font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Hey! How can we<br />help you today?
  </h2>
  <p className="text-xs text-gray-600 font-semibold max-w-sm mx-auto leading-tight">
@@ -1821,10 +1821,10 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
  }`}
  >
- <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
  </svg>
- <span className="text-[6px] font-medium leading-none">{label}</span>
+ <span className="text-[5px] font-medium leading-none">{label}</span>
  </button>
  ))}
  </div>
