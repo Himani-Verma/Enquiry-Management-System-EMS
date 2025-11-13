@@ -10,16 +10,18 @@ export async function GET() {
  console.log('📊 Daily Visitors API: Attempting to fetch data...');
  await connectMongo();
 
- // Last 7 full days (including today)
+ // Last 7 full days (including today) - using UTC to avoid timezone issues
  const now = new Date();
  const start = new Date();
- start.setDate(now.getDate() - 6);
- start.setHours(0,0,0,0);
+ start.setUTCDate(now.getUTCDate() - 6);
+ start.setUTCHours(0,0,0,0);
  
  const end = new Date();
- end.setHours(23,59,59,999);
+ end.setUTCHours(23,59,59,999);
  
- console.log('📊 Date range:', start.toISOString(), 'to', end.toISOString());
+ console.log('📊 Date range (UTC):', start.toISOString(), 'to', end.toISOString());
+ console.log('📊 Current date (UTC):', now.toISOString());
+ console.log('📊 Start date (UTC):', start.toISOString());
 
  console.log('📊 Fetching visitors from:', start.toISOString(), 'to now');
 
@@ -49,22 +51,19 @@ export async function GET() {
  const series = await Visitor.aggregate(pipeline as any);
  console.log('📊 Raw aggregation result:', series);
 
- // Generate 7 days array (including today)
+ // Generate 7 days array (including today) - using UTC dates
  const days: string[] = [];
  for (let i = 0; i < 7; i++) {
  const d = new Date(start);
- d.setDate(start.getDate() + i);
- days.push(d.toISOString().slice(0,10));
- }
- 
- // Ensure today is included
- const today = now.toISOString().slice(0,10);
- if (!days.includes(today)) {
- days[6] = today; // Replace the last day with today
+ d.setUTCDate(start.getUTCDate() + i);
+ const dateStr = d.toISOString().slice(0,10);
+ days.push(dateStr);
+ console.log(`📊 Day ${i}: ${dateStr} (${d.toUTCString()})`);
  }
  
  console.log('📊 Generated days array:', days);
- console.log('📊 Today should be:', now.toISOString().slice(0,10));
+ console.log('📊 Today (UTC):', now.toISOString().slice(0,10));
+ console.log('📊 First day in array:', days[0]);
  console.log('📊 Last day in array:', days[days.length - 1]);
 
  // Map results to days
@@ -104,16 +103,16 @@ export async function GET() {
  console.error('❌ Daily visitors API error:', error);
  console.log('🔄 Using fallback data for daily visitors...');
  
- // Generate realistic fallback data
+ // Generate realistic fallback data using UTC
  const now = new Date();
  const start = new Date();
- start.setDate(now.getDate() - 6);
- start.setHours(0,0,0,0);
+ start.setUTCDate(now.getUTCDate() - 6);
+ start.setUTCHours(0,0,0,0);
 
  const days: string[] = [];
  for (let i = 0; i < 7; i++) {
  const d = new Date(start);
- d.setDate(start.getDate() + i);
+ d.setUTCDate(start.getUTCDate() + i);
  days.push(d.toISOString().slice(0,10));
  }
 
