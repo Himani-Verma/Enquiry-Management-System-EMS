@@ -414,7 +414,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  article.title.toLowerCase().includes(articlesSearchQuery.toLowerCase()) ||
  article.excerpt.toLowerCase().includes(articlesSearchQuery.toLowerCase()) ||
  article.category.toLowerCase().includes(articlesSearchQuery.toLowerCase()) ||
- article.tags.some(tag => tag.toLowerCase().includes(articlesSearchQuery.toLowerCase()))
+ article.tags.some((tag: string) => tag.toLowerCase().includes(articlesSearchQuery.toLowerCase()))
  );
 
  const scrollToBottom = () => {
@@ -1630,7 +1630,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <div className="pt-2 border-t border-gray-100">
  <p className="text-[9px] text-gray-700 leading-relaxed">{faq.answer}</p>
  <div className="flex flex-wrap gap-1 mt-2">
- {faq.tags.map((tag, index) => (
+ {faq.tags.map((tag: string, index: number) => (
  <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
@@ -1716,7 +1716,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <span className="text-[8px] text-gray-500">{article.readTime}</span>
  </div>
  <div className="flex flex-wrap gap-1 mt-1">
- {article.tags.slice(0, 2).map((tag, index) => (
+ {article.tags.slice(0, 2).map((tag: string, index: number) => (
  <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
@@ -1738,7 +1738,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <p className="text-[9px] text-gray-700 leading-relaxed mb-2">{article.excerpt}</p>
  <div className="flex items-center justify-between">
  <div className="flex flex-wrap gap-1">
- {article.tags.slice(0, 3).map((tag, index) => (
+ {article.tags.slice(0, 3).map((tag: string, index: number) => (
  <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
  #{tag}
  </span>
