@@ -8,6 +8,7 @@ import QuotationTable from '@/components/quotation/QuotationTable'
 import QuotationFormModal from '@/components/quotation/QuotationFormModal'
 import PreviewDrawer from '@/components/quotation/PreviewDrawer'
 import GenerateQuotationButton from '@/components/quotation/GenerateQuotationButton'
+import RateListViewer from '@/components/quotation/RateListViewer'
 
 import { QuotationDraft, SavedQuotation } from '@/lib/types/quotation'
 import { generateQuotationNo } from '@/lib/quotation-calculations'
@@ -21,6 +22,7 @@ export default function QuotationsPage() {
  const [quotations, setQuotations] = useState<SavedQuotation[]>([])
  const [isModalOpen, setIsModalOpen] = useState(false)
  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
+ const [isRateListOpen, setIsRateListOpen] = useState(false)
 
  const [modalMode, setModalMode] = useState<'create' | 'edit' | 'view'>('create')
  const [selectedQuotationId, setSelectedQuotationId] = useState<string>()
@@ -488,6 +490,13 @@ export default function QuotationsPage() {
  </p>
  </div>
  <div className="flex gap-2">
+ <button
+ onClick={() => setIsRateListOpen(true)}
+ className="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-colors font-semibold text-sm shadow-md flex items-center gap-2"
+ >
+ <FileText className="w-4 h-4" />
+ View Rate List
+ </button>
  <GenerateQuotationButton onClick={handleCreateNew} />
  </div>
  </div>
@@ -533,6 +542,11 @@ export default function QuotationsPage() {
  />
  )}
 
+ {/* Rate List Viewer */}
+ <RateListViewer
+ isOpen={isRateListOpen}
+ onClose={() => setIsRateListOpen(false)}
+ />
 
  </div>
  )

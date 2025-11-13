@@ -22,9 +22,8 @@ export async function GET() {
  const items = await collection.find({}).toArray()
  console.log(`📊 Found ${items.length} items in rate collection`)
  
- // Transform data for Excel export - using the original format you expect
+ // Transform data for Excel export - ID column excluded
  const excelData = items.map((item: any, index: number) => ({
- 'ID': item._id?.toString() || '',
  'Serial No': index + 1,
  'Group': item.group || '',
  'Test Parameter (Methods)': item['test_parameter(methods)'] || '',
@@ -56,9 +55,8 @@ function createExcelResponse(excelData: any[]) {
  const workbook = XLSX.utils.book_new()
  const worksheet = XLSX.utils.json_to_sheet(excelData)
  
- // Set column widths for better readability - matching original format
+ // Set column widths for better readability - ID column removed
  const columnWidths = [
- { wch: 25 }, // ID
  { wch: 10 }, // Serial No
  { wch: 20 }, // Group
  { wch: 40 }, // Test Parameter (Methods)

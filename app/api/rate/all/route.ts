@@ -16,16 +16,27 @@ export async function GET(request: NextRequest) {
  .sort({ id: 1 })
  .toArray()
 
- return NextResponse.json({
- success: true,
- items: items.map((item: any) => ({
+ // Generate sequential IDs for items that don't have them
+ let currentId = 1
+ const itemsWithIds = items.map((item: any, index: number) => {
+ // If item has an id, use it; otherwise assign sequential number
+ const itemId = item.id ? parseInt(item.id) : (index + 1)
+ if (itemId >= currentId) {
+ currentId = itemId + 1
+ }
+ return {
  _id: item._id.toString(),
- id: item.id,
+ id: itemId,
  group: item.group,
  testParameter: item['test_parameter(methods)'],
  rate: parseFloat(item['rates\r'] || item.rates || 0)
- })),
- count: items.length
+ }
+ })
+
+ return NextResponse.json({
+ success: true,
+ items: itemsWithIds,
+ count: itemsWithIds.length
  })
 
  } catch (error) {

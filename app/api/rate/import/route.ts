@@ -53,9 +53,9 @@ export async function POST(request: NextRequest) {
  )
  }
  
- // Extract headers and validate - using original format
+ // Extract headers and validate
  const headers = jsonData[0] as string[]
- const requiredHeaders = ['ID', 'Group', 'Test Parameter (Methods)', 'Rate (₹)']
+ const requiredHeaders = ['Serial No', 'Group', 'Test Parameter (Methods)', 'Rate (₹)']
  
  console.log('📊 Excel headers found:', headers)
  console.log('📊 Required headers:', requiredHeaders)
@@ -74,6 +74,13 @@ export async function POST(request: NextRequest) {
  if (normalizedHeader === normalizedTarget) return true
  
  // Try partial matches for common variations
+ if (targetHeader.includes('Serial No')) {
+ return normalizedHeader.includes('serialno') || 
+ normalizedHeader.includes('serial') ||
+ normalizedHeader.includes('srno') ||
+ normalizedHeader.includes('sno')
+ }
+ 
  if (targetHeader.includes('Test Parameter')) {
  return normalizedHeader.includes('testparameter') || 
  normalizedHeader.includes('parameter') ||
@@ -86,10 +93,6 @@ export async function POST(request: NextRequest) {
  
  if (targetHeader.includes('Group')) {
  return normalizedHeader.includes('group')
- }
- 
- if (targetHeader.includes('ID')) {
- return normalizedHeader === 'id'
  }
  
  return false
@@ -106,9 +109,8 @@ export async function POST(request: NextRequest) {
  headerMap[header] = index
  })
  
- // Process data rows - using original format
+ // Process data rows - all rows will be treated as new inserts with auto-generated sequential IDs
  const dataRows = jsonData.slice(1) as any[][]
- const updates: any[] = []
  const inserts: any[] = []
  const errors: string[] = []
  
@@ -122,10 +124,22 @@ export async function POST(request: NextRequest) {
  continue
  }
  
- const id = row[headerMap['ID']]?.toString().trim()
+ const serialNo = row[headerMap['Serial No']]
  const group = row[headerMap['Group']]?.toString().trim()
  const testParameter = row[headerMap['Test Parameter (Methods)']]?.toString().trim()
  const rateValue = row[headerMap['Rate (₹)']]
+ 
+ // Validate Serial No
+ if (!serialNo || serialNo === '') {
+ errors.push(`Row ${rowNumber}: Serial No is required`)
+ continue
+ }
+ 
+ const id = parseInt(serialNo.toString())
+ if (isNaN(id) || id <= 0) {
+ errors.push(`Row ${rowNumber}: Invalid Serial No "${serialNo}"`)
+ continue
+ }
  
  // Validate required fields
  if (!group) {
@@ -148,25 +162,15 @@ export async function POST(request: NextRequest) {
  }
  }
  
- const itemData = {
+ // Use Serial No from Excel as the ID
+ inserts.push({
+ id: id.toString(),
  group: group,
  'test_parameter(methods)': testParameter,
  'rates\r': rate.toString(),
+ createdAt: new Date(),
  updatedAt: new Date()
- }
- 
- // Check if this is an update (has valid ID) or insert (new item)
- if (id && ObjectId.isValid(id)) {
- updates.push({
- filter: { _id: ObjectId.createFromHexString(id) },
- update: { $set: itemData }
  })
- } else {
- inserts.push({
- ...itemData,
- createdAt: new Date()
- })
- }
  
  } catch (error) {
  errors.push(`Row ${rowNumber}: ${error instanceof Error ? error.message : 'Unknown error'}`)
@@ -185,32 +189,29 @@ export async function POST(request: NextRequest) {
  )
  }
  
- // Perform database operations - using original rate collection
- let updatedCount = 0
+ // Check if there's anything to insert
+ if (inserts.length === 0) {
+ return NextResponse.json(
+ { 
+ success: false, 
+ error: 'No valid data rows found to import'
+ },
+ { status: 400 }
+ )
+ }
+ 
+ // Perform database operations - insert all rows as new entries
  let insertedCount = 0
  
- // Process updates
- if (updates.length > 0) {
- for (const update of updates) {
- const result = await collection.updateOne(update.filter, update.update)
- if (result.modifiedCount > 0) {
- updatedCount++
- }
- }
- }
- 
  // Process inserts
- if (inserts.length > 0) {
  const result = await collection.insertMany(inserts)
  insertedCount = result.insertedCount
- }
  
  return NextResponse.json({
  success: true,
  message: 'Rate list imported successfully',
  summary: {
- totalProcessed: updates.length + inserts.length,
- updated: updatedCount,
+ totalProcessed: inserts.length,
  inserted: insertedCount,
  errors: errors.length
  }

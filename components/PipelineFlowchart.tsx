@@ -71,30 +71,16 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  const [pendingStageChange, setPendingStageChange] = useState<string | null>(null);
  const [mandatoryNotes, setMandatoryNotes] = useState('');
 
- // Debug logging
- console.log('🚀🚀🚀 FRESH CODE LOADED - TIMESTAMP:', new Date().toISOString(), '🚀🚀🚀');
- console.log('🚀 PipelineFlowchart component loaded with NEW DEBUGGING CODE - TIMESTAMP:', new Date().toISOString());
- console.log('PipelineFlowchart rendered with currentStatus:', currentStatus);
- console.log('PipelineFlowchart pipelineHistory:', pipelineHistory);
- console.log('PipelineFlowchart stageHistory:', stageHistory);
+ // Debug logging.toISOString(), '🚀🚀🚀');.toISOString());
  
  // Debug: Check if notes are in pipelineHistory
  if (pipelineHistory && pipelineHistory.length > 0) {
- console.log('🔍 PipelineFlowchart - Checking pipelineHistory entries:');
  pipelineHistory.forEach((entry, index) => {
- console.log(` Entry ${index}:`, {
- status: entry.status,
- notes: entry.notes,
- hasNotes: !!entry.notes,
- notesLength: entry.notes?.length,
- changedAt: entry.changedAt
- });
  });
  }
 
  // Effect to log when currentStatus changes
  useEffect(() => {
- console.log('PipelineFlowchart currentStatus changed to:', currentStatus);
  }, [currentStatus]);
 
  // Create a stable key for pipeline history to prevent unnecessary recalculations
@@ -107,34 +93,20 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
 
  // Memoize the pipeline history processing to prevent infinite loops
  const processedStageHistory = useMemo(() => {
- console.log('Processing stage history with:', { pipelineHistory, currentStatus });
- console.log('Pipeline history entries:', pipelineHistory.map(entry => ({
- status: entry.status,
- notes: entry.notes,
- changedAt: entry.changedAt
- })));
  
  let stageHistoryEntries: StageHistory[] = [];
  
  if (pipelineHistory && pipelineHistory.length > 0) {
- console.log('Converting pipeline history:', pipelineHistory);
  
  // Create a map to ensure each stage appears only once
  const stageMap = new Map<string, any>();
  
  // Process pipeline history and keep only the latest entry for each stage
  pipelineHistory.forEach((entry) => {
- console.log('Processing pipeline entry:', {
- status: entry.status,
- notes: entry.notes,
- changedAt: entry.changedAt,
- changedBy: entry.changedBy
- });
  
  const existingEntry = stageMap.get(entry.status);
  if (!existingEntry || new Date(entry.changedAt) > new Date(existingEntry.changedAt)) {
  stageMap.set(entry.status, entry);
- console.log('Added/updated entry for stage:', entry.status, 'with notes:', entry.notes);
  }
  });
  
@@ -152,29 +124,17 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  return reachedStages.has(stage.id);
  });
  
- console.log('Pipeline stages that have been reached (in sequence):', reachedPipelineStages);
- 
  // Create stage history entries following the pipeline sequence
  stageHistoryEntries = reachedPipelineStages.map((stage, index) => {
  const historyEntry = stageMap.get(stage.id);
  const isAutoFilled = historyEntry && historyEntry.notes && historyEntry.notes.includes('Auto-filled stage:');
  
- console.log(`Creating stage history entry for ${stage.id}:`, {
- historyEntry: historyEntry,
- hasNotes: historyEntry?.notes ? 'YES' : 'NO',
- notes: historyEntry?.notes
- });
- 
  // Use the notes from the backend if available, otherwise use default text
  let executiveNotes = 'Stage reached';
  if (historyEntry && historyEntry.notes) {
  executiveNotes = historyEntry.notes;
- console.log(`Using backend notes for ${stage.id}: "${executiveNotes}"`);
  } else if (stage.id === currentStatus) {
  executiveNotes = 'Current status';
- console.log(`Using default "Current status" for ${stage.id}`);
- } else {
- console.log(`Using default "Stage reached" for ${stage.id}`);
  }
  
  const stageEntry = {
@@ -187,8 +147,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  isEditable: true,
  isAutoFilled: isAutoFilled
  };
- 
- console.log(`Final stage entry for ${stage.id}:`, stageEntry);
  return stageEntry;
  });
  
@@ -196,7 +154,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  // No pipeline history, create entries for all stages up to current status
  const currentStageIndex = PIPELINE_STAGES.findIndex(s => s.id === currentStatus);
  if (currentStageIndex >= 0) {
- console.log('Creating stage history for all stages up to:', currentStatus, 'index:', currentStageIndex);
  
  // Create entries for all stages from 0 to currentStageIndex
  stageHistoryEntries = PIPELINE_STAGES.slice(0, currentStageIndex + 1).map((stage, index) => ({
@@ -209,12 +166,8 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  isEditable: true,
  isAutoFilled: stage.id !== currentStatus // Mark auto-filled except current
  }));
- 
- console.log('Created stage history for', stageHistoryEntries.length, 'stages');
  }
  }
- 
- console.log('Final stage history - FOLLOWS PIPELINE SEQUENCE:', stageHistoryEntries);
  return stageHistoryEntries;
  }, [pipelineHistoryKey]);
 
@@ -226,9 +179,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  const hasChanged = JSON.stringify(processedStageHistory) !== JSON.stringify(prevProcessedHistoryRef.current);
  
  if (hasChanged) {
- console.log('Stage history changed, updating state');
- console.log('Processed stage history:', processedStageHistory);
- 
  // Use the processed history directly - it already contains the backend notes
  setStageHistory(processedStageHistory);
  prevProcessedHistoryRef.current = processedStageHistory;
@@ -236,8 +186,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  }, [processedStageHistory]);
 
  const handleStageChange = useCallback((newStatus: string) => {
- console.log('Stage change requested:', newStatus);
- 
  if (readOnly) {
  return; // Don't allow changes in read-only mode
  }
@@ -270,7 +218,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  
  // TODO: In the future, you might want to save edited notes to the backend
  // For now, we'll just update the local state
- console.log('Notes edited locally:', { stageId: entry.stageId, notes: trimmedNotes });
  }
  
  setEditingNotes(null);
@@ -285,26 +232,16 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  // Functions to handle mandatory notes modal
  const handleConfirmStageChange = useCallback(() => {
  if (!pendingStageChange || !mandatoryNotes.trim()) {
- console.log('Cannot proceed - missing stage or notes:', { pendingStageChange, mandatoryNotes });
  return; // Don't proceed if no stage or empty notes
  }
  
- console.log('🚀 CONFIRMING STAGE CHANGE WITH NOTES:', { 
- newStatus: pendingStageChange, 
- notes: mandatoryNotes.trim(),
- notesLength: mandatoryNotes.trim().length
- });
- 
  // Call the onStatusChange callback with the notes - backend will save them
- console.log('📤 Sending to backend via onStatusChange:', pendingStageChange, mandatoryNotes.trim());
  onStatusChange(pendingStageChange, mandatoryNotes.trim());
  
  // Close the modal and reset state
  setShowNotesModal(false);
  setPendingStageChange(null);
  setMandatoryNotes('');
- 
- console.log('✅ Modal closed, waiting for backend response...');
  }, [pendingStageChange, mandatoryNotes, onStatusChange]);
 
  const handleCancelStageChange = useCallback(() => {
@@ -327,21 +264,11 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  return a.timestamp.getTime() - b.timestamp.getTime();
  });
 
- // Debug log sorted stage history (now sorted by pipeline order)
- useEffect(() => {
- console.log('Stage history sorted by pipeline order:', sortedStageHistory);
- }, [sortedStageHistory]);
+
 
  const getStageStatus = (stageId: string) => {
  const currentIndex = PIPELINE_STAGES.findIndex(s => s.id === currentStatus);
  const stageIndex = PIPELINE_STAGES.findIndex(s => s.id === stageId);
- 
- console.log(`getStageStatus for ${stageId}:`, {
- currentStatus,
- currentIndex,
- stageIndex,
- stageName: PIPELINE_STAGES[stageIndex]?.name
- });
  
  // Handle unqualified status
  if (currentStatus === 'unqualified' && stageId === 'unqualified') {
@@ -369,12 +296,6 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  const renderStage = (stage: PipelineStage, index: number, isLastStage: boolean = false) => {
  const status = getStageStatus(stage.id);
  const isCurrent = currentStatus === stage.id;
- 
- console.log(`Rendering stage ${stage.name} (${stage.id}):`, {
- status,
- isCurrent,
- currentStatus
- });
  
  let statusClass = '';
  let borderClass = '';
