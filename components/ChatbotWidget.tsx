@@ -1317,9 +1317,9 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  return (
  <div className={containerClasses}>
  {/* Enhanced Header */}
- <div className={`text-white p-4 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
+ <div className={`text-white p-2 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
  <div className="flex items-center justify-center">
- <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={200} height={50} className="drop-shadow-sm" />
+ <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={160} height={40} className="drop-shadow-sm" />
  {!isIframe && (
  <button
  onClick={onToggle}
@@ -1335,50 +1335,50 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
 
  {/* Enhanced Content Area */}
- <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+ <div className="flex-1 p-2 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
- <div className="text-center space-y-4 py-6 px-4">
+ <div className="text-center space-y-2 py-2 px-2">
  {/* Animated Welcome Section with Better Spacing */}
- <div className="space-y-3 animate-fade-in">
+ <div className="space-y-1.5 animate-fade-in">
  <div className="inline-block">
- <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-full px-3 py-1.5 mb-2 shadow-sm border border-blue-100">
- <span className="text-[10px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
+ <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-full px-2 py-1 mb-1 shadow-sm border border-blue-100">
+ <span className="text-[9px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-2xl font-extrabold leading-tight px-2 mb-3" style={{ fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+ <h2 className="text-lg font-extrabold leading-tight px-1 mb-1" style={{ fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
  Hey! How can we<br />help you today?
  </h2>
- <p className="text-base text-gray-700 max-w-sm mx-auto leading-relaxed px-2 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <p className="text-sm text-gray-700 max-w-sm mx-auto leading-snug px-1 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  I'm <span className="font-extrabold text-[#2d4891]">Eva</span>, your AI assistant.
  </p>
- <p className="text-sm text-gray-500 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Let's get started! ✨</p>
+ <p className="text-xs text-gray-500 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Let's get started! ✨</p>
  </div>
 
  {/* Enhanced Action Buttons with Better Spacing */}
- <div className="space-y-3 px-2 pt-2">
+ <div className="space-y-2 px-1 pt-1">
  <button
  onClick={() => handleTabChange('chat')}
- className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-3.5 px-4 rounded-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 active:scale-95 relative overflow-hidden transform hover:-translate-y-1"
+ className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-2.5 px-3 rounded-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-1.5 shadow-lg hover:scale-105 active:scale-95 relative overflow-hidden transform hover:-translate-y-1"
  style={{ animation: 'bounce-subtle 3s ease-in-out infinite' }}
  >
  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
- <svg className="w-5 h-5 relative z-10 group-hover:rotate-[360deg] group-hover:scale-125 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-4 h-4 relative z-10 group-hover:rotate-[360deg] group-hover:scale-125 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
  </svg>
- <span className="text-sm font-semibold relative z-10 group-hover:tracking-wide transition-all duration-300">Chat with Eva now</span>
- <svg className="w-4 h-4 relative z-10 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-xs font-semibold relative z-10 group-hover:tracking-wide transition-all duration-300">Chat with Eva now</span>
+ <svg className="w-3 h-3 relative z-10 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
  </svg>
  </button>
 
  <button 
  onClick={() => window.open('https://envirocarelabs.com/blogs/', '_blank')}
- className="group w-full bg-white text-gray-700 py-3 px-4 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-2 transform hover:-translate-y-1">
- <svg className="w-4 h-4 text-blue-600 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ className="group w-full bg-white text-gray-700 py-2 px-3 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-1.5 transform hover:-translate-y-1">
+ <svg className="w-3 h-3 text-blue-600 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
  </svg>
- <span className="text-sm font-semibold group-hover:text-blue-600 transition-colors duration-300">Blogs / Events</span>
- <svg className="w-3 h-3 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-xs font-semibold group-hover:text-blue-600 transition-colors duration-300">Blogs / Events</span>
+ <svg className="w-2.5 h-2.5 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
  </svg>
  </button>
@@ -1390,25 +1390,25 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  transform: translateY(0);
  }
  50% {
- transform: translateY(-3px);
+ transform: translateY(-2px);
  }
  }
  `}</style>
 
  {/* Trust Indicators with Better Spacing */}
- <div className="pt-4 mt-2 border-t border-gray-100">
- <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
- <div className="flex items-center space-x-1.5">
- <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+ <div className="pt-2 mt-1 border-t border-gray-100">
+ <div className="flex items-center justify-center space-x-4 text-xs text-gray-500">
+ <div className="flex items-center space-x-1">
+ <svg className="w-3 h-3 text-green-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[10px]">24/7 Available</span>
+ <span className="font-medium text-[9px]">24/7 Available</span>
  </div>
- <div className="flex items-center space-x-1.5">
- <svg className="w-3.5 h-3.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+ <div className="flex items-center space-x-1">
+ <svg className="w-3 h-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[10px]">Instant Replies</span>
+ <span className="font-medium text-[9px]">Instant Replies</span>
  </div>
  </div>
  </div>
@@ -1416,14 +1416,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showVisitorForm && (
- <div className="space-y-4 px-2">
+ <div className="space-y-2 px-2">
  <div className="text-center">
- <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
- <p className="text-gray-600 text-sm font-medium leading-relaxed">Please provide your details to start the conversation!</p>
+ <h3 className="text-base font-bold text-gray-900 mb-1 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
+ <p className="text-gray-600 text-xs font-medium leading-snug">Please provide your details to start the conversation!</p>
  </div>
- <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-3" noValidate>
+ <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-2" noValidate>
  <div>
- <label htmlFor="name" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="name" className="block text-xs font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Name
  </label>
  <div className="relative">
@@ -1447,7 +1447,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="email" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="email" className="block text-xs font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Email
  </label>
  <div className="relative">
@@ -1472,7 +1472,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="phone" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="phone" className="block text-xs font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Phone Number
  </label>
  <div className="relative">
