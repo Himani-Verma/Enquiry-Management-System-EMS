@@ -771,7 +771,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  setShowVisitorForm(false);
  setShowChat(true);
 
- const greeting = `Hello ${data.name}! 👋 Welcome to *Envirocare Labs*! I'm Eva, your Virtual Assistant. Would you like to explore our services or have a specific question?`;
+ const greeting = `Hello ${data.name}! 👋 Welcome to Envirocare Labs! I'm Eva, your Virtual Assistant. Would you like to explore our services or have a specific question?`;
  const botMsg = greeting;
 
  setMessages([
