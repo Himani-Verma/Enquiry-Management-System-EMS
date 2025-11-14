@@ -1258,7 +1258,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  // Iframe mode: fixed dimensions with border and shadow
  const containerClasses = isIframe 
  ? "w-full h-full bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col font-poppins overflow-hidden"
- : "fixed bottom-6 right-6 w-80 max-h-[85vh] h-[600px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95";
+ : "fixed bottom-24 right-6 w-80 max-h-[70vh] h-[520px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95";
 
  // If not open and not iframe, show the animated toggle button
  if (!isOpen && !isIframe) {
