@@ -19,11 +19,14 @@ This design document outlines a modern, creative redesign of the Envirocare Labs
 
 ```
 HomePage
-├── Header (Sticky)
+├── Header Component (Separate, Reusable)
 │   ├── Logo
 │   └── Action Buttons (Register, Login)
+├── Animated Background Layer
+│   ├── Floating Particles
+│   ├── Gradient Waves
+│   └── Geometric Shapes
 ├── Hero Section
-│   ├── Animated Background
 │   ├── Headline & Subheadline
 │   └── Primary CTAs
 ├── Stats Section (Animated Cards)
@@ -42,13 +45,27 @@ HomePage
 
 ## Components and Interfaces
 
-### 1. Header Component
+### 1. Header Component (Separate Component)
+
+**File Location:** `components/Header.tsx`
 
 **Design Specifications:**
+- Extracted as a standalone, reusable component
 - Sticky positioning with backdrop blur effect
 - Transparent background with subtle border
 - Logo on the left, action buttons on the right
 - Smooth shadow appears on scroll
+- Accepts props for customization
+
+**Props Interface:**
+```typescript
+interface HeaderProps {
+  transparent?: boolean;
+  currentPage?: string;
+  onLoginClick?: () => void;
+  onRegisterClick?: () => void;
+}
+```
 
 **Styling:**
 ```css
@@ -56,38 +73,85 @@ HomePage
 - Height: 80px
 - Shadow: 0 4px 6px rgba(0, 0, 0, 0.05) on scroll
 - Buttons: Outlined (Register) and Filled (Login)
+- Transition: All properties 300ms ease
 ```
 
-### 2. Hero Section
+**Features:**
+- Scroll detection for dynamic styling
+- Responsive mobile menu (hamburger on small screens)
+- Smooth transitions between states
+- Accessibility-compliant navigation
+
+### 2. Animated Background Layer
 
 **Design Specifications:**
-- Full viewport height with animated gradient background
-- Floating geometric shapes in background (subtle)
+- Full-page fixed background layer behind all content
+- Multiple animation types working in harmony
+- Subtle, non-distracting movements
+- Performance-optimized with CSS transforms and GPU acceleration
+
+**Animation Types:**
+
+**A. Floating Particles:**
+- Small circular dots (3-8px diameter)
+- 15-20 particles scattered across viewport
+- Slow vertical floating motion (20-40s duration)
+- Varying opacity (0.1 - 0.3)
+- Different speeds for depth effect
+- Colors: Blue and green tints
+
+**B. Gradient Waves:**
+- Large gradient orbs (300-600px diameter)
+- Positioned at corners and edges
+- Slow pulsing animation (scale 1.0 to 1.2)
+- Heavy blur effect (blur-3xl)
+- Rotating gradient colors
+- 3-4 orbs total
+
+**C. Geometric Shapes:**
+- Subtle hexagons or triangles
+- Wireframe/outline style
+- Slow rotation (60-120s)
+- Very low opacity (0.05 - 0.1)
+- Positioned strategically for visual interest
+
+**Implementation:**
+```css
+- Position: fixed, inset-0
+- Z-index: 0 (behind all content)
+- Pointer-events: none
+- Will-change: transform (for performance)
+- Animations: CSS keyframes with infinite loop
+```
+
+### 3. Hero Section
+
+**Design Specifications:**
+- Full viewport height with layered content over animated background
 - Large, bold typography with gradient text effect
 - Two-column layout on desktop (content left, visual element right)
 - Stacked layout on mobile
 
 **Visual Elements:**
-- Animated gradient background: Blue to Green diagonal
-- Floating orbs/circles with blur effect
-- Glassmorphic card containing main content
 - Gradient text for main headline
+- Subtle glassmorphic effects on content areas
+- Floating animation on CTA buttons
 
 **Content Structure:**
 ```
-- Badge: "Employee Portal" (small, rounded)
-- Main Headline: "Envirocare Labs" (gradient text, 4xl-6xl)
-- Subheadline: "Enquiry Management System" (3xl-4xl)
+- Badge: "Employee Portal" (small, rounded, with pulse animation)
+- Main Headline: "Enquiry Management" (gradient text, 4xl-6xl)
+- Subheadline: "System" (accent color, 3xl-5xl)
 - Description: Brief value proposition (xl)
-- CTA Buttons: "Access Dashboard" (primary), "Need Help?" (secondary)
+- CTA Buttons: "Employee Login" (primary), "Register" (secondary)
 ```
 
 **Styling:**
 ```css
-- Background: Animated gradient mesh
-- Content Card: Glassmorphic (backdrop-blur, semi-transparent)
-- Headline: Gradient from blue to green
+- Background: Transparent (shows animated background layer)
+- Headline: Gradient from blue to green with text-shadow
 - Buttons: Large (px-8 py-4), rounded-xl, with hover lift effect
+- Badge: Animated pulse effect on dot indicator
 ```
 
 ### 3. Stats Section
@@ -240,6 +304,69 @@ interface Stat {
 
 ## Animations and Interactions
 
+### Background Animations (Continuous)
+
+**1. Floating Particles Animation:**
+```css
+@keyframes float-up {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100px) translateX(var(--drift));
+    opacity: 0;
+  }
+}
+```
+
+**2. Gradient Wave Animation:**
+```css
+@keyframes wave-pulse {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 0.3;
+  }
+}
+```
+
+**3. Geometric Shape Rotation:**
+```css
+@keyframes slow-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+```
+
+**4. Gradient Shift Animation:**
+```css
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+```
+
 ### Micro-interactions
 
 1. **Button Hover:**
@@ -271,6 +398,14 @@ background: rgba(255, 255, 255, 0.1);
 backdrop-filter: blur(10px);
 border: 1px solid rgba(255, 255, 255, 0.2);
 ```
+
+### Performance Optimization for Animations
+
+- Use `will-change: transform` for animated elements
+- Leverage GPU acceleration with `transform` and `opacity`
+- Limit number of simultaneous animations
+- Use `requestAnimationFrame` for JavaScript animations
+- Implement `prefers-reduced-motion` media query
 
 ## Responsive Design
 

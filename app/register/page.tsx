@@ -109,8 +109,16 @@ export default function RegisterPage() {
 
 
  return (
- <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
- <div className="w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden">
+ <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 relative overflow-hidden flex items-center justify-center p-4 py-12">
+ {/* Animated Background Elements */}
+ <div className="absolute inset-0 overflow-hidden pointer-events-none">
+ <div className="absolute top-20 left-10 w-96 h-96 bg-green-200/20 rounded-full blur-3xl animate-float"></div>
+ <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-blue-200/20 rounded-full blur-3xl animate-float-delay"></div>
+ <div className="absolute top-1/2 right-1/3 w-80 h-80 bg-emerald-200/15 rounded-full blur-3xl animate-float-delay-2"></div>
+ </div>
+ 
+ {/* Content */}
+ <div className="relative z-10 w-full max-w-2xl bg-white rounded-xl shadow-xl overflow-hidden">
  <div className="bg-[#2d4891] p-6 flex items-center justify-center">
  <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={220} height={56} style={{ height: 'auto' }} />
  </div>

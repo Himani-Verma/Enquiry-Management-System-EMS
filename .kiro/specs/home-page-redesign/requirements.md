@@ -97,3 +97,27 @@ This specification defines the requirements for redesigning the Envirocare Labs 
 3. THE Home Page SHALL support keyboard navigation for all interactive components
 4. THE Home Page SHALL ensure focus indicators are visible on all focusable elements
 5. THE Home Page SHALL structure content with semantic HTML elements
+
+### Requirement 8
+
+**User Story:** As a visitor, I want to see creative and dynamic background animations, so that the page feels modern and engaging
+
+#### Acceptance Criteria
+
+1. THE Home Page SHALL display animated background elements that move continuously without user interaction
+2. THE Home Page SHALL include multiple layered animated elements with different speeds to create depth
+3. THE Home Page SHALL use particle effects, floating shapes, or gradient animations in the background
+4. THE Home Page SHALL ensure background animations do not distract from or obscure main content
+5. WHEN animations are active, THE Home Page SHALL maintain smooth 60fps performance
+
+### Requirement 9
+
+**User Story:** As a developer maintaining the codebase, I want the header to be a separate reusable component, so that it can be easily maintained and reused across pages
+
+#### Acceptance Criteria
+
+1. THE Header Component SHALL be extracted into a separate file in the components directory
+2. THE Header Component SHALL accept props for customization such as transparent mode and current page
+3. THE Header Component SHALL be importable and reusable across different pages
+4. THE Header Component SHALL maintain all existing functionality including navigation and authentication buttons
+5. THE Header Component SHALL include proper TypeScript type definitions for all props

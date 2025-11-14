@@ -1255,12 +1255,64 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  }
  };
 
- if (!isOpen) return null;
-
  // Iframe mode: fixed dimensions with border and shadow
  const containerClasses = isIframe 
  ? "w-full h-full bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col font-poppins overflow-hidden"
  : "fixed top-20 bottom-20 right-6 w-80 h-[500px] bg-white rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden font-poppins flex flex-col backdrop-blur-sm bg-white/95";
+
+ // If not open and not iframe, show the animated toggle button
+ if (!isOpen && !isIframe) {
+ return (
+ <button
+ onClick={onToggle}
+ className="fixed bottom-6 right-6 z-50 group"
+ aria-label="Open chat"
+ style={{ animation: 'wiggle 2.5s ease-in-out infinite' }}
+ >
+ <div className="relative">
+ {/* Main button with gradient */}
+ <div className="w-16 h-16 bg-gradient-to-br from-[#2d4891] via-[#2557a7] to-[#16a34a] rounded-full shadow-2xl flex items-center justify-center transform transition-all duration-300 group-hover:scale-110 group-hover:shadow-3xl">
+ <svg
+ xmlns="http://www.w3.org/2000/svg"
+ fill="none"
+ viewBox="0 0 24 24"
+ strokeWidth={2}
+ stroke="white"
+ className="w-8 h-8 group-hover:scale-110 transition-transform duration-300"
+ >
+ <path
+ strokeLinecap="round"
+ strokeLinejoin="round"
+ d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
+ />
+ </svg>
+ </div>
+ 
+ {/* Pulsing ring animation */}
+ <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#2d4891] to-[#16a34a] opacity-75 animate-ping"></div>
+ 
+ {/* Online indicator */}
+ <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-3 border-white shadow-lg animate-pulse"></div>
+ </div>
+ 
+ <style jsx>{`
+ @keyframes wiggle {
+ 0%, 100% {
+ transform: rotate(0deg);
+ }
+ 10%, 30%, 50%, 70%, 90% {
+ transform: rotate(-3deg);
+ }
+ 20%, 40%, 60%, 80% {
+ transform: rotate(3deg);
+ }
+ }
+ `}</style>
+ </button>
+ );
+ }
+
+ if (!isOpen) return null;
 
  return (
  <div className={containerClasses}>
@@ -1271,9 +1323,10 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  {!isIframe && (
  <button
  onClick={onToggle}
- className="text-white/80 hover:text-white transition-colors duration-200 p-1 rounded hover:bg-white/10 absolute right-3"
+ className="text-white/80 hover:text-white transition-all duration-300 p-1 rounded-full hover:bg-white/20 absolute right-3 hover:rotate-90 hover:scale-110 active:scale-90 group"
+ aria-label="Close chat"
  >
- <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
  </svg>
  </button>
@@ -1301,31 +1354,46 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </p>
  </div>
 
- {/* Enhanced Action Buttons */}
+ {/* Enhanced Action Buttons with Fun Animations */}
  <div className="space-y-1 px-0.5">
  <button
  onClick={() => handleTabChange('chat')}
- className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-1.5 px-2 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-1 shadow-md hover:scale-[1.01] active:scale-[0.99] relative overflow-hidden"
+ className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-1.5 px-2 rounded-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-1 shadow-md hover:scale-105 active:scale-95 relative overflow-hidden transform hover:-translate-y-0.5"
+ style={{ animation: 'bounce-subtle 3s ease-in-out infinite' }}
  >
- <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
- <svg className="w-3 h-3 relative z-10 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+ <svg className="w-3 h-3 relative z-10 group-hover:rotate-[360deg] group-hover:scale-125 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
  </svg>
- <span className="text-[10px] font-bold relative z-10">Chat with Eva now</span>
- <svg className="w-2.5 h-2.5 relative z-10 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-[10px] font-bold relative z-10 group-hover:tracking-wide transition-all duration-300">Chat with Eva now</span>
+ <svg className="w-2.5 h-2.5 relative z-10 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
  </svg>
  </button>
 
  <button 
  onClick={() => window.open('https://envirocarelabs.com/blogs/', '_blank')}
- className="group w-full bg-white text-gray-700 py-1.5 px-2 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 border border-gray-200 hover:border-blue-300 shadow-sm hover:shadow hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center space-x-1">
- <svg className="w-2.5 h-2.5 text-blue-600 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ className="group w-full bg-white text-gray-700 py-1.5 px-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 border border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-1 transform hover:-translate-y-0.5">
+ <svg className="w-2.5 h-2.5 text-blue-600 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
  </svg>
- <span className="text-[9px] font-bold">Blogs / Events</span>
+ <span className="text-[9px] font-bold group-hover:text-blue-600 transition-colors duration-300">Blogs / Events</span>
+ <svg className="w-2 h-2 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+ </svg>
  </button>
  </div>
+ 
+ <style jsx>{`
+ @keyframes bounce-subtle {
+ 0%, 100% {
+ transform: translateY(0);
+ }
+ 50% {
+ transform: translateY(-2px);
+ }
+ }
+ `}</style>
 
  {/* Trust Indicators */}
  <div className="pt-1 border-t border-gray-100">
@@ -1557,18 +1625,42 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  key={index}
  onClick={() => handleQuickReply(reply)}
  disabled={isLoading}
- className={`px-2.5 py-2 rounded-lg border-2 transition-all duration-200 shadow-sm text-[9px] font-semibold text-center ${
+ style={{ animationDelay: `${index * 50}ms` }}
+ className={`px-2.5 py-2 rounded-lg border-2 transition-all duration-300 shadow-sm text-[9px] font-semibold text-center transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 animate-slide-in-up ${
  ['Previous', 'Next', 'Back'].includes(reply) 
- ? 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200 hover:border-gray-400' 
- : 'bg-white text-[#2d4891] border-[#2d4891] hover:bg-[#2d4891] hover:text-white hover:shadow-md'
- } disabled:opacity-50 disabled:cursor-not-allowed`}
+ ? 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-100 hover:border-gray-400 hover:shadow-lg' 
+ : 'bg-gradient-to-r from-white to-blue-50 text-[#2d4891] border-[#2d4891] hover:bg-gradient-to-r hover:from-[#2d4891] hover:to-[#1e3a8a] hover:text-white hover:shadow-xl hover:border-[#1e3a8a]'
+ } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0`}
  >
+ <span className="inline-flex items-center justify-center gap-1">
  {reply}
+ {!['Previous', 'Next', 'Back'].includes(reply) && (
+ <svg className="w-2 h-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+ </svg>
+ )}
+ </span>
  </button>
  ))}
  </div>
  </div>
  )}
+ 
+ <style jsx>{`
+ @keyframes slide-in-up {
+ from {
+ opacity: 0;
+ transform: translateY(10px);
+ }
+ to {
+ opacity: 1;
+ transform: translateY(0);
+ }
+ }
+ .animate-slide-in-up {
+ animation: slide-in-up 0.3s ease-out forwards;
+ }
+ `}</style>
  <div ref={messagesEndRef} />
  </div>
  )}
@@ -1798,9 +1890,15 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  onClick={sendMessage}
  disabled={!newMessage.trim() || isLoading}
- className="bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white px-6 py-3 rounded-xl hover:from-[#1e3a8a] hover:to-[#1e3a8a] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none font-semibold"
+ className="group bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white px-6 py-3 rounded-xl hover:from-[#1e3a8a] hover:via-[#2557a7] hover:to-[#2d4891] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 shadow-lg hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 disabled:transform-none font-semibold relative overflow-hidden"
  >
+ <span className="relative z-10 flex items-center gap-2">
  Send
+ <svg className="w-4 h-4 group-hover:translate-x-1 group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+ </svg>
+ </span>
+ <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
  </button>
  </div>
  )}
@@ -1819,16 +1917,19 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  key={key}
  onClick={() => handleTabChange(key as 'home' | 'chat' | 'faq' | 'articles')}
- className={`flex flex-col items-center space-y-0.5 p-1 rounded transition-all duration-200 ${
+ className={`group flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 ${
  activeTab === key 
- ? 'text-[#2d4891] bg-blue-50' 
- : 'text-gray-700 hover:text-gray-900 hover:bg-gray-50'
+ ? 'text-[#2d4891] bg-gradient-to-br from-blue-50 to-indigo-50 shadow-sm scale-105' 
+ : 'text-gray-600 hover:text-[#2d4891] hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50'
  }`}
  >
- <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
+ <svg className={`w-4 h-4 transition-all duration-300 ${activeTab === key ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-0.5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={activeTab === key ? 2.5 : 2} d={icon} />
  </svg>
- <span className="text-[5px] font-medium leading-none">{label}</span>
+ <span className={`text-[5px] font-medium leading-none transition-all duration-300 ${activeTab === key ? 'font-bold' : ''}`}>{label}</span>
+ {activeTab === key && (
+ <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-[#2d4891] to-[#16a34a] rounded-full"></div>
+ )}
  </button>
  ))}
  </div>
