@@ -1629,7 +1629,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  className={`px-2.5 py-2 rounded-lg border-2 transition-all duration-300 shadow-sm text-[9px] font-semibold text-center transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 animate-slide-in-up ${
  ['Previous', 'Next', 'Back'].includes(reply) 
  ? 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-100 hover:border-gray-400 hover:shadow-lg' 
- : 'bg-gradient-to-r from-white to-blue-50 text-[#2d4891] border-[#2d4891] hover:bg-gradient-to-r hover:from-[#2d4891] hover:to-[#1e3a8a] hover:text-white hover:shadow-xl hover:border-[#1e3a8a]'
+ : 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white border-[#2d4891] hover:bg-gradient-to-r hover:from-[#1e3a8a] hover:to-[#2d4891] hover:shadow-xl hover:scale-110'
  } disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:translate-y-0`}
  >
  <span className="inline-flex items-center justify-center gap-1">
