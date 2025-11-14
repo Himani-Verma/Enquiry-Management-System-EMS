@@ -1317,9 +1317,9 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  return (
  <div className={containerClasses}>
  {/* Enhanced Header */}
- <div className={`text-white p-3 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
+ <div className={`text-white p-4 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] ${isIframe ? 'rounded-t-2xl' : 'rounded-t-3xl'}`}>
  <div className="flex items-center justify-center">
- <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={180} height={45} className="drop-shadow-sm" />
+ <Image src="/envirocare-logo.png" alt="Envirocare Labs" width={200} height={50} className="drop-shadow-sm" />
  {!isIframe && (
  <button
  onClick={onToggle}
@@ -1335,50 +1335,50 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
 
  {/* Enhanced Content Area */}
- <div className="flex-1 p-1.5 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
+ <div className="flex-1 p-4 overflow-y-auto bg-gradient-to-b from-gray-50 to-white">
  {activeTab === 'home' && !showVisitorForm && !showChat && !showFAQ && (
- <div className="text-center space-y-1 py-0.5">
- {/* Animated Welcome Section */}
- <div className="space-y-0.5 animate-fade-in">
+ <div className="text-center space-y-4 py-6 px-4">
+ {/* Animated Welcome Section with Better Spacing */}
+ <div className="space-y-3 animate-fade-in">
  <div className="inline-block">
- <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded px-1.5 py-0.5 mb-0 shadow-sm border border-blue-100">
- <span className="text-[8px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
+ <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-full px-3 py-1.5 mb-2 shadow-sm border border-blue-100">
+ <span className="text-[10px] font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 tracking-wide">👋 WELCOME TO ENVIROCARE</span>
  </div>
  </div>
- <h2 className="text-[10px] font-extrabold text-gray-900 leading-tight tracking-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <h2 className="text-2xl font-extrabold leading-tight px-2 mb-3" style={{ fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #3b82f6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
  Hey! How can we<br />help you today?
  </h2>
- <p className="text-[9px] text-gray-600 font-semibold max-w-sm mx-auto leading-tight">
- I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 font-extrabold text-[10px]">Eva</span>, your AI assistant.<br />
- <span className="text-[8px]">Let's get started! ✨</span>
+ <p className="text-base text-gray-700 max-w-sm mx-auto leading-relaxed px-2 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ I'm <span className="font-extrabold text-[#2d4891]">Eva</span>, your AI assistant.
  </p>
+ <p className="text-sm text-gray-500 font-medium" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Let's get started! ✨</p>
  </div>
 
- {/* Enhanced Action Buttons with Fun Animations */}
- <div className="space-y-1 px-0.5">
+ {/* Enhanced Action Buttons with Better Spacing */}
+ <div className="space-y-3 px-2 pt-2">
  <button
  onClick={() => handleTabChange('chat')}
- className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-1.5 px-2 rounded-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-1 shadow-md hover:scale-105 active:scale-95 relative overflow-hidden transform hover:-translate-y-0.5"
+ className="group w-full bg-gradient-to-r from-[#2d4891] via-[#2557a7] to-[#1e3a8a] text-white py-3.5 px-4 rounded-xl hover:shadow-2xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:scale-105 active:scale-95 relative overflow-hidden transform hover:-translate-y-1"
  style={{ animation: 'bounce-subtle 3s ease-in-out infinite' }}
  >
  <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
- <svg className="w-3 h-3 relative z-10 group-hover:rotate-[360deg] group-hover:scale-125 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5 relative z-10 group-hover:rotate-[360deg] group-hover:scale-125 transition-all duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
  </svg>
- <span className="text-[10px] font-bold relative z-10 group-hover:tracking-wide transition-all duration-300">Chat with Eva now</span>
- <svg className="w-2.5 h-2.5 relative z-10 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-sm font-semibold relative z-10 group-hover:tracking-wide transition-all duration-300">Chat with Eva now</span>
+ <svg className="w-4 h-4 relative z-10 group-hover:translate-x-2 group-hover:scale-125 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
  </svg>
  </button>
 
  <button 
  onClick={() => window.open('https://envirocarelabs.com/blogs/', '_blank')}
- className="group w-full bg-white text-gray-700 py-1.5 px-2 rounded-lg hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 border border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-1 transform hover:-translate-y-0.5">
- <svg className="w-2.5 h-2.5 text-blue-600 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ className="group w-full bg-white text-gray-700 py-3 px-4 rounded-xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center space-x-2 transform hover:-translate-y-1">
+ <svg className="w-4 h-4 text-blue-600 group-hover:scale-125 group-hover:rotate-12 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
  </svg>
- <span className="text-[9px] font-bold group-hover:text-blue-600 transition-colors duration-300">Blogs / Events</span>
- <svg className="w-2 h-2 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <span className="text-sm font-semibold group-hover:text-blue-600 transition-colors duration-300">Blogs / Events</span>
+ <svg className="w-3 h-3 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
  </svg>
  </button>
@@ -1390,25 +1390,25 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  transform: translateY(0);
  }
  50% {
- transform: translateY(-2px);
+ transform: translateY(-3px);
  }
  }
  `}</style>
 
- {/* Trust Indicators */}
- <div className="pt-1 border-t border-gray-100">
- <div className="flex items-center justify-center space-x-2 text-xs text-gray-500">
- <div className="flex items-center space-x-0.5">
- <svg className="w-2 h-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+ {/* Trust Indicators with Better Spacing */}
+ <div className="pt-4 mt-2 border-t border-gray-100">
+ <div className="flex items-center justify-center space-x-6 text-xs text-gray-500">
+ <div className="flex items-center space-x-1.5">
+ <svg className="w-3.5 h-3.5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[7px]">24/7 Available</span>
+ <span className="font-medium text-[10px]">24/7 Available</span>
  </div>
- <div className="flex items-center space-x-0.5">
- <svg className="w-2 h-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+ <div className="flex items-center space-x-1.5">
+ <svg className="w-3.5 h-3.5 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
  </svg>
- <span className="font-medium text-[7px]">Instant Replies</span>
+ <span className="font-medium text-[10px]">Instant Replies</span>
  </div>
  </div>
  </div>
@@ -1416,14 +1416,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showVisitorForm && (
- <div className="space-y-1">
+ <div className="space-y-4 px-2">
  <div className="text-center">
- <h3 className="text-sm font-extrabold text-gray-900 mb-0.5 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
- <p className="text-gray-700 text-[8px] font-medium leading-tight">Please provide your details to start the conversation!</p>
+ <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Welcome to Envirocare Labs!</h3>
+ <p className="text-gray-600 text-sm font-medium leading-relaxed">Please provide your details to start the conversation!</p>
  </div>
- <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-1.5" noValidate>
+ <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-3" noValidate>
  <div>
- <label htmlFor="name" className="block text-xs font-bold text-gray-800 mb-1">
+ <label htmlFor="name" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Name
  </label>
  <div className="relative">
@@ -1435,7 +1435,8 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Name"
  aria-invalid={errors.name ? 'true' : 'false'}
  aria-describedby={errors.name ? 'name-error' : undefined}
- className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-xs font-medium ${getFieldStateClass('name')}`}
+ className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-sm ${getFieldStateClass('name')}`}
+ style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  {isFieldValid('name') && <SuccessIcon />}
  </div>
@@ -1446,7 +1447,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="email" className="block text-xs font-bold text-gray-800 mb-1">
+ <label htmlFor="email" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Email
  </label>
  <div className="relative">
@@ -1459,7 +1460,8 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Email"
  aria-invalid={errors.email ? 'true' : 'false'}
  aria-describedby={errors.email ? 'email-error' : undefined}
- className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-xs font-medium ${getFieldStateClass('email')}`}
+ className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-sm ${getFieldStateClass('email')}`}
+ style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  {isFieldValid('email') && <SuccessIcon />}
  </div>
@@ -1470,7 +1472,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="phone" className="block text-xs font-bold text-gray-800 mb-1">
+ <label htmlFor="phone" className="block text-sm font-semibold text-gray-800 mb-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Phone Number
  </label>
  <div className="relative">
@@ -1528,7 +1530,8 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Phone Number"
  aria-invalid={errors.phone ? 'true' : 'false'}
  aria-describedby={errors.phone ? 'phone-error' : undefined}
- className={`w-full px-4 py-3 border-2 rounded-r-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 h-12 ${getFieldStateClass('phone')}`}
+ className={`w-full px-4 py-3 border-2 rounded-r-xl focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 h-12 text-sm ${getFieldStateClass('phone')}`}
+ style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  {isFieldValid('phone') && (
  <svg 
@@ -1569,11 +1572,11 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showChat && isRegistered && (
- <div className="space-y-2">
- <div className="flex justify-end mb-2">
+ <div className="space-y-3 px-2">
+ <div className="flex justify-end mb-3">
  <button
  onClick={resetChat}
- className="text-[9px] text-[#2d4891] hover:text-[#1e3a8a] hover:underline transition-colors duration-200 px-2 py-0.5 rounded-lg hover:bg-blue-50 font-semibold"
+ className="text-xs text-[#2d4891] hover:text-[#1e3a8a] hover:underline transition-colors duration-200 px-3 py-1.5 rounded-lg hover:bg-blue-50 font-semibold"
  >
  Start New Chat
  </button>
@@ -1584,7 +1587,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  className={`flex ${message.is_visitor ? 'justify-end' : 'justify-start'}`}
  >
  <div
- className={`max-w-xs px-2.5 py-2 rounded-lg ${
+ className={`max-w-[75%] px-3 py-2.5 rounded-xl ${
  message.is_visitor
  ? 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] shadow-md'
  : 'bg-white shadow-sm border border-gray-100'
@@ -1592,14 +1595,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  style={message.is_visitor ? { color: '#ffffff' } : {}}
  >
  <p 
- className={`text-[9px] whitespace-pre-line leading-relaxed font-bold ${message.is_visitor ? 'text-white' : 'text-gray-800'}`}
+ className={`text-xs whitespace-pre-line leading-relaxed ${message.is_visitor ? 'text-white' : 'text-gray-800'}`}
  style={message.is_visitor ? { color: '#ffffff !important' } : {}}
  >
  {message.message}
  </p>
  <p 
- className={`text-[7px] mt-1 font-bold ${message.is_visitor ? 'text-white' : 'text-gray-500'}`}
- style={message.is_visitor ? { color: '#ffffff !important', opacity: 0.95 } : {}}
+ className={`text-[9px] mt-1.5 ${message.is_visitor ? 'text-white' : 'text-gray-500'}`}
+ style={message.is_visitor ? { color: '#ffffff !important', opacity: 0.9 } : {}}
  >
  {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
  </p>
@@ -1618,15 +1621,15 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  </div>
  )}
  {quickReplies.length > 0 && !isLoading && !isFetchingMessages && (
- <div className="flex justify-start mt-2">
- <div className="grid grid-cols-2 gap-1.5 w-full">
+ <div className="flex justify-start mt-3 px-2">
+ <div className="grid grid-cols-2 gap-2 w-full">
  {quickReplies.map((reply, index) => (
  <button
  key={index}
  onClick={() => handleQuickReply(reply)}
  disabled={isLoading}
  style={{ animationDelay: `${index * 50}ms` }}
- className={`px-2.5 py-2 rounded-lg border-2 transition-all duration-300 shadow-sm text-[9px] font-semibold text-center transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 animate-slide-in-up ${
+ className={`px-3 py-2.5 rounded-xl border-2 transition-all duration-300 shadow-sm text-xs font-semibold text-center transform hover:scale-105 hover:-translate-y-0.5 active:scale-95 animate-slide-in-up ${
  ['Previous', 'Next', 'Back'].includes(reply) 
  ? 'bg-gradient-to-r from-gray-100 to-gray-50 text-gray-700 border-gray-300 hover:bg-gradient-to-r hover:from-gray-200 hover:to-gray-100 hover:border-gray-400 hover:shadow-lg' 
  : 'bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] text-white border-[#2d4891] hover:bg-gradient-to-r hover:from-[#1e3a8a] hover:to-[#2d4891] hover:shadow-xl hover:scale-110'
@@ -1635,7 +1638,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <span className="inline-flex items-center justify-center gap-1">
  {reply}
  {!['Previous', 'Next', 'Back'].includes(reply) && (
- <svg className="w-2 h-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-2.5 h-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
  </svg>
  )}
@@ -1666,20 +1669,20 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showFAQ && (
- <div className="space-y-2">
- <div className="flex items-center space-x-2 mb-3">
- <div className="w-8 h-8 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
- <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="space-y-3 px-2">
+ <div className="flex items-center space-x-3 mb-4">
+ <div className="w-10 h-10 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
+ <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
  </div>
- <h3 className="font-extrabold text-gray-900 text-[11px]" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search FAQ</h3>
+ <h3 className="font-bold text-gray-900 text-base" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search FAQ</h3>
  </div>
  
  {/* Search Bar */}
  <div className="relative">
- <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
- <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+ <svg className="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </div>
@@ -1688,23 +1691,24 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  placeholder="Search FAQs..."
  value={faqSearchQuery}
  onChange={(e) => setFaqSearchQuery(e.target.value)}
- className="w-full pl-9 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-[10px] placeholder:text-gray-400"
+ className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-sm placeholder:text-gray-400"
+ style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  </div>
 
  {/* Search Results Count */}
  {faqSearchQuery && (
- <div className="text-[9px] text-gray-600 text-center py-1">
+ <div className="text-xs text-gray-600 text-center py-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Found {filteredFaqs.length} FAQ{filteredFaqs.length !== 1 ? 's' : ''} for &quot;{faqSearchQuery}&quot;
  </div>
  )}
 
  {/* FAQ List */}
- <div className="space-y-2 max-h-64 overflow-y-auto">
+ <div className="space-y-3 max-h-64 overflow-y-auto">
  {filteredFaqs.length > 0 ? (
  filteredFaqs.map((faq) => (
- <div key={faq.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md hover:border-[#2d4891] transition-all duration-200">
- <div className="p-2.5 cursor-pointer group" onClick={() => {
+ <div key={faq.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md hover:border-[#2d4891] transition-all duration-200">
+ <div className="p-3 cursor-pointer group" onClick={() => {
  const element = document.getElementById(`faq-answer-${faq.id}`);
  if (element) {
  element.classList.toggle('hidden');
@@ -1712,27 +1716,27 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  }}>
  <div className="flex items-center justify-between">
  <div className="flex-1">
- <h4 className="text-[10px] font-bold text-gray-900 group-hover:text-[#2d4891] transition-colors duration-200 leading-tight">
+ <h4 className="text-sm font-semibold text-gray-900 group-hover:text-[#2d4891] transition-colors duration-200 leading-snug" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  {faq.question}
  </h4>
- <div className="flex items-center space-x-1.5 mt-1">
- <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-semibold bg-blue-50 text-[#2d4891] border border-blue-200">
+ <div className="flex items-center space-x-2 mt-2">
+ <span className="inline-flex items-center px-2 py-1 rounded-full text-[10px] font-semibold bg-blue-50 text-[#2d4891] border border-blue-200" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  {faq.category}
  </span>
- <span className="text-[8px] text-gray-500">{faq.tags.slice(0, 2).join(', ')}</span>
+ <span className="text-[10px] text-gray-500" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>{faq.tags.slice(0, 2).join(', ')}</span>
  </div>
  </div>
- <svg className="w-4 h-4 text-gray-500 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-5 h-5 text-gray-500 group-hover:text-[#2d4891] transition-colors duration-200 transform group-hover:rotate-180 flex-shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
  </svg>
  </div>
  </div>
- <div id={`faq-answer-${faq.id}`} className="hidden px-2.5 pb-2.5">
- <div className="pt-2 border-t border-gray-100">
- <p className="text-[9px] text-gray-700 leading-relaxed">{faq.answer}</p>
- <div className="flex flex-wrap gap-1 mt-2">
+ <div id={`faq-answer-${faq.id}`} className="hidden px-3 pb-3">
+ <div className="pt-3 border-t border-gray-100">
+ <p className="text-xs text-gray-700 leading-relaxed" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>{faq.answer}</p>
+ <div className="flex flex-wrap gap-1.5 mt-3">
  {faq.tags.map((tag: string, index: number) => (
- <span key={index} className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[7px] font-medium bg-gray-100 text-gray-600">
+ <span key={index} className="inline-flex items-center px-2 py-1 rounded-md text-[9px] font-medium bg-gray-100 text-gray-600" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  #{tag}
  </span>
  ))}
@@ -1761,20 +1765,20 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showArticles && (
- <div className="space-y-2">
- <div className="flex items-center space-x-2 mb-3">
- <div className="w-8 h-8 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
- <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="space-y-3 px-2">
+ <div className="flex items-center space-x-3 mb-4">
+ <div className="w-10 h-10 bg-gradient-to-r from-[#2d4891] to-[#1e3a8a] rounded-full flex items-center justify-center shadow-md">
+ <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
  </svg>
  </div>
- <h3 className="font-extrabold text-gray-900 text-[11px]" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search Articles</h3>
+ <h3 className="font-bold text-gray-900 text-base" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Search Articles</h3>
  </div>
  
  {/* Search Bar */}
  <div className="relative">
- <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
- <svg className="h-4 w-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+ <svg className="h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
  </svg>
  </div>
@@ -1783,13 +1787,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  placeholder="Search articles..."
  value={articlesSearchQuery}
  onChange={(e) => setArticlesSearchQuery(e.target.value)}
- className="w-full pl-9 pr-3 py-2 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-[10px] placeholder:text-gray-400"
+ className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2d4891] focus:border-transparent transition-all duration-200 bg-white text-gray-900 text-sm placeholder:text-gray-400"
+ style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  </div>
 
  {/* Search Results Count */}
  {articlesSearchQuery && (
- <div className="text-[9px] text-gray-600 text-center py-1">
+ <div className="text-xs text-gray-600 text-center py-2" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Found {filteredArticles.length} article{filteredArticles.length !== 1 ? 's' : ''} for &quot;{articlesSearchQuery}&quot;
  </div>
  )}
@@ -1906,7 +1911,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {/* Enhanced Bottom Navigation */}
- <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-2">
+ <div className="bg-white/90 backdrop-blur-sm border-t border-gray-100 p-3">
  <div className="flex justify-around">
  {[
  { key: 'home', icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', label: 'Home' },
@@ -1917,18 +1922,18 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  key={key}
  onClick={() => handleTabChange(key as 'home' | 'chat' | 'faq' | 'articles')}
- className={`group flex flex-col items-center space-y-0.5 p-1.5 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 ${
+ className={`group flex flex-col items-center space-y-1 p-2 rounded-xl transition-all duration-300 transform hover:scale-110 active:scale-95 ${
  activeTab === key 
  ? 'text-[#2d4891] bg-gradient-to-br from-blue-50 to-indigo-50 shadow-sm scale-105' 
  : 'text-gray-600 hover:text-[#2d4891] hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50'
  }`}
  >
- <svg className={`w-4 h-4 transition-all duration-300 ${activeTab === key ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-0.5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className={`w-5 h-5 transition-all duration-300 ${activeTab === key ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-0.5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={activeTab === key ? 2.5 : 2} d={icon} />
  </svg>
- <span className={`text-[5px] font-medium leading-none transition-all duration-300 ${activeTab === key ? 'font-bold' : ''}`}>{label}</span>
+ <span className={`text-[8px] font-medium leading-none transition-all duration-300 ${activeTab === key ? 'font-semibold' : ''}`} style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>{label}</span>
  {activeTab === key && (
- <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-[#2d4891] to-[#16a34a] rounded-full"></div>
+ <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-10 h-0.5 bg-gradient-to-r from-[#2d4891] to-[#16a34a] rounded-full"></div>
  )}
  </button>
  ))}
