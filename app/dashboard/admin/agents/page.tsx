@@ -1157,9 +1157,6 @@ export default function AdminAgentsPage() {
  <tr className="border-b border-gray-200">
  <th className="text-left py-2 px-2 text-sm font-medium text-black">Agent Name</th>
  <th className="text-left py-2 px-2 text-sm font-medium text-black">Role</th>
- <th className="text-left py-2 px-2 text-sm font-medium text-black">Visitors</th>
- <th className="text-left py-2 px-2 text-sm font-medium text-black">Enquiries</th>
- <th className="text-left py-2 px-2 text-sm font-medium text-black">Leads</th>
  <th className="text-left py-2 px-2 text-sm font-medium text-black w-32">Services</th>
  </tr>
  </thead>
@@ -1173,7 +1170,7 @@ export default function AdminAgentsPage() {
  if (filteredUsers.length === 0) {
  return (
  <tr>
- <td colSpan={6} className="text-center py-8 text-gray-800">
+ <td colSpan={3} className="text-center py-8 text-gray-800">
  No agents found. Please add some agents or check if users are loaded.
  </td>
  </tr>
@@ -1217,15 +1214,6 @@ export default function AdminAgentsPage() {
  : 'Executive'
  }
  </span>
- </td>
- <td className="py-2 px-2">
- <span className="text-black text-sm">{performance?.visitorsHandled || 0}</span>
- </td>
- <td className="py-2 px-2">
- <span className="text-black text-sm">{performance?.enquiriesAdded || 0}</span>
- </td>
- <td className="py-2 px-2">
- <span className="text-black text-sm">{performance?.leadsConverted || 0}</span>
  </td>
  <td className="py-2 px-2">
  <div className="relative">
