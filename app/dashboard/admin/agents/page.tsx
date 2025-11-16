@@ -1147,36 +1147,6 @@ export default function AdminAgentsPage() {
  </div>
 
  {/* Agents Performance Table */}
- <style jsx>{`
- .custom-scrollbar::-webkit-scrollbar {
- width: 6px;
- }
- .custom-scrollbar::-webkit-scrollbar-track {
- background: #f1f1f1;
- border-radius: 10px;
- }
- .custom-scrollbar::-webkit-scrollbar-thumb {
- background: #cbd5e0;
- border-radius: 10px;
- }
- .custom-scrollbar::-webkit-scrollbar-thumb:hover {
- background: #a0aec0;
- }
- @keyframes fadeIn {
- from {
- opacity: 0;
- transform: translateY(-10px);
- }
- to {
- opacity: 1;
- transform: translateY(0);
- }
- }
- .animate-fadeIn {
- animation: fadeIn 0.2s ease-out;
- }
- `}</style>
- 
  <div className="bg-white rounded-lg shadow-sm border border-gray-200">
  <div className="p-6 h-full flex flex-col">
  <h2 className="text-lg font-semibold text-gray-900 mb-4">Detailed Agent Performance</h2>
@@ -1245,61 +1215,39 @@ export default function AdminAgentsPage() {
  }
  </span>
  </td>
- <td className="py-3 px-3">
- <div className="relative">
+ <td className="py-2 px-2">
  {(() => {
  const assignedServices = serviceAssignments[user.id] || [];
  const count = assignedServices.length;
  
  return (
- <>
- {/* Display assigned services as badges */}
- {count > 0 ? (
- <div className="flex flex-wrap gap-1 mb-2">
- {assignedServices.slice(0, 2).map((service, idx) => (
- <span 
- key={idx}
- className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800"
- >
- {service}
- </span>
- ))}
- {count > 2 && (
- <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
- +{count - 2} more
- </span>
- )}
- </div>
- ) : null}
- 
- {/* Assign/Edit button */}
+ <div className="relative inline-block">
  <button
  onClick={() => {
  setShowServiceDropdown(showServiceDropdown === user.id ? null : user.id);
  setEditingServices(assignedServices);
  }}
- className="inline-flex items-center px-3 py-1.5 border border-blue-600 text-xs font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition-all duration-200"
+ className="text-sm text-blue-600 hover:text-blue-800 hover:underline font-medium"
  >
- <svg className="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
- </svg>
- {count > 0 ? 'Edit Services' : 'Assign Services'}
+ {count > 0 ? `${count} Service${count > 1 ? 's' : ''}` : 'Assign Services'} ▼
  </button>
  
- {/* Dropdown */}
  {showServiceDropdown === user.id && (
- <div className="service-dropdown absolute top-full left-0 mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-2xl z-50 animate-fadeIn">
- <div className="p-4">
- <div className="flex items-center justify-between mb-3">
- <h4 className="text-sm font-semibold text-gray-900">Assign Services</h4>
- <span className="text-xs text-gray-500">{editingServices.length} selected</span>
+ <div className="service-dropdown fixed bg-white border border-gray-300 rounded-lg shadow-xl z-[9999] p-4 w-80" style={{
+ top: '50%',
+ left: '50%',
+ transform: 'translate(-50%, -50%)'
+ }}>
+ <div className="mb-3">
+ <h4 className="text-base font-semibold text-gray-900 mb-1">Assign Services</h4>
+ <p className="text-xs text-gray-500">{editingServices.length} selected</p>
  </div>
  
- <div className="max-h-56 overflow-y-auto space-y-1.5 mb-3 pr-1 custom-scrollbar">
+ <div className="max-h-64 overflow-y-auto mb-4 border border-gray-200 rounded p-2">
  {availableServices.map((service, serviceIndex) => (
  <label 
  key={`service-${service}-${serviceIndex}`} 
- className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors group"
+ className="flex items-center p-2 hover:bg-blue-50 rounded cursor-pointer"
  >
  <input
  type="checkbox"
@@ -1311,42 +1259,35 @@ export default function AdminAgentsPage() {
  setEditingServices(editingServices.filter(s => s !== service));
  }
  }}
- className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
+ className="w-4 h-4 text-blue-600 rounded"
  />
- <span className="text-sm text-gray-700 group-hover:text-gray-900 flex-1">{service}</span>
- {editingServices.includes(service) && (
- <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
- <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
- </svg>
- )}
+ <span className="ml-2 text-sm text-gray-800">{service}</span>
  </label>
  ))}
  </div>
  
- <div className="flex justify-end space-x-2 pt-3 border-t border-gray-200">
+ <div className="flex justify-end gap-2">
  <button
  onClick={() => {
  setShowServiceDropdown(null);
  setEditingServices([]);
  }}
- className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-gray-500 transition-all duration-200"
+ className="px-4 py-2 text-sm text-gray-700 bg-gray-100 rounded hover:bg-gray-200"
  >
  Cancel
  </button>
  <button
  onClick={() => handleSaveServices(user.id)}
- className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition-all duration-200 hover:shadow-md"
+ className="px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
  >
- Save Changes
+ Save
  </button>
  </div>
  </div>
- </div>
  )}
- </>
+ </div>
  );
  })()}
- </div>
  </td>
  </tr>
  );
