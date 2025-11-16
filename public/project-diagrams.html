@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envirocare EMS - Project Architecture & UML Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #022a7a;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            background: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            border-bottom: 2px solid #e9ecef;
+        }
+        
+        .nav-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #022a7a;
+            color: #022a7a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover, .nav-btn.active {
+            background: #022a7a;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 42, 122, 0.3);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .diagram-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        .diagram-section.active {
+            display: block;
+        }
+        
+        .diagram-title {
+            color: #022a7a;
+            font-size: 28px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #022a7a;
+        }
+        
+        .diagram-description {
+            background: #e7f3ff;
+            padding: 20px;
+            border-left: 4px solid #022a7a;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 2px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Envirocare EMS</h1>
+            <p>Enquiry Management System - Architecture & UML Diagrams</p>
+        </div>
+        
+        <div class="nav">
+            <button class="nav-btn active" onclick="showDiagram('system')">System Architecture</button>
+            <button class="nav-btn" onclick="showDiagram('class')">Class Diagram</button>
+            <button class="nav-btn" onclick="showDiagram('sequence')">Sequence Diagrams</button>
+            <button class="nav-btn" onclick="showDiagram('er')">Database ER Diagram</button>
+            <button class="nav-btn" onclick="showDiagram('usecase')">Use Case Diagram</button>
+            <button class="nav-btn" onclick="showDiagram('flow')">User Flow</button>
+        </div>
+        
+        <div class="content">
+            <!-- System Architecture -->
+            <div id="system" class="diagram-section active">
+                <h2 class="diagram-title">System Architecture</h2>
+                <div class="diagram-description">
+                    <strong>Overview:</strong> High-level architecture showing the main components and their interactions in the Envirocare EMS system.
+                </div>
+                <div class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        Web[Web Browser]
+        Mobile[Mobile Browser]
+    end
+    
+    subgraph "Frontend - Next.js 13"
+        Pages[Pages/Routes]
+        Components[React Components]
+        API_Client[API Client]
+    end
+    
+    subgraph "Backend - API Routes"
+        Auth[Authentication API]
+        Analytics[Analytics API]
+        Visitors[Visitors API]
+        Enquiries[Enquiries API]
+        Quotations[Quotations API]
+        Chat[Chat API]
+        KB[Knowledge Base API]
+    end
+    
+    subgraph "Database Layer"
+        MongoDB[(MongoDB Atlas)]
+    end
+    
+    subgraph "External Services"
+        Netlify[Netlify Hosting]
+        JWT[JWT Auth]
+    end
+    
+    Web --> Pages
+    Mobile --> Pages
+    Pages --> Components
+    Components --> API_Client
+    API_Client --> Auth
+    API_Client --> Analytics
+    API_Client --> Visitors
+    API_Client --> Enquiries
+    API_Client --> Quotations
+    API_Client --> Chat
+    API_Client --> KB
+    
+    Auth --> MongoDB
+    Analytics --> MongoDB
+    Visitors --> MongoDB
+    Enquiries --> MongoDB
+    Quotations --> MongoDB
+    Chat --> MongoDB
+    KB --> MongoDB
+    
+    Auth -.-> JWT
+    Pages -.-> Netlify
+                </div>
+            </div>
+            
+            <!-- Class Diagram -->
+            <div id="class" class="diagram-section">
+                <h2 class="diagram-title">Class Diagram - Core Models</h2>
+                <div class="diagram-description">
+                    <strong>Overview:</strong> Main data models and their relationships in the system.
+                </div>
+                <div class="mermaid">
+classDiagram
+    class User {
+        +String id
+        +String username
+        +String email
+        +String password
+        +String name
+        +String role
+        +String department
+        +String region
+        +Boolean isApproved
+        +Boolean isActive
+        +Date createdAt
+        +login()
+        +register()
+        +updateProfile()
+    }
+    
+    class Visitor {
+        +String id
+        +String name
+        +String email
+        +String phone
+        +String organization
+        +String service
+        +String source
+        +String status
+        +String agentName
+        +Boolean isConverted
+        +Date createdAt
+        +assignAgent()
+        +updateStatus()
+        +convertToLead()
+    }
+    
+    class Enquiry {
+        +String id
+        +String visitorId
+        +String name
+        +String email
+        +String service
+        +String status
+        +String assignedTo
+        +Boolean isConverted
+        +Date createdAt
+        +create()
+        +update()
+        +convert()
+    }
+    
+    class Quotation {
+        +String id
+        +String quotationNo
+        +String customerName
+        +String email
+        +Array items
+        +Number totalAmount
+        +String status
+        +String createdBy
+        +Date createdAt
+        +generate()
+        +exportPDF()
+        +updateStatus()
+    }
+    
+    class ChatMessage {
+        +String id
+        +String visitorId
+        +String message
+        +String sender
+        +Date timestamp
+        +send()
+        +getHistory()
+    }
+    
+    class KnowledgeBase {
+        +String id
+        +String type
+        +String title
+        +String content
+        +Boolean isActive
+        +Date createdAt
+        +create()
+        +update()
+        +delete()
+    }
+    
+    User "1" --> "*" Visitor : assigns
+    User "1" --> "*" Enquiry : handles
+    User "1" --> "*" Quotation : creates
+    Visitor "1" --> "*" Enquiry : generates
+    Visitor "1" --> "*" ChatMessage : sends
+    Enquiry "1" --> "0..1" Quotation : converts to
+                </div>
+            </div>
+            
+            <!-- Sequence Diagrams -->
+            <div id="sequence" class="diagram-section">
+                <h2 class="diagram-title">Sequence Diagrams</h2>
+                
+                <h3 style="color: #022a7a; margin: 30px 0 15px;">User Authentication Flow</h3>
+                <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant Login as Login Page
+    participant API as Auth API
+    participant DB as MongoDB
+    participant Dashboard
+    
+    User->>Login: Enter credentials
+    Login->>API: POST /api/auth/login
+    API->>DB: Query user
+    DB-->>API: User data
+    API->>API: Verify password
+    API->>API: Generate JWT token
+    API-->>Login: Return token + user data
+    Login->>Login: Store token in localStorage
+    Login->>Dashboard: Redirect to dashboard
+    Dashboard->>Dashboard: Display user-specific content
+                </div>
+                
+                <h3 style="color: #022a7a; margin: 30px 0 15px;">Visitor to Lead Conversion Flow</h3>
+                <div class="mermaid">
+sequenceDiagram
+    actor Visitor
+    participant Chatbot
+    participant API as Visitors API
+    participant DB as MongoDB
+    participant Agent as Agent Dashboard
+    
+    Visitor->>Chatbot: Start conversation
+    Chatbot->>API: POST /api/visitors
+    API->>DB: Create visitor record
+    DB-->>API: Visitor created
+    API-->>Chatbot: Visitor ID
+    
+    Agent->>API: GET /api/visitors
+    API->>DB: Fetch visitors
+    DB-->>API: Visitor list
+    API-->>Agent: Display visitors
+    
+    Agent->>API: PUT /api/visitors/{id}
+    Note over Agent,API: Assign agent, update status
+    API->>DB: Update visitor
+    DB-->>API: Updated
+    API-->>Agent: Success
+    
+    Agent->>API: POST /api/enquiries
+    Note over Agent,API: Convert to enquiry
+    API->>DB: Create enquiry
+    DB-->>API: Enquiry created
+    API-->>Agent: Conversion complete
+                </div>
+            </div>
+            
+            <!-- ER Diagram -->
+            <div id="er" class="diagram-section">
+                <h2 class="diagram-title">Database ER Diagram</h2>
+                <div class="diagram-description">
+                    <strong>Overview:</strong> Entity-Relationship diagram showing database schema and relationships.
+                </div>
+                <div class="mermaid">
+erDiagram
+    USERS ||--o{ VISITORS : assigns
+    USERS ||--o{ ENQUIRIES : handles
+    USERS ||--o{ QUOTATIONS : creates
+    VISITORS ||--o{ ENQUIRIES : generates
+    VISITORS ||--o{ CHAT_MESSAGES : sends
+    ENQUIRIES ||--o| QUOTATIONS : "converts to"
+    
+    USERS {
+        ObjectId _id PK
+        string username
+        string email UK
+        string password
+        string name
+        string role
+        string department
+        string region
+        boolean isApproved
+        boolean isActive
+        date createdAt
+        date updatedAt
+    }
+    
+    VISITORS {
+        ObjectId _id PK
+        string name
+        string email
+        string phone
+        string organization
+        string service
+        string source
+        string status
+        ObjectId assignedAgent FK
+        string agentName
+        boolean isConverted
+        date createdAt
+        date updatedAt
+    }
+    
+    ENQUIRIES {
+        ObjectId _id PK
+        ObjectId visitorId FK
+        string name
+        string email
+        string service
+        string status
+        ObjectId assignedTo FK
+        boolean isConverted
+        date createdAt
+        date updatedAt
+    }
+    
+    QUOTATIONS {
+        ObjectId _id PK
+        string quotationNo UK
+        string customerName
+        string email
+        array items
+        number totalAmount
+        string status
+        ObjectId createdBy FK
+        date createdAt
+        date updatedAt
+    }
+    
+    CHAT_MESSAGES {
+        ObjectId _id PK
+        ObjectId visitorId FK
+        string message
+        string sender
+        date timestamp
+    }
+    
+    KNOWLEDGE_BASE {
+        ObjectId _id PK
+        string type
+        string title
+        string content
+        boolean isActive
+        date createdAt
+        date updatedAt
+    }
+                </div>
+            </div>
+            
+            <!-- Use Case Diagram -->
+            <div id="usecase" class="diagram-section">
+                <h2 class="diagram-title">Use Case Diagram</h2>
+                <div class="diagram-description">
+                    <strong>Overview:</strong> Main use cases for different user roles in the system.
+                </div>
+                <div class="mermaid">
+graph TB
+    subgraph "Envirocare EMS Use Cases"
+        subgraph "Admin Use Cases"
+            UC1[Manage Users]
+            UC2[View Analytics]
+            UC3[Manage Knowledge Base]
+            UC4[Assign Services to Agents]
+            UC5[Approve Registrations]
+        end
+        
+        subgraph "Sales Executive Use Cases"
+            UC6[Create Quotations]
+            UC7[Manage Enquiries]
+            UC8[View Assigned Visitors]
+            UC9[Update Lead Status]
+        end
+        
+        subgraph "Customer Executive Use Cases"
+            UC10[Handle Chat Support]
+            UC11[Manage Visitors]
+            UC12[Create Enquiries]
+            UC13[View Analytics]
+        end
+        
+        subgraph "Visitor Use Cases"
+            UC14[Chat with Bot]
+            UC15[Submit Enquiry]
+            UC16[View Services]
+        end
+    end
+    
+    Admin((Admin))
+    SalesExec((Sales Executive))
+    CustomerExec((Customer Executive))
+    Visitor((Visitor))
+    
+    Admin --> UC1
+    Admin --> UC2
+    Admin --> UC3
+    Admin --> UC4
+    Admin --> UC5
+    
+    SalesExec --> UC6
+    SalesExec --> UC7
+    SalesExec --> UC8
+    SalesExec --> UC9
+    
+    CustomerExec --> UC10
+    CustomerExec --> UC11
+    CustomerExec --> UC12
+    CustomerExec --> UC13
+    
+    Visitor --> UC14
+    Visitor --> UC15
+    Visitor --> UC16
+                </div>
+            </div>
+            
+            <!-- User Flow -->
+            <div id="flow" class="diagram-section">
+                <h2 class="diagram-title">User Flow Diagrams</h2>
+                
+                <h3 style="color: #022a7a; margin: 30px 0 15px;">Visitor Journey</h3>
+                <div class="mermaid">
+flowchart TD
+    Start([Visitor Lands on Website]) --> Chat{Interact with Chatbot?}
+    Chat -->|Yes| ChatStart[Start Chat Conversation]
+    Chat -->|No| Browse[Browse Services]
+    
+    ChatStart --> Provide[Provide Contact Info]
+    Browse --> Provide
+    
+    Provide --> Register[Register as Visitor]
+    Register --> Assign[Auto-assign to Agent]
+    
+    Assign --> AgentContact{Agent Contacts?}
+    AgentContact -->|Yes| Qualify[Qualify Lead]
+    AgentContact -->|No| FollowUp[Follow-up Reminder]
+    
+    Qualify --> Convert{Convert to Enquiry?}
+    Convert -->|Yes| CreateEnq[Create Enquiry]
+    Convert -->|No| Nurture[Continue Nurturing]
+    
+    CreateEnq --> Quote{Need Quotation?}
+    Quote -->|Yes| GenQuote[Generate Quotation]
+    Quote -->|No| Service[Provide Service Info]
+    
+    GenQuote --> Close[Close Deal]
+    Service --> Close
+    Nurture --> AgentContact
+    FollowUp --> AgentContact
+    
+    Close --> End([Conversion Complete])
+                </div>
+                
+                <h3 style="color: #022a7a; margin: 30px 0 15px;">Admin Workflow</h3>
+                <div class="mermaid">
+flowchart TD
+    Login([Admin Login]) --> Dashboard[View Dashboard]
+    Dashboard --> Action{Select Action}
+    
+    Action -->|Manage Users| Users[User Management]
+    Action -->|View Analytics| Analytics[Analytics Dashboard]
+    Action -->|Knowledge Base| KB[Manage KB]
+    Action -->|Agents| Agents[Agent Management]
+    
+    Users --> Approve{Approve User?}
+    Approve -->|Yes| Grant[Grant Access]
+    Approve -->|No| Reject[Reject Registration]
+    
+    Analytics --> View[View Metrics]
+    View --> Export[Export Reports]
+    
+    KB --> CRUD{CRUD Operation}
+    CRUD -->|Create| AddKB[Add FAQ/Article/Link]
+    CRUD -->|Update| EditKB[Edit Content]
+    CRUD -->|Delete| DelKB[Remove Content]
+    
+    Agents --> AssignSvc[Assign Services]
+    AssignSvc --> Monitor[Monitor Performance]
+    
+    Grant --> Dashboard
+    Reject --> Dashboard
+    Export --> Dashboard
+    AddKB --> Dashboard
+    EditKB --> Dashboard
+    DelKB --> Dashboard
+    Monitor --> Dashboard
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Envirocare EMS</strong> - Enquiry Management System</p>
+            <p>Built with Next.js, MongoDB, and deployed on Netlify</p>
+            <p style="margin-top: 10px; font-size: 14px;">© 2025 Envirocare Labs. All rights reserved.</p>
+        </div>
+    </div>
+    
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            themeVariables: {
+                primaryColor: '#022a7a',
+                primaryTextColor: '#fff',
+                primaryBorderColor: '#022a7a',
+                lineColor: '#022a7a',
+                secondaryColor: '#667eea',
+                tertiaryColor: '#f8f9fa'
+            }
+        });
+        
+        function showDiagram(diagramId) {
+            // Hide all diagrams
+            document.querySelectorAll('.diagram-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected diagram
+            document.getElementById(diagramId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
