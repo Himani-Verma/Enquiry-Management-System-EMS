@@ -1,0 +1,143 @@
+/* Compact Dashboard Styles - Reduces scrolling across all dashboards */
+
+/* Force 4-column layout for stat cards on all screen sizes */
+[class*="dashboard"] .grid.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+/* Reduce stat card padding and sizing */
+.dashboard-stat-card {
+  padding: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Reduce stat card gaps */
+.dashboard-stats-grid {
+  gap: 0.75rem !important; /* Reduced from 1rem */
+  margin-bottom: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Reduce stat number size */
+.dashboard-stat-card .text-4xl,
+.dashboard-stat-card .text-3xl,
+.dashboard-stat-card .text-2xl,
+.dashboard-stat-card .text-xl {
+  font-size: 1.25rem !important; /* Compact size */
+  line-height: 1.2 !important;
+}
+
+/* Reduce icon sizes in stat cards */
+.dashboard-stat-card svg.w-8,
+.dashboard-stat-card svg.w-6,
+.dashboard-stat-card svg.w-5 {
+  width: 1.25rem !important; /* Reduced icon size */
+  height: 1.25rem !important;
+}
+
+/* Reduce icon container padding */
+.dashboard-stat-card .p-4,
+.dashboard-stat-card .p-3,
+.dashboard-stat-card .p-2 {
+  padding: 0.5rem !important; /* Reduced from 0.75rem */
+}
+
+/* Reduce chart heights */
+.dashboard-chart-container {
+  min-height: 320px !important; /* Reduced from 360px */
+}
+
+/* Reduce page padding */
+.dashboard-content {
+  padding-top: 0.75rem !important; /* Reduced from 1rem */
+  padding-bottom: 0.75rem !important;
+}
+
+/* Reduce header spacing */
+.dashboard-header {
+  margin-bottom: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Reduce heading sizes */
+.dashboard-header h1 {
+  font-size: 1.5rem !important; /* Reduced from 1.875rem */
+  margin-bottom: 0.25rem !important;
+}
+
+/* Reduce table padding */
+.dashboard-table td,
+.dashboard-table th {
+  padding-top: 0.5rem !important; /* Reduced from 0.75rem */
+  padding-bottom: 0.5rem !important;
+}
+
+/* Reduce card spacing in lists */
+.dashboard-list-item {
+  padding: 0.5rem !important; /* Reduced from 0.75rem */
+  margin-bottom: 0.375rem !important;
+}
+
+/* Compact form inputs */
+.dashboard-form input,
+.dashboard-form select,
+.dashboard-form textarea {
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.375rem !important;
+}
+
+/* Reduce modal padding */
+.dashboard-modal {
+  padding: 1rem !important; /* Reduced from 1.25rem */
+}
+
+/* Compact buttons */
+.dashboard-button {
+  padding-top: 0.375rem !important;
+  padding-bottom: 0.375rem !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+/* Reduce section gaps */
+.dashboard-section {
+  margin-bottom: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Compact sidebar if needed */
+.dashboard-sidebar {
+  padding: 0.5rem !important;
+}
+
+/* Reduce whitespace in cards */
+.dashboard-card {
+  padding: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Compact grid gaps */
+.dashboard-grid {
+  gap: 0.75rem !important; /* Reduced from 1rem */
+}
+
+/* Compact all gaps in dashboard */
+[class*="dashboard"] .gap-6 {
+  gap: 0.75rem !important;
+}
+
+[class*="dashboard"] .gap-4 {
+  gap: 0.75rem !important;
+}
+
+[class*="dashboard"] .gap-3 {
+  gap: 0.75rem !important;
+}
+
+/* Compact all margins in dashboard */
+[class*="dashboard"] .mb-6 {
+  margin-bottom: 0.75rem !important;
+}
+
+[class*="dashboard"] .mb-4 {
+  margin-bottom: 0.75rem !important;
+}
+
+[class*="dashboard"] .mb-3 {
+  margin-bottom: 0.75rem !important;
+}

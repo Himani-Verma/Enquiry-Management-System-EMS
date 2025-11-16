@@ -141,7 +141,7 @@ export default function SearchResults({
  <div className="flex items-center space-x-2">
  {result.item.status && (
  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">
- {result.item.status.replace(/_/g, ' ')}
+ {result.item.status === 'enquiry_required' ? 'Enquiry Received' : result.item.status.replace(/_/g, ' ')}
  </span>
  )}
  {result.item.region && (

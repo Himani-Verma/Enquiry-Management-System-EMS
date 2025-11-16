@@ -861,3 +861,139 @@ div[class*="bg-gradient-to-r"][class*="from-[#2d4891]"] p,
 div[class*="bg-gradient-to-r"][class*="from-[#2d4891]"] span {
   color: #ffffff !important;
 }
+
+
+/* ========================================
+   COMPACT DASHBOARD STYLES
+   Reduces scrolling and makes content fit better
+   ======================================== */
+
+/* Reduce padding in dashboard pages */
+[class*="dashboard"] .max-w-\\[1600px\\] {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+/* Compact stat cards */
+[class*="dashboard"] .grid > div[class*="p-6"] {
+  padding: 1rem !important;
+}
+
+/* Reduce stat card gaps */
+[class*="dashboard"] .grid[class*="gap-6"] {
+  gap: 1rem !important;
+}
+
+/* Reduce margin bottom */
+[class*="dashboard"] [class*="mb-6"] {
+  margin-bottom: 1rem !important;
+}
+
+/* Compact stat numbers */
+[class*="dashboard"] .text-4xl {
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+}
+
+/* Reduce icon sizes */
+[class*="dashboard"] .w-8.h-8 {
+  width: 1.75rem !important;
+  height: 1.75rem !important;
+}
+
+/* Compact icon containers */
+[class*="dashboard"] .p-4.rounded-lg {
+  padding: 0.75rem !important;
+}
+
+/* Reduce heading sizes */
+[class*="dashboard"] h1.text-3xl {
+  font-size: 1.875rem !important;
+  margin-bottom: 0.25rem !important;
+}
+
+/* Compact charts */
+[class*="dashboard"] [style*="minHeight: '480px'"],
+[class*="dashboard"] [style*="min-height: 480px"] {
+  min-height: 360px !important;
+}
+
+/* Reduce table cell padding */
+[class*="dashboard"] table td,
+[class*="dashboard"] table th {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
+/* Compact buttons */
+[class*="dashboard"] button[class*="py-3"] {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+/* Reduce form input padding */
+[class*="dashboard"] input[class*="py-3"],
+[class*="dashboard"] select[class*="py-3"],
+[class*="dashboard"] textarea[class*="py-3"] {
+  padding-top: 0.625rem !important;
+  padding-bottom: 0.625rem !important;
+}
+
+/* Compact modal padding */
+[class*="dashboard"] [class*="modal"] [class*="p-6"] {
+  padding: 1.25rem !important;
+}
+
+/* Reduce spacing in lists */
+[class*="dashboard"] [class*="space-y-4"] > * + * {
+  margin-top: 0.75rem !important;
+}
+
+[class*="dashboard"] [class*="space-y-3"] > * + * {
+  margin-top: 0.5rem !important;
+}
+
+/* Compact card padding */
+[class*="dashboard"] .rounded-xl[class*="p-6"] {
+  padding: 1rem !important;
+}
+
+/* Reduce gap in grid layouts */
+[class*="dashboard"] .grid[class*="gap-4"] {
+  gap: 0.75rem !important;
+}
+
+/* Make charts more compact */
+[class*="EnhancedDailyVisitorsChart"],
+[class*="VisitorTrendsChart"],
+[class*="DonutGauge"] {
+  max-height: 360px !important;
+}
+
+/* Compact recent activity lists */
+[class*="RecentList"] [class*="p-4"] {
+  padding: 0.75rem !important;
+}
+
+/* Reduce whitespace in stat card content */
+[class*="dashboard"] .text-sm.text-green-600,
+[class*="dashboard"] .text-sm.text-purple-600,
+[class*="dashboard"] .text-sm.text-orange-600 {
+  margin-top: 0.375rem !important;
+}
+
+/* Compact page header */
+[class*="dashboard"] .flex.flex-wrap.items-end {
+  margin-bottom: 1rem !important;
+  gap: 0.75rem !important;
+}
+
+/* Reduce padding in update timestamp */
+[class*="dashboard"] .bg-white.border.px-4.py-3 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}

@@ -237,7 +237,7 @@ export default function EnhancedDailyVisitorsChart({
  responsive: true,
  maintainAspectRatio: false,
  animation: {
- duration: 1000,
+ duration: 800,
  easing: 'easeInOutQuart' as const,
  },
  plugins: {
@@ -250,14 +250,21 @@ export default function EnhancedDailyVisitorsChart({
  bodyColor: '#93c5fd',
  borderColor: `${scheme.primary}30`,
  borderWidth: 1,
- cornerRadius: 8,
+ cornerRadius: 6,
  displayColors: false,
+ padding: 8,
+ titleFont: {
+ size: 11
+ },
+ bodyFont: {
+ size: 10
+ },
  callbacks: {
  title: function(context: any) {
  const dataIndex = context[0].dataIndex;
  const date = new Date(processedData[dataIndex].date);
  return date.toLocaleDateString('en-US', { 
- weekday: 'long', 
+ weekday: 'short', 
  month: 'short', 
  day: 'numeric' 
  });
@@ -276,7 +283,7 @@ export default function EnhancedDailyVisitorsChart({
  ticks: {
  color: '#6b7280',
  font: {
- size: 12
+ size: 10
  }
  }
  },
@@ -289,7 +296,7 @@ export default function EnhancedDailyVisitorsChart({
  ticks: {
  color: '#6b7280',
  font: {
- size: 12
+ size: 10
  },
  callback: function(value: any) {
  return Number.isInteger(value) ? value : '';
@@ -302,8 +309,8 @@ export default function EnhancedDailyVisitorsChart({
  tension: 0.4
  },
  point: {
- radius: timeRange === '90d' ? 2 : timeRange === '30d' ? 3 : 4,
- hoverRadius: timeRange === '90d' ? 4 : timeRange === '30d' ? 5 : 6
+ radius: timeRange === '90d' ? 1 : timeRange === '30d' ? 2 : 3,
+ hoverRadius: timeRange === '90d' ? 3 : timeRange === '30d' ? 4 : 5
  }
  }
  };
@@ -400,9 +407,9 @@ export default function EnhancedDailyVisitorsChart({
  }
 
  return (
- <div className={`bg-gradient-to-br ${scheme.bg} border border-gray-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 w-full flex flex-col group ${className}`} style={{ minHeight: `${height}px` }}>
+ <div className={`bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 w-full flex flex-col group ${className}`} style={{ minHeight: `${height}px` }}>
  {/* Header */}
- <div className="flex items-center justify-between mb-6">
+ <div className="flex items-center justify-between mb-4">
  <div className="flex items-center space-x-3">
  <div className={`p-2 ${scheme.icon} rounded-lg ${scheme.iconHover} transition-colors`}>
  <svg className={`w-5 h-5 ${scheme.text}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -425,7 +432,7 @@ export default function EnhancedDailyVisitorsChart({
  <select
  value={timeRange}
  onChange={(e) => setTimeRange(e.target.value as '7d' | '30d' | '90d')}
- className="text-sm border border-gray-300 rounded-lg px-3 py-1 bg-white hover:border-blue-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+ className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 bg-white hover:border-blue-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
  >
  <option value="7d">Last 7 days</option>
  <option value="30d">Last 30 days</option>
@@ -445,22 +452,22 @@ export default function EnhancedDailyVisitorsChart({
  
  {/* Statistics */}
  {showStats && (
- <div className="mt-6 flex items-center justify-between">
+ <div className="mt-4 flex items-center justify-between">
  <div className="flex items-center space-x-4">
- <div className={`flex items-center space-x-2 bg-blue-50 rounded-lg px-3 py-1.5 hover:bg-blue-100 transition-colors`}>
+ <div className={`flex items-center space-x-2 bg-blue-50 rounded-lg px-3 py-1.5`}>
  <div className={`w-2 h-2 ${scheme.dot} rounded-full`}></div>
  <span className="text-sm font-medium text-gray-700">Total {total}</span>
  </div>
- <div className="flex items-center space-x-2 bg-green-50 rounded-lg px-3 py-1.5 hover:bg-green-100 transition-colors">
+ <div className="flex items-center space-x-2 bg-green-50 rounded-lg px-3 py-1.5">
  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
  <span className="text-sm font-medium text-gray-700">Avg {average}</span>
  </div>
- <div className="flex items-center space-x-2 bg-purple-50 rounded-lg px-3 py-1.5 hover:bg-purple-100 transition-colors">
+ <div className="flex items-center space-x-2 bg-purple-50 rounded-lg px-3 py-1.5">
  <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
  <span className="text-sm font-medium text-gray-700">Peak {max}</span>
  </div>
  </div>
- <div className="flex items-center space-x-2 text-gray-800">
+ <div className="flex items-center space-x-2 text-gray-600">
  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>

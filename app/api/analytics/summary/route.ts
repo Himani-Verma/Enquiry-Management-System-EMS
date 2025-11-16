@@ -28,11 +28,11 @@ export async function GET() {
  const leadOr = statusFields.map(f => ({ [f]: regexFromSet(LEAD_SET) }));
  const pendOr = statusFields.map(f => ({ [f]: regexFromSet(PENDING_SET) }));
 
- const [totalVisitors, leadsByStatus, pendingByStatus, chatbotVisitorIds] = await Promise.all([
+ const [totalVisitors, leadsByStatus, chatbotEnquiries, pendingByStatus] = await Promise.all([
  Visitor.countDocuments({}),
  Enquiry.countDocuments({ $or: leadOr }),
- ChatMessage.distinct("visitorId"),
- Enquiry.countDocuments({ $or: pendOr }),
+ Visitor.countDocuments({ source: 'chatbot' }),
+ Visitor.countDocuments({ status: 'enquiry_required' }),
  ]);
 
  // Additional fallbacks (in case teams use booleans/dates instead of strings)
@@ -75,11 +75,19 @@ export async function GET() {
  const conversionRate = tot > 0 ? Math.round((leads / tot) * 100) : 0;
 
  console.log('✅ Summary API: Successfully fetched data');
+ console.log('📊 Metrics:', {
+ totalVisitors: tot,
+ leads,
+ chatbotEnquiries: Number(chatbotEnquiries) || 0,
+ pendingConversations: Number(pendingByStatus) || 0,
+ conversionRate
+ });
+ 
  return NextResponse.json({
  totalVisitors: tot,
  leads,
- chatbotEnquiries: Array.isArray(chatbotVisitorIds) ? chatbotVisitorIds.length : 0,
- pendingConversations,
+ chatbotEnquiries: Number(chatbotEnquiries) || 0,
+ pendingConversations: Number(pendingByStatus) || 0,
  conversionRate, // integer 0..100
  });
  } catch (error) {

@@ -1785,7 +1785,7 @@ export default function AdminVisitorsPage() {
  }}
  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors shadow-sm"
  >
- {visitor.status?.replace(/_/g, ' ') || 'Unknown'}
+ {visitor.status === 'enquiry_required' ? 'Enquiry Received' : (visitor.status?.replace(/_/g, ' ') || 'Unknown')}
  </button>
  </td>
  )}

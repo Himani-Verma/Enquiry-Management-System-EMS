@@ -43,31 +43,31 @@ export default function RecentList({ items, title }: RecentListProps) {
 
  return (
  <div>
- <h3 className="text-lg font-bold text-gray-900 mb-4">{title}</h3>
+ <h3 className="text-sm font-bold text-gray-900 mb-2">{title}</h3>
  
- <div className="space-y-3">
+ <div className="space-y-1.5">
  {items.slice(0, 5).map((item) => (
- <div key={item.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border border-gray-100">
- <div className="flex items-center space-x-3 flex-1 min-w-0">
- <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
- <span className="text-sm font-bold text-white">
+ <div key={item.id} className="flex items-center justify-between p-2 rounded hover:bg-gray-50 transition-all duration-200 border border-gray-100">
+ <div className="flex items-center space-x-2 flex-1 min-w-0">
+ <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
+ <span className="text-xs font-bold text-white">
  {item.name.charAt(0).toUpperCase()}
  </span>
  </div>
  
  <div className="flex-1 min-w-0">
- <div className="flex items-center space-x-2 mb-1">
- <p className="text-sm font-semibold text-gray-900 truncate">
+ <div className="flex items-center space-x-1.5 mb-0.5">
+ <p className="text-xs font-semibold text-gray-900 truncate">
  {item.name}
  </p>
  {item.messages > 0 && (
- <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
- {item.messages} msgs
+ <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+ {item.messages}
  </span>
  )}
  </div>
  
- <div className="flex items-center space-x-2 text-xs text-gray-900">
+ <div className="flex items-center space-x-1.5 text-xs text-gray-600">
  {item.email && (
  <span className="truncate">{item.email}</span>
  )}
@@ -80,17 +80,17 @@ export default function RecentList({ items, title }: RecentListProps) {
  </div>
  
  {item.tags && item.tags.length > 0 && (
- <div className="flex flex-wrap gap-1 mt-2">
+ <div className="flex flex-wrap gap-1 mt-1">
  {item.tags.slice(0, 2).map((tag, index) => (
  <span 
  key={index}
- className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700"
+ className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700"
  >
  {tag}
  </span>
  ))}
  {item.tags.length > 2 && (
- <span className="text-xs text-gray-700">
+ <span className="text-xs text-gray-600">
  +{item.tags.length - 2}
  </span>
  )}
@@ -99,7 +99,7 @@ export default function RecentList({ items, title }: RecentListProps) {
  </div>
  </div>
  
- <div className="text-xs font-medium text-gray-800 ml-2 whitespace-nowrap">
+ <div className="text-xs font-medium text-gray-600 ml-2 whitespace-nowrap">
  {formatTime(item.joinedAt)}
  </div>
  </div>

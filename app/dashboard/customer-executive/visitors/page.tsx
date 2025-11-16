@@ -1671,7 +1671,7 @@ export default function ExecutiveVisitorsPage() {
  }}
  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-all duration-200 hover:scale-105"
  >
- {visitor.status || 'Unknown'}
+ {visitor.status === 'enquiry_required' ? 'Enquiry Received' : (visitor.status?.replace(/_/g, ' ') || 'Unknown')}
  </button>
  </td>
  )}

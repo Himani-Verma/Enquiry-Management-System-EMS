@@ -26,8 +26,8 @@ export default function DonutGauge({ value, label = "Conversion Rate", height = 
  data={data}
  cx="50%"
  cy="50%"
- innerRadius={70}
- outerRadius={95}
+ innerRadius={height * 0.25}
+ outerRadius={height * 0.35}
  startAngle={90}
  endAngle={450}
  dataKey="value"
@@ -52,7 +52,7 @@ export default function DonutGauge({ value, label = "Conversion Rate", height = 
  </div>
  </div>
  
- <div className="mt-4 flex items-center justify-center space-x-6 text-sm">
+ <div className="mt-6 flex items-center justify-center space-x-6 text-sm">
  <div className="flex items-center">
  <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
  <span className="text-gray-700 font-medium">Converted</span>
