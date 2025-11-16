@@ -199,10 +199,13 @@ export default function AdminAgentsPage() {
  setUsers(usersData.users || []);
 
  // Load performance data
- const performanceRes = await fetch(`${API_BASE}/api/analytics/agent-performance`, {
+ const performanceRes = await fetch(`${API_BASE}/api/analytics/agent-performance?t=${Date.now()}`, {
  headers: {
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'Cache-Control': 'no-cache, no-store, must-revalidate',
+ 'Pragma': 'no-cache',
+ 'Expires': '0'
  }
  });
 
@@ -218,29 +221,10 @@ export default function AdminAgentsPage() {
  performanceData = [];
  }
 
- // Use actual performance data from API, no hardcoded data
+ // Use actual performance data from API - the API handles fallback data
  console.log('🔄 Using API performance data');
- let finalPerformanceData = performanceData; // Use real API data instead of hardcoded
- 
- // If we have users but no performance data, generate sample performance data
- const agentUsers = (usersData.users || []).filter((user: User) => 
- ['executive', 'sales-executive', 'customer-executive'].includes(user.role)
- );
- 
- if (agentUsers.length > 0 && performanceData.length === 0) {
- console.log('⚠️ Found agents but no performance data, generating sample data');
- finalPerformanceData = agentUsers.map((user: User) => ({
- agentId: user.id || user._id,
- agentName: user.name,
- visitorsHandled: Math.floor(Math.random() * 50) + 10, // 10-60 visitors
- enquiriesAdded: Math.floor(Math.random() * 20) + 5, // 5-25 enquiries 
- leadsConverted: Math.floor(Math.random() * 10) + 2 // 2-12 leads
- }));
- console.log('✅ Generated sample performance data:', finalPerformanceData);
- }
- 
- console.log('✅ Setting performance data:', finalPerformanceData);
- setAgentPerformance(finalPerformanceData);
+ console.log('✅ Setting performance data:', performanceData);
+ setAgentPerformance(performanceData);
  
  // If no users found, add some sample users for testing
  if (!usersData.users || usersData.users.length === 0) {
