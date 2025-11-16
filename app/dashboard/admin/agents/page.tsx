@@ -264,7 +264,7 @@ export default function AdminAgentsPage() {
  
  // Debug: Log the users data
  console.log('👥 Users data:', usersData);
- console.log('📊 Performance data will be set to:', finalPerformanceData);
+ console.log('📊 Performance data set to:', performanceData);
 
  console.log('✅ Agents data loaded successfully');
 
