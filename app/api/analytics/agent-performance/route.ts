@@ -5,6 +5,8 @@ import Visitor from '@/lib/models/Visitor';
 import Enquiry from '@/lib/models/Enquiry';
 import mongoose from 'mongoose';
 
+export const dynamic = 'force-dynamic';
+
 // Temporarily disable authentication for testing
 export const GET = async (request: NextRequest) => {
  try {
@@ -78,9 +80,37 @@ export const GET = async (request: NextRequest) => {
 
  console.log(`📊 Generated REAL performance data for ${agentPerformance.length} agents from database`);
 
- // If no agents found, return sample data for demonstration
- if (agentPerformance.length === 0) {
- console.log('⚠️ No agents found, returning sample performance data');
+ // Check if all agents have zero performance data
+ const hasAnyData = agentPerformance.some(agent => 
+ agent.visitorsHandled > 0 || agent.enquiriesAdded > 0 || agent.leadsConverted > 0
+ );
+
+ // If no agents found OR all agents have zero data, return sample data with real agent names
+ if (agentPerformance.length === 0 || !hasAnyData) {
+ console.log('⚠️ No agents found or all have zero data, returning sample performance data with real agent info');
+ 
+ // Use real agent data if available, otherwise use sample
+ const performanceWithData = agentPerformance.length > 0 
+ ? agentPerformance.map((agent, index) => ({
+ ...agent,
+ visitorsHandled: [35, 28, 42, 31, 25][index % 5] || 30,
+ enquiriesAdded: [15, 12, 18, 14, 10][index % 5] || 12,
+ leadsConverted: [8, 6, 10, 7, 5][index % 5] || 7,
+ conversionRate: [23, 21, 24, 23, 20][index % 5] || 22
+ }))
+ : [];
+ if (performanceWithData.length > 0) {
+ return NextResponse.json({
+ success: true,
+ agentPerformance: performanceWithData,
+ totalAgents: performanceWithData.length,
+ activeAgents: performanceWithData.filter(a => a.isActive).length,
+ isSampleData: true,
+ message: 'Using demo data - no visitor/enquiry data found'
+ });
+ }
+ 
+ // Fallback to completely sample data if no agents at all
  const samplePerformance = [
  {
  agentId: 'sample-1',
