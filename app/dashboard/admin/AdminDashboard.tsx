@@ -167,7 +167,7 @@ export default function AdminDashboard() {
  {/* Header */}
  <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
  <div>
- <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2 tracking-tight">
+ <h1 className="text-4xl font-extrabold text-[#022a7a] mb-2 tracking-tight">
  Admin Dashboard
  </h1>
  <p className="text-base text-gray-700 font-medium">System Overview & Performance Metrics</p>

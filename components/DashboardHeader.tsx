@@ -60,7 +60,7 @@ export default function DashboardHeader({ userRole, userName }: DashboardHeaderP
  <div className="bg-white border-b border-gray-200 shadow-sm pr-6 pl-2 py-3 md:mt-0 mt-12 transition-all duration-300">
  <div className="flex justify-between items-center">
  <div className="flex-1 min-w-0">
- <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent truncate tracking-tight">
+ <h1 className="text-2xl font-bold text-[#022a7a] truncate tracking-tight">
  {getGreeting()}, {userName || userRole}
  </h1>
  {isClient && currentTime ? (

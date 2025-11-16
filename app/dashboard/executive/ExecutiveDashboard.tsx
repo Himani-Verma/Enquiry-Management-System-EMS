@@ -167,7 +167,7 @@ export default function ExecutiveDashboard() {
  {/* Header */}
  <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
  <div>
- <h1 className="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 bg-clip-text text-transparent mb-2 tracking-tight">
+ <h1 className="text-4xl font-extrabold text-[#022a7a] mb-2 tracking-tight">
  Executive Dashboard
  </h1>
  <p className="text-base text-gray-700 font-medium">System Overview & Performance Metrics</p>
