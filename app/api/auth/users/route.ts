@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongo } from '@/lib/mongo';
 import User from '@/lib/models/User';
 
+export const dynamic = 'force-dynamic';
+
 // Handle CORS preflight requests
 export async function OPTIONS(request: NextRequest) {
  return new NextResponse(null, {
@@ -29,6 +31,12 @@ export const GET = async (request: NextRequest) => {
  const users = await User.find({}).select('-password').lean();
  console.log(`📊 Found ${users.length} real users`);
 
+ // If no users found, return mock data
+ if (users.length === 0) {
+ console.log('⚠️ No users found in database, using mock data');
+ throw new Error('No users in database');
+ }
+
  return NextResponse.json({
  success: true,
  users: users,
@@ -43,8 +51,8 @@ export const GET = async (request: NextRequest) => {
  });
 
  } catch (mongoError) {
- console.log('⚠️ MongoDB connection failed, using mock users data');
- console.error('MongoDB error:', mongoError.message);
+ console.log('⚠️ MongoDB connection failed or no users, using mock users data');
+ console.error('MongoDB error:', mongoError);
 
  // FALLBACK: Mock users data for local development when MongoDB is unavailable
  const mockUsers = [
