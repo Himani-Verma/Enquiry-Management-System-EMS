@@ -167,8 +167,10 @@ export default function ExecutiveDashboard() {
  {/* Header */}
  <div className="flex flex-wrap items-end justify-between gap-3 mb-6">
  <div>
- <h1 className="text-3xl font-bold text-gray-900 mb-1">Sales Executive Dashboard</h1>
- <p className="text-sm text-gray-900">System Overview & Performance Metrics</p>
+ <h1 className="text-4xl font-extrabold bg-gradient-to-r from-green-600 via-teal-600 to-blue-600 bg-clip-text text-transparent mb-2 tracking-tight">
+ Sales Executive Dashboard
+ </h1>
+ <p className="text-base text-gray-700 font-medium">System Overview & Performance Metrics</p>
  </div>
  <div className="flex items-center space-x-2 bg-white border border-gray-200 px-4 py-3 rounded-lg shadow-sm transition-all duration-200 hover:scale-105">
  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -256,8 +258,6 @@ export default function ExecutiveDashboard() {
  </svg>
  </div>
  </div>
- </div>
-
  </div>
  </div>
 
