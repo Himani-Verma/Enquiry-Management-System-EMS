@@ -197,8 +197,8 @@ export default function ExecutiveEnquiriesPage() {
  'X-User-Info': JSON.stringify(user)
  };
  
- console.log('📡 Fetching from:', `${API_BASE}/api/analytics/customer-executive-enquiries-management`);
- const response = await fetch(`${API_BASE}/api/analytics/customer-executive-enquiries-management`, { headers });
+ console.log('📡 Fetching from:', `${API_BASE}/api/analytics/sales-executive-enquiries`);
+ const response = await fetch(`${API_BASE}/api/analytics/sales-executive-enquiries`, { headers });
 
  console.log('📊 Response status:', response.status);
 
