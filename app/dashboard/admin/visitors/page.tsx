@@ -1551,96 +1551,96 @@ export default function AdminVisitorsPage() {
  {/* Visitors Table */}
  <div className="bg-white border-gray-200 rounded-lg shadow overflow-hidden transition-all duration-300">
  <div className="overflow-x-auto">
- <table className="w-full divide-y divide-gray-200">
+ <table className="w-full divide-y divide-gray-200 text-xs">
  <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
  <tr>
  {visibleColumns['Sr.no.'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-12">
  Sr.No
  </th>
  )}
  {visibleColumns['Name of Client'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">
  Client Name
  </th>
  )}
  {visibleColumns['Agent'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[140px]">
  Agent
  </th>
  )}
  {visibleColumns['Sales Executive'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
- Sales Executive
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[140px]">
+ Sales Exec
  </th>
  )}
  {visibleColumns['Status'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Status
  </th>
  )}
  {visibleColumns['Date & Time'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Date & Time
  </th>
  )}
  {visibleColumns['Service'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Service
  </th>
  )}
  {visibleColumns['Sub-service'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Sub-service
  </th>
  )}
  {visibleColumns['Enquiry Details'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">
  Enquiry Details
  </th>
  )}
  {visibleColumns['Source'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-20">
  Source
  </th>
  )}
  {visibleColumns['Contact no.'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[90px]">
  Contact
  </th>
  )}
  {visibleColumns['Email id'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[120px]">
  Email
  </th>
  )}
  {visibleColumns['Organization'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Organization
  </th>
  )}
  {visibleColumns['Region'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-20">
  Region
  </th>
  )}
  {visibleColumns['Comments'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
  Comments
  </th>
  )}
  {visibleColumns['Amount'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-20">
  Amount
  </th>
  )}
  {visibleColumns['Converted'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-20">
  Converted
  </th>
  )}
  {visibleColumns['Actions'] && (
- <th className="px-4 py-3.5 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+ <th className="px-2 py-2 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-20">
  Actions
  </th>
  )}
@@ -1651,31 +1651,31 @@ export default function AdminVisitorsPage() {
  <tr key={visitor._id} className="hover:bg-blue-50 transition-colors duration-150">
  {/* Sr.no. */}
  {visibleColumns['Sr.no.'] && (
- <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900 font-medium">
  {index + 1}
  </td>
  )}
  
  {/* Name of Client */}
  {visibleColumns['Name of Client'] && (
- <td className="px-4 py-4 whitespace-nowrap">
+ <td className="px-2 py-2">
  <div className="flex items-center">
- <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-3 shadow-sm">
- <span className="text-white font-semibold text-sm">
+ <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-2 shadow-sm flex-shrink-0">
+ <span className="text-white font-semibold text-xs">
  {visitor.name ? visitor.name.charAt(0).toUpperCase() : visitor.email.charAt(0).toUpperCase()}
  </span>
  </div>
- <div className="text-sm font-semibold text-gray-900">{visitor.name || 'Anonymous'}</div>
+ <div className="text-xs font-semibold text-gray-900 truncate">{visitor.name || 'Anonymous'}</div>
  </div>
  </td>
  )}
  
  {/* Agent */}
  {visibleColumns['Agent'] && (
- <td className="px-4 py-4 whitespace-nowrap text-sm">
- <div className="space-y-2 min-w-[180px]">
+ <td className="px-2 py-2 text-xs">
+ <div className="space-y-1">
  {/* Display current agent name */}
- <div className="text-gray-900 font-medium text-sm">
+ <div className="text-gray-900 font-medium text-xs truncate">
  {visitor.agentName ? (
  visitor.agentName
  ) : (
@@ -1684,7 +1684,7 @@ export default function AdminVisitorsPage() {
  </div>
  {/* Assignment dropdown */}
  <select
- className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm hover:border-gray-400 transition-colors"
+ className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm hover:border-gray-400 transition-colors"
  value={visitor.assignedAgent || ''}
  onClick={() => {
  console.log('📋 Agents dropdown clicked. Available agents:', agents.length, agents);
@@ -1715,7 +1715,7 @@ export default function AdminVisitorsPage() {
  </option>
  ))
  ) : (
- <option value="" disabled>⚠️ No agents available in database</option>
+ <option value="" disabled>⚠️ No agents available</option>
  )}
  </select>
  </div>
@@ -1724,10 +1724,10 @@ export default function AdminVisitorsPage() {
  
  {/* Sales Executive */}
  {visibleColumns['Sales Executive'] && (
- <td className="px-4 py-4 whitespace-nowrap text-sm">
- <div className="space-y-2 min-w-[180px]">
+ <td className="px-2 py-2 text-xs">
+ <div className="space-y-1">
  {/* Display current sales executive name */}
- <div className="text-gray-900 font-medium text-sm">
+ <div className="text-gray-900 font-medium text-xs truncate">
  {visitor.salesExecutiveName ? (
  visitor.salesExecutiveName
  ) : (
@@ -1736,7 +1736,7 @@ export default function AdminVisitorsPage() {
  </div>
  {/* Assignment dropdown */}
  <select
- className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm hover:border-gray-400 transition-colors"
+ className="w-full px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm hover:border-gray-400 transition-colors"
  value={visitor.salesExecutive || ''}
  onClick={() => {
  console.log('📋 Sales Executives dropdown clicked. Available sales executives:', salesExecutives.length, salesExecutives);
@@ -1759,15 +1759,15 @@ export default function AdminVisitorsPage() {
  }
  }}
  >
- <option value="">Select Sales Executive...</option>
+ <option value="">Select Sales Exec...</option>
  {salesExecutives.length > 0 ? (
  salesExecutives.map(exec => (
  <option key={exec._id || exec.id} value={exec._id || exec.id}>
- {exec.displayName || exec.name || exec.username || 'Unknown Sales Executive'}
+ {exec.displayName || exec.name || exec.username || 'Unknown'}
  </option>
  ))
  ) : (
- <option value="" disabled>⚠️ No sales executives available in database</option>
+ <option value="" disabled>⚠️ No sales execs</option>
  )}
  </select>
  </div>
@@ -1776,14 +1776,14 @@ export default function AdminVisitorsPage() {
  
  {/* Status */}
  {visibleColumns['Status'] && (
- <td className="px-4 py-4 whitespace-nowrap">
+ <td className="px-2 py-2">
  <button
  onClick={() => {
  setSelectedVisitor(visitor);
  setShowPipeline(true);
  fetchChatMessages(visitor._id);
  }}
- className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors shadow-sm"
+ className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800 hover:bg-blue-200 transition-colors shadow-sm truncate max-w-full"
  >
  {visitor.status === 'enquiry_required' ? 'Enquiry Received' : (visitor.status?.replace(/_/g, ' ') || 'Unknown')}
  </button>
@@ -1792,7 +1792,7 @@ export default function AdminVisitorsPage() {
  
  {/* Date & Time */}
  {visibleColumns['Date & Time'] && (
- <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  {formatDate(visitor.createdAt)}
  </td>
  )}
@@ -1985,78 +1985,6 @@ export default function AdminVisitorsPage() {
  pipelineHistory={selectedVisitor.pipelineHistory || []}
  className="w-full"
  />
- </div>
-
- {/* Chat Messages Section */}
- <div className="mb-6 bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border-2 border-gray-200 shadow-lg p-6">
- <div className="flex items-center justify-between mb-4">
- <div>
- <h4 className="text-xl font-bold text-gray-900 flex items-center gap-2">
- <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
- <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
- </svg>
- </div>
- Chat Conversation
- </h4>
- <p className="text-sm text-gray-900 mt-1">Complete conversation history with the visitor</p>
- </div>
- <div className="text-right">
- <div className="text-2xl font-bold text-blue-600">{chatMessages.length}</div>
- <div className="text-xs text-gray-900">Messages</div>
- </div>
- </div>
-
- {loadingMessages ? (
- <div className="text-center py-8">
- <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
- <p className="mt-2 text-gray-900">Loading messages...</p>
- </div>
- ) : chatMessages.length > 0 ? (
- <div className="bg-white rounded-lg border border-gray-300 p-4 max-h-96 overflow-y-auto space-y-3">
- {chatMessages.map((msg, index) => (
- <div
- key={msg._id || index}
- className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
- >
- <div
- className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg shadow-sm ${
- msg.sender === 'user'
- ? 'bg-blue-600 text-white'
- : 'bg-gray-200 text-gray-900'
- }`}
- >
- <div className="flex items-center gap-2 mb-1">
- <span className="text-xs font-semibold">
- {msg.sender === 'user' ? 'Visitor' : 'Bot/Agent'}
- </span>
- </div>
- <p className="text-sm">{msg.message}</p>
- <p className={`text-xs mt-1 ${
- msg.sender === 'user' ? 'text-blue-100' : 'text-gray-900'
- }`}>
- {msg.at ? new Date(msg.at).toLocaleString('en-US', {
- month: 'short',
- day: 'numeric',
- hour: '2-digit',
- minute: '2-digit'
- }) : ''}
- </p>
- </div>
- </div>
- ))}
- </div>
- ) : (
- <div className="text-center py-8 bg-white rounded-lg border border-gray-300">
- <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
- <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
- </svg>
- </div>
- <p className="text-gray-900 font-medium">No conversation history</p>
- <p className="text-sm text-gray-800 mt-1">This visitor hasn't had any chat interactions yet</p>
- </div>
- )}
  </div>
 
  {/* Action Buttons */}

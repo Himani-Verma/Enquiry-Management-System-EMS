@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Diagrams PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            max-width: 850px;
+            margin: 10px auto;
+            padding: 10px;
+            background: #f5f5f5;
+            font-size: 13px;
+        }
+        .container {
+            background: white;
+            padding: 14px;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        h1 {
+            color: #022a7a;
+            margin-bottom: 4px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .instructions {
+            background: #e7f3ff;
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            border-left: 2px solid #022a7a;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            margin-bottom: 4px;
+            color: #022a7a;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .instructions p {
+            margin: 2px 0;
+            font-size: 12px;
+        }
+        .instructions ol, .instructions ul {
+            margin: 4px 0;
+            padding-left: 16px;
+        }
+        .instructions li {
+            margin: 2px 0;
+            font-size: 12px;
+        }
+        .button-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        .btn-primary {
+            background: #022a7a;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #034099;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(2, 42, 122, 0.3);
+        }
+        .btn-secondary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #5568d3;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(102, 126, 234, 0.3);
+        }
+        .status {
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 4px;
+            display: none;
+            font-size: 12px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .method {
+            background: #f8f9fa;
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            border: 1.5px solid #dee2e6;
+        }
+        .method h3 {
+            color: #022a7a;
+            margin-top: 0;
+            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .method p {
+            margin: 2px 0 6px 0;
+            font-size: 12px;
+        }
+        .method ol {
+            margin: 4px 0;
+            padding-left: 16px;
+        }
+        .method li {
+            margin: 2px 0;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .method-recommended {
+            border-color: #28a745;
+            background: #f1f9f4;
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 9px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+        .badge-recommended {
+            background: #28a745;
+            color: white;
+        }
+        .badge-advanced {
+            background: #ffc107;
+            color: #000;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Generate Diagrams PDF</h1>
+        <p class="subtitle">Export your project diagrams to PDF format</p>
+        
+        <div class="instructions">
+            <h3>📋 Quick Instructions</h3>
+            <p>Choose one of the methods below to generate PDF versions of your diagrams:</p>
+        </div>
+
+        <!-- Method 1: Browser Print -->
+        <div class="method method-recommended">
+            <h3>Method 1: Browser Print to PDF <span class="badge badge-recommended">RECOMMENDED</span></h3>
+            <p><strong>Best for:</strong> High quality, all diagrams, works everywhere</p>
+            <ol>
+                <li>Click the button below to open the diagrams page</li>
+                <li>Press <code>Ctrl+P</code> (Windows) or <code>Cmd+P</code> (Mac)</li>
+                <li>Select "Save as PDF" as the destination</li>
+                <li>Choose "Landscape" orientation</li>
+                <li>Enable "Background graphics"</li>
+                <li>Click "Save" and choose your location</li>
+            </ol>
+            <button class="btn-primary" onclick="openDiagramsPage()">
+                🖨️ Open Diagrams Page
+            </button>
+        </div>
+
+        <!-- Method 2: Individual Diagrams -->
+        <div class="method">
+            <h3>Method 2: Save Individual Diagrams</h3>
+            <p><strong>Best for:</strong> Specific diagrams, presentations</p>
+            <ol>
+                <li>Open the diagrams page using the button above</li>
+                <li>Click on the diagram tab you want to save</li>
+                <li>Right-click on the diagram</li>
+                <li>Select "Save image as..." or "Copy image"</li>
+                <li>Repeat for each diagram you need</li>
+            </ol>
+        </div>
+
+        <!-- Method 3: Screenshot -->
+        <div class="method">
+            <h3>Method 3: Screenshot Tool</h3>
+            <p><strong>Best for:</strong> Quick captures, specific sections</p>
+            <ol>
+                <li>Open the diagrams page</li>
+                <li>Use Windows Snipping Tool or Mac Screenshot (Cmd+Shift+4)</li>
+                <li>Capture each diagram section</li>
+                <li>Use an online tool to combine images into PDF</li>
+            </ol>
+        </div>
+
+        <!-- Method 4: Automated Script -->
+        <div class="method">
+            <h3>Method 4: Automated Script <span class="badge badge-advanced">ADVANCED</span></h3>
+            <p><strong>Best for:</strong> Developers, automation, batch processing</p>
+            <ol>
+                <li>Install Puppeteer: <code>npm install puppeteer</code></li>
+                <li>Run: <code>npm run generate:diagrams-pdf</code></li>
+                <li>Find PDF in: <code>public/Envirocare-EMS-Diagrams.pdf</code></li>
+            </ol>
+            <p><strong>Note:</strong> Requires Node.js and may take 2-3 minutes to install Puppeteer.</p>
+        </div>
+
+        <div class="instructions">
+            <h3>💡 Tips for Best Results</h3>
+            <ul>
+                <li><strong>Orientation:</strong> Use Landscape for better diagram visibility</li>
+                <li><strong>Quality:</strong> Enable "Background graphics" in print settings</li>
+                <li><strong>Size:</strong> A4 or Letter size works best</li>
+                <li><strong>Margins:</strong> Use minimal margins for more diagram space</li>
+                <li><strong>Multiple Pages:</strong> Each diagram section will be on a separate page</li>
+            </ul>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="openDiagramsPage()">
+                📊 Open Diagrams Page
+            </button>
+            <button class="btn-secondary" onclick="showInstructions()">
+                📖 View Full Instructions
+            </button>
+        </div>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        function openDiagramsPage() {
+            window.open('project-diagrams.html', '_blank');
+            showStatus('Diagrams page opened in new tab. Use Ctrl+P (Cmd+P on Mac) to print to PDF.', 'info');
+        }
+
+        function showInstructions() {
+            window.open('GENERATE_DIAGRAMS_PDF.md', '_blank');
+            showStatus('Opening detailed instructions...', 'info');
+        }
+
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + type;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show welcome message
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                showStatus('👋 Welcome! Choose a method above to generate your PDF.', 'info');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

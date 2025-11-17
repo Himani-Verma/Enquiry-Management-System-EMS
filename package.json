@@ -18,7 +18,9 @@
     "dev:project": "ts-node --project tsconfig.scripts.json scripts/dev-project-demo.ts",
     "dev:backfill:printable": "ts-node --project tsconfig.scripts.json scripts/dev-backfill-printable.ts",
     "seed:knowledge-base": "node scripts/seed-knowledge-base.js",
-    "dev:test:catalog": "ts-node --project tsconfig.scripts.json scripts/test-catalog-query.ts"
+    "dev:test:catalog": "ts-node --project tsconfig.scripts.json scripts/test-catalog-query.ts",
+    "generate:diagrams-pdf": "node scripts/generate-diagrams-pdf.js",
+    "generate:diagrams-pdf-individual": "node scripts/generate-diagrams-pdf-individual.js"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
@@ -78,6 +80,7 @@
     "jest-environment-jsdom": "^30.2.0",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
+    "puppeteer": "^21.11.0",
     "ts-jest": "^29.4.5",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0"

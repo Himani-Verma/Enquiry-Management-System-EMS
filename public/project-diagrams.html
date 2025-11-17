@@ -155,49 +155,20 @@
                 </div>
                 <div class="mermaid">
 graph TB
-    subgraph "Client Layer"
-        Web[Web Browser]
-        Mobile[Mobile Browser]
-    end
+    Web[Web Browser] --> Pages[Pages/Routes]
+    Mobile[Mobile Browser] --> Pages
+    Pages --> Components[React Components]
+    Components --> API_Client[API Client]
     
-    subgraph "Frontend - Next.js 13"
-        Pages[Pages/Routes]
-        Components[React Components]
-        API_Client[API Client]
-    end
+    API_Client --> Auth[Authentication API]
+    API_Client --> Analytics[Analytics API]
+    API_Client --> Visitors[Visitors API]
+    API_Client --> Enquiries[Enquiries API]
+    API_Client --> Quotations[Quotations API]
+    API_Client --> Chat[Chat API]
+    API_Client --> KB[Knowledge Base API]
     
-    subgraph "Backend - API Routes"
-        Auth[Authentication API]
-        Analytics[Analytics API]
-        Visitors[Visitors API]
-        Enquiries[Enquiries API]
-        Quotations[Quotations API]
-        Chat[Chat API]
-        KB[Knowledge Base API]
-    end
-    
-    subgraph "Database Layer"
-        MongoDB[(MongoDB Atlas)]
-    end
-    
-    subgraph "External Services"
-        Netlify[Netlify Hosting]
-        JWT[JWT Auth]
-    end
-    
-    Web --> Pages
-    Mobile --> Pages
-    Pages --> Components
-    Components --> API_Client
-    API_Client --> Auth
-    API_Client --> Analytics
-    API_Client --> Visitors
-    API_Client --> Enquiries
-    API_Client --> Quotations
-    API_Client --> Chat
-    API_Client --> KB
-    
-    Auth --> MongoDB
+    Auth --> MongoDB[("MongoDB Atlas")]
     Analytics --> MongoDB
     Visitors --> MongoDB
     Enquiries --> MongoDB
@@ -205,8 +176,8 @@ graph TB
     Chat --> MongoDB
     KB --> MongoDB
     
-    Auth -.-> JWT
-    Pages -.-> Netlify
+    Auth -.-> JWT[JWT Auth]
+    Pages -.-> Netlify[Netlify Hosting]
                 </div>
             </div>
             
@@ -309,7 +280,7 @@ classDiagram
     User "1" --> "*" Quotation : creates
     Visitor "1" --> "*" Enquiry : generates
     Visitor "1" --> "*" ChatMessage : sends
-    Enquiry "1" --> "0..1" Quotation : converts to
+    Enquiry "1" --> "0..1" Quotation : "converts to"
                 </div>
             </div>
             
@@ -471,61 +442,29 @@ erDiagram
                     <strong>Overview:</strong> Main use cases for different user roles in the system.
                 </div>
                 <div class="mermaid">
-graph TB
-    subgraph "Envirocare EMS Use Cases"
-        subgraph "Admin Use Cases"
-            UC1[Manage Users]
-            UC2[View Analytics]
-            UC3[Manage Knowledge Base]
-            UC4[Assign Services to Agents]
-            UC5[Approve Registrations]
-        end
-        
-        subgraph "Sales Executive Use Cases"
-            UC6[Create Quotations]
-            UC7[Manage Enquiries]
-            UC8[View Assigned Visitors]
-            UC9[Update Lead Status]
-        end
-        
-        subgraph "Customer Executive Use Cases"
-            UC10[Handle Chat Support]
-            UC11[Manage Visitors]
-            UC12[Create Enquiries]
-            UC13[View Analytics]
-        end
-        
-        subgraph "Visitor Use Cases"
-            UC14[Chat with Bot]
-            UC15[Submit Enquiry]
-            UC16[View Services]
-        end
-    end
+flowchart LR
+    Admin([Admin])
+    SalesExec([Sales Executive])
+    CustomerExec([Customer Executive])
+    Visitor([Visitor])
     
-    Admin((Admin))
-    SalesExec((Sales Executive))
-    CustomerExec((Customer Executive))
-    Visitor((Visitor))
+    Admin --> UC1[Manage Users]
+    Admin --> UC2[View Analytics]
+    Admin --> UC3[Manage Knowledge Base]
+    Admin --> UC4[Assign Services]
+    Admin --> UC5[Approve Registrations]
     
-    Admin --> UC1
-    Admin --> UC2
-    Admin --> UC3
-    Admin --> UC4
-    Admin --> UC5
+    SalesExec --> UC6[Create Quotations]
+    SalesExec --> UC7[Manage Enquiries]
+    SalesExec --> UC8[View Visitors]
+    SalesExec --> UC9[Update Lead Status]
     
-    SalesExec --> UC6
-    SalesExec --> UC7
-    SalesExec --> UC8
-    SalesExec --> UC9
+    CustomerExec --> UC10[Handle Chat]
+    CustomerExec --> UC11[Manage Visitors]
+    CustomerExec --> UC12[Create Enquiries]
     
-    CustomerExec --> UC10
-    CustomerExec --> UC11
-    CustomerExec --> UC12
-    CustomerExec --> UC13
-    
-    Visitor --> UC14
-    Visitor --> UC15
-    Visitor --> UC16
+    Visitor --> UC13[Chat with Bot]
+    Visitor --> UC14[Submit Enquiry]
                 </div>
             </div>
             
@@ -536,62 +475,87 @@ graph TB
                 <h3 style="color: #022a7a; margin: 30px 0 15px;">Visitor Journey</h3>
                 <div class="mermaid">
 flowchart TD
-    Start([Visitor Lands on Website]) --> Chat{Interact with Chatbot?}
-    Chat -->|Yes| ChatStart[Start Chat Conversation]
-    Chat -->|No| Browse[Browse Services]
+    Start([Visitor Lands on Website])
+    Chat{Interact with Chatbot}
+    ChatStart[Start Chat Conversation]
+    Browse[Browse Services]
+    Provide[Provide Contact Info]
+    Register[Register as Visitor]
+    Assign[Auto-assign to Agent]
+    AgentContact{Agent Contacts}
+    Qualify[Qualify Lead]
+    FollowUp[Follow-up Reminder]
+    Convert{Convert to Enquiry}
+    CreateEnq[Create Enquiry]
+    Nurture[Continue Nurturing]
+    Quote{Need Quotation}
+    GenQuote[Generate Quotation]
+    Service[Provide Service Info]
+    Close[Close Deal]
+    End([Conversion Complete])
     
-    ChatStart --> Provide[Provide Contact Info]
+    Start --> Chat
+    Chat -->|Yes| ChatStart
+    Chat -->|No| Browse
+    ChatStart --> Provide
     Browse --> Provide
-    
-    Provide --> Register[Register as Visitor]
-    Register --> Assign[Auto-assign to Agent]
-    
-    Assign --> AgentContact{Agent Contacts?}
-    AgentContact -->|Yes| Qualify[Qualify Lead]
-    AgentContact -->|No| FollowUp[Follow-up Reminder]
-    
-    Qualify --> Convert{Convert to Enquiry?}
-    Convert -->|Yes| CreateEnq[Create Enquiry]
-    Convert -->|No| Nurture[Continue Nurturing]
-    
-    CreateEnq --> Quote{Need Quotation?}
-    Quote -->|Yes| GenQuote[Generate Quotation]
-    Quote -->|No| Service[Provide Service Info]
-    
-    GenQuote --> Close[Close Deal]
+    Provide --> Register
+    Register --> Assign
+    Assign --> AgentContact
+    AgentContact -->|Yes| Qualify
+    AgentContact -->|No| FollowUp
+    Qualify --> Convert
+    Convert -->|Yes| CreateEnq
+    Convert -->|No| Nurture
+    CreateEnq --> Quote
+    Quote -->|Yes| GenQuote
+    Quote -->|No| Service
+    GenQuote --> Close
     Service --> Close
     Nurture --> AgentContact
     FollowUp --> AgentContact
-    
-    Close --> End([Conversion Complete])
+    Close --> End
                 </div>
                 
                 <h3 style="color: #022a7a; margin: 30px 0 15px;">Admin Workflow</h3>
                 <div class="mermaid">
 flowchart TD
-    Login([Admin Login]) --> Dashboard[View Dashboard]
-    Dashboard --> Action{Select Action}
+    Login([Admin Login])
+    Dashboard[View Dashboard]
+    Action{Select Action}
+    Users[User Management]
+    Analytics[Analytics Dashboard]
+    KB[Manage KB]
+    Agents[Agent Management]
+    Approve{Approve User}
+    Grant[Grant Access]
+    Reject[Reject Registration]
+    View[View Metrics]
+    Export[Export Reports]
+    CRUD{CRUD Operation}
+    AddKB[Add FAQ/Article/Link]
+    EditKB[Edit Content]
+    DelKB[Remove Content]
+    AssignSvc[Assign Services]
+    Monitor[Monitor Performance]
     
-    Action -->|Manage Users| Users[User Management]
-    Action -->|View Analytics| Analytics[Analytics Dashboard]
-    Action -->|Knowledge Base| KB[Manage KB]
-    Action -->|Agents| Agents[Agent Management]
-    
-    Users --> Approve{Approve User?}
-    Approve -->|Yes| Grant[Grant Access]
-    Approve -->|No| Reject[Reject Registration]
-    
-    Analytics --> View[View Metrics]
-    View --> Export[Export Reports]
-    
-    KB --> CRUD{CRUD Operation}
-    CRUD -->|Create| AddKB[Add FAQ/Article/Link]
-    CRUD -->|Update| EditKB[Edit Content]
-    CRUD -->|Delete| DelKB[Remove Content]
-    
-    Agents --> AssignSvc[Assign Services]
-    AssignSvc --> Monitor[Monitor Performance]
-    
+    Login --> Dashboard
+    Dashboard --> Action
+    Action -->|Manage Users| Users
+    Action -->|View Analytics| Analytics
+    Action -->|Knowledge Base| KB
+    Action -->|Agents| Agents
+    Users --> Approve
+    Approve -->|Yes| Grant
+    Approve -->|No| Reject
+    Analytics --> View
+    View --> Export
+    KB --> CRUD
+    CRUD -->|Create| AddKB
+    CRUD -->|Update| EditKB
+    CRUD -->|Delete| DelKB
+    Agents --> AssignSvc
+    AssignSvc --> Monitor
     Grant --> Dashboard
     Reject --> Dashboard
     Export --> Dashboard

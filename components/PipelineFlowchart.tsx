@@ -299,32 +299,37 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  
  let statusClass = '';
  let borderClass = '';
+ let iconClass = '';
  
  switch (status) {
  case 'current':
- statusClass = 'bg-blue-600 text-white shadow-lg transform scale-105';
- borderClass = 'border-2 border-blue-700';
+ statusClass = 'bg-gradient-to-br from-blue-600 to-indigo-600 text-white shadow-xl transform scale-110 animate-pulse';
+ borderClass = 'border-2 border-blue-400 ring-4 ring-blue-200';
+ iconClass = 'text-blue-200';
  break;
  case 'completed':
- statusClass = 'bg-green-500 text-white shadow-md';
- borderClass = 'border-2 border-green-600';
+ statusClass = 'bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg';
+ borderClass = 'border-2 border-green-400';
+ iconClass = 'text-green-200';
  break;
  case 'pending':
- statusClass = 'bg-white text-gray-700 hover:bg-gray-50 transition-colors';
- borderClass = 'border-2 border-gray-300';
+ statusClass = 'bg-white text-gray-700 hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50 hover:shadow-lg transition-all';
+ borderClass = 'border-2 border-gray-300 hover:border-blue-400';
+ iconClass = 'text-gray-400';
  break;
  case 'disabled':
- statusClass = 'bg-gray-200 text-gray-700 cursor-not-allowed';
- borderClass = 'border-2 border-gray-300';
+ statusClass = 'bg-gray-100 text-gray-500 cursor-not-allowed opacity-60';
+ borderClass = 'border-2 border-gray-200';
+ iconClass = 'text-gray-300';
  break;
  }
 
  const stageClasses = `
- relative px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 
- min-w-[140px] max-w-[160px] text-center ${statusClass} ${borderClass}
- ${stage.isDecision ? 'ring-2 ring-purple-300 ring-offset-2' : ''}
+ relative px-3 py-2 rounded-lg text-xs font-bold transition-all duration-300 
+ w-[110px] h-[60px] flex flex-col items-center justify-center text-center ${statusClass} ${borderClass}
+ ${stage.isDecision ? 'ring-1 ring-purple-400 ring-offset-1' : ''}
  ${stage.isEnd ? 'opacity-75' : ''}
- ${!stage.isEnd ? 'hover:shadow-lg cursor-pointer' : 'cursor-not-allowed'}
+ ${!stage.isEnd ? 'hover:shadow-lg hover:scale-105 cursor-pointer' : 'cursor-not-allowed'}
  `;
 
  return (
@@ -335,22 +340,40 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  onClick={() => !stage.isEnd && !readOnly && handleStageChange(stage.id)}
  disabled={stage.isEnd || readOnly}
  >
- <div className="font-semibold text-xs leading-tight">{stage.name}</div>
- {isCurrent && (
- <div className="text-xs mt-1 opacity-90 font-medium">Current</div>
+ {/* Status Icon */}
+ <div className="flex items-center justify-center mb-1">
+ {status === 'completed' && (
+ <svg className={`w-4 h-4 ${iconClass}`} fill="currentColor" viewBox="0 0 20 20">
+ <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+ </svg>
  )}
- {stage.isDecision && (
- <div className="text-xs mt-1 opacity-75">Decision Point</div>
+ {status === 'current' && (
+ <svg className={`w-4 h-4 ${iconClass} animate-spin`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+ </svg>
+ )}
+ {status === 'pending' && (
+ <svg className={`w-4 h-4 ${iconClass}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+ </svg>
+ )}
+ </div>
+ <div className="font-bold text-[10px] leading-tight px-1">{stage.name}</div>
+ {isCurrent && (
+ <div className="text-[8px] mt-1 opacity-90 font-semibold flex items-center justify-center gap-0.5">
+ <span className="w-1 h-1 bg-white rounded-full animate-pulse"></span>
+ Active
+ </div>
  )}
  </button>
  
  {/* Arrow (except for last stage) */}
  {!isLastStage && (
- <div className="mx-3 flex items-center">
- <div className={`w-8 h-0.5 ${
+ <div className="mx-1.5 flex items-center">
+ <div className={`w-4 h-0.5 ${
  getStageStatus(stage.id) === 'completed' ? 'bg-green-400' : 'bg-gray-300'
  }`}></div>
- <svg className={`w-4 h-4 ${
+ <svg className={`w-3 h-3 ${
  getStageStatus(stage.id) === 'completed' ? 'text-green-400' : 'text-gray-300'
  }`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -498,65 +521,72 @@ export default function PipelineFlowchart({ currentStatus, onStatusChange, class
  };
 
  return (
- <div className={`bg-white rounded-xl p-6 border border-gray-200 ${className}`}>
- <div className="text-center mb-6">
- <h3 className="text-lg font-semibold text-black mb-2">Pipeline Flowchart</h3>
- <p className="text-sm text-black">Click on any stage to update visitor status - Scroll horizontally to see all stages</p>
- <div className="mt-3 p-2 bg-blue-50 rounded-lg inline-block">
- <span className="text-sm font-medium text-blue-800">Current Status: </span>
- <span className="text-sm font-bold text-blue-900">{PIPELINE_STAGES.find(s => s.id === currentStatus)?.name || currentStatus}</span>
+ <div className={`bg-gradient-to-br from-white via-blue-50 to-indigo-50 rounded-xl p-3 border border-blue-200 shadow-lg ${className}`}>
+ <div className="text-center mb-3">
+ <div className="flex items-center justify-center gap-2 mb-2">
+ <div className="w-6 h-6 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-md">
+ <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+ </svg>
+ </div>
+ <h3 className="text-base font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Pipeline Flowchart</h3>
+ </div>
+ <p className="text-xs text-gray-700 mb-2">Click stage to update - Scroll to see all</p>
+ <div className="p-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg inline-block shadow-md">
+ <span className="text-xs font-semibold text-white">Current: </span>
+ <span className="text-xs font-bold text-white">{PIPELINE_STAGES.find(s => s.id === currentStatus)?.name || currentStatus}</span>
  </div>
  </div>
  
  {/* Single Horizontal Scrollable Pipeline */}
- <div className="mb-8">
- <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-custom">
+ <div className="mb-3">
+ <div className="flex items-center gap-1 overflow-x-auto pb-2 scrollbar-custom">
  {PIPELINE_STAGES.filter(stage => stage.id !== 'unqualified').map((stage, index, arr) => 
  renderStage(stage, index, index === arr.length - 1)
  )}
  </div>
  
  {/* Unqualified Stage (shown separately at bottom) */}
- <div className="mt-4 pt-4 border-t border-gray-300">
- <div className="flex items-center gap-2">
- <span className="text-sm text-gray-900 font-medium">Alternative End:</span>
+ <div className="mt-2 pt-2 border-t border-gray-300">
+ <div className="flex items-center gap-1">
+ <span className="text-xs text-gray-900 font-medium">Alternative:</span>
  {renderStage(PIPELINE_STAGES.find(s => s.id === 'unqualified')!, 0, true)}
  </div>
  </div>
  </div>
  
  {/* Stage History with Executive Notes */}
- <div className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 shadow-lg">
- <div className="flex items-center justify-between mb-6">
+ <div className="mt-3 p-3 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border border-blue-200 shadow-md">
+ <div className="flex items-center justify-between mb-2">
  <div>
- <h4 className="text-xl font-bold text-blue-900 flex items-center gap-2">
- <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center">
- <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <h4 className="text-sm font-bold text-blue-900 flex items-center gap-1.5">
+ <div className="w-4 h-4 bg-blue-600 rounded-full flex items-center justify-center">
+ <svg className="w-2.5 h-2.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
  </svg>
  </div>
- Stage History & Executive Notes
+ Stage History & Notes
  </h4>
- <p className="text-sm text-blue-700 mt-1">Complete timeline with all stage updates and notes</p>
+ <p className="text-[10px] text-blue-700">Timeline with updates</p>
  </div>
  <div className="text-right">
- <div className="text-2xl font-bold text-blue-600">{stageHistory.length}</div>
- <div className="text-xs text-blue-700">Total Updates</div>
+ <div className="text-base font-bold text-blue-600">{stageHistory.length}</div>
+ <div className="text-[9px] text-blue-700">Updates</div>
  </div>
  </div>
  
  {stageHistory.length === 0 ? (
- <div className="text-center py-8">
- <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-3">
- <svg className="w-8 h-8 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <div className="text-center py-4">
+ <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-2">
+ <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
  </div>
- <p className="text-black mb-2">No stage updates yet</p>
- <p className="text-sm text-black">Start by clicking on a stage to update the visitor status</p>
+ <p className="text-xs text-black mb-1">No stage updates yet</p>
+ <p className="text-[10px] text-black">Click a stage to update status</p>
  </div>
  ) : (
- <div className="space-y-5 max-h-[600px] overflow-y-auto scrollbar-custom pr-2">
+ <div className="space-y-2 max-h-[400px] overflow-y-auto scrollbar-custom pr-1">
  {sortedStageHistory.map((entry, index) => (
  <div key={entry.id} className={`rounded-xl border-2 shadow-lg hover:shadow-xl transition-all duration-200 ${
  entry.isAutoFilled 

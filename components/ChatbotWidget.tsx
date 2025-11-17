@@ -1416,14 +1416,14 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
 
  {showVisitorForm && (
- <div className="space-y-2 px-3 py-2">
+ <div className="space-y-1.5 px-2 py-1.5">
  <div className="text-center mb-1">
- <h3 className="text-xs font-bold text-gray-900 leading-tight mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Let's Get Started! 👋</h3>
- <p className="text-gray-600 text-[9px] font-medium leading-snug">Quick details to begin</p>
+ <h3 className="text-[11px] font-bold text-gray-900 leading-tight mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>Let's Get Started! 👋</h3>
+ <p className="text-gray-600 text-[8px] font-medium leading-snug">Quick details to begin</p>
  </div>
- <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-2" noValidate>
+ <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-1.5" noValidate>
  <div>
- <label htmlFor="name" className="block text-[10px] font-semibold text-gray-800 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="name" className="block text-[7px] font-semibold text-gray-700 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Name
  </label>
  <div className="relative">
@@ -1435,7 +1435,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Name"
  aria-invalid={errors.name ? 'true' : 'false'}
  aria-describedby={errors.name ? 'name-error' : undefined}
- className={`w-full px-2.5 py-1.5 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-[11px] ${getFieldStateClass('name')}`}
+ className={`w-full px-2 py-1 border-2 rounded-lg focus:outline-none focus:ring-1 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-[10px] ${getFieldStateClass('name')}`}
  style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  {isFieldValid('name') && <SuccessIcon />}
@@ -1447,7 +1447,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="email" className="block text-[10px] font-semibold text-gray-800 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="email" className="block text-[7px] font-semibold text-gray-700 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Email
  </label>
  <div className="relative">
@@ -1460,7 +1460,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  aria-label="Email"
  aria-invalid={errors.email ? 'true' : 'false'}
  aria-describedby={errors.email ? 'email-error' : undefined}
- className={`w-full px-2.5 py-1.5 border-2 rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-[11px] ${getFieldStateClass('email')}`}
+ className={`w-full px-2 py-1 border-2 rounded-lg focus:outline-none focus:ring-1 transition-all duration-200 bg-white/80 backdrop-blur-sm text-gray-900 text-[10px] ${getFieldStateClass('email')}`}
  style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}
  />
  {isFieldValid('email') && <SuccessIcon />}
@@ -1472,7 +1472,7 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  )}
  </div>
  <div>
- <label htmlFor="phone" className="block text-[10px] font-semibold text-gray-800 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
+ <label htmlFor="phone" className="block text-[7px] font-semibold text-gray-700 mb-0.5" style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>
  Phone
  </label>
  <div className="relative">
@@ -1930,16 +1930,20 @@ export default function ChatbotWidget({ isOpen, onToggle, isIframe = false }: Ch
  <button
  key={key}
  onClick={() => handleTabChange(key as 'home' | 'chat' | 'faq' | 'articles')}
- className={`group flex flex-col items-center space-y-0.5 p-1 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 ${
+ title={label}
+ className={`group relative flex items-center justify-center p-2.5 rounded-lg transition-all duration-300 transform hover:scale-110 active:scale-95 ${
  activeTab === key 
  ? 'text-[#2d4891] bg-gradient-to-br from-blue-50 to-indigo-50 shadow-sm scale-105' 
  : 'text-gray-600 hover:text-[#2d4891] hover:bg-gradient-to-br hover:from-gray-50 hover:to-blue-50'
  }`}
  >
- <svg className={`w-4 h-4 transition-all duration-300 ${activeTab === key ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-0.5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className={`w-5 h-5 transition-all duration-300 ${activeTab === key ? 'scale-110' : 'group-hover:scale-110 group-hover:-translate-y-0.5'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={activeTab === key ? 2.5 : 2} d={icon} />
  </svg>
- <span className={`text-[7px] font-medium leading-none transition-all duration-300 ${activeTab === key ? 'font-semibold' : ''}`} style={{ fontFamily: "'Poppins', 'Inter', sans-serif" }}>{label}</span>
+ {/* Tooltip on hover */}
+ <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-50">
+ {label}
+ </span>
  {activeTab === key && (
  <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-gradient-to-r from-[#2d4891] to-[#16a34a] rounded-full"></div>
  )}
