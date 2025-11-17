@@ -34,9 +34,14 @@ export const GET = async (request: NextRequest) => {
  ]
  });
  
- // Count enquiries added by this agent
- const enquiriesAdded = await Enquiry.countDocuments({
- addedBy: new mongoose.Types.ObjectId(agentId)
+ // Count enquiries (visitors) assigned to this agent
+ // Enquiries are stored in the Visitor collection, not a separate Enquiry collection
+ const enquiriesAdded = await Visitor.countDocuments({
+ $or: [
+ { assignedAgent: new mongoose.Types.ObjectId(agentId) },
+ { salesExecutive: new mongoose.Types.ObjectId(agentId) },
+ { customerExecutive: new mongoose.Types.ObjectId(agentId) }
+ ]
  });
  
  // Count converted leads (visitors with isConverted = true) assigned to this agent
