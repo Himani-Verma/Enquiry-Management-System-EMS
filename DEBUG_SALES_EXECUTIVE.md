@@ -39,10 +39,15 @@ The `customer-executive-enquiries-management` route has role-based filtering bui
 6. ✅ Test editing enquiry
 7. ✅ Test deleting enquiry
 
+## Files Fixed
+1. ✅ `cms/app/dashboard/sales-executive/enquiries/page.tsx` - Updated to use `/api/analytics/sales-executive-enquiries`
+2. ✅ `cms/app/dashboard/executive/enquiries/page.tsx` - Updated to use `/api/analytics/customer-executive-enquiries-management`
+3. ✅ `cms/app/api/analytics/sales-executive-enquiries/route.ts` - Created new dedicated route
+
 ## Deployment
-- Committed: `a061d04`
+- Latest commit: `dd36d3f`
 - Pushed to: `main` branch
-- Netlify will auto-deploy
+- Netlify will auto-deploy in ~2-5 minutes
 
 ## Why This Happened
 Netlify has specific requirements for Next.js 13 App Router API routes:
