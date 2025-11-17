@@ -260,18 +260,49 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  // Fetch sales executives for dropdown
  const fetchSalesExecutives = useCallback(async () => {
  try {
+ console.log('🔄 Executive - Fetching sales executives...');
+ console.log('🔑 Executive - Token:', token ? 'Present' : 'Missing');
+ console.log('🌐 Executive - API Base:', API_BASE);
+ 
+ if (!token) {
+ console.error('❌ Executive - No token available for fetching sales executives');
+ return;
+ }
+ 
  const response = await fetch(`${API_BASE}/api/auth/sales-executives`, { 
  headers: { Authorization: `Bearer ${token}` } 
  });
  
+ console.log('📡 Executive - Sales executives response status:', response.status);
+ 
  if (response.ok) {
  const data = await response.json();
- setSalesExecutives(data.salesExecutives || []);
+ console.log('✅ Executive - Sales executives API response:', data);
+ 
+ if (data.success && data.salesExecutives) {
+ const salesExecs = data.salesExecutives;
+ console.log('🎯 Executive - Found sales executives:', salesExecs.length);
+ salesExecs.forEach((se: any) => {
+ console.log(`- ${se.name || se.username} (${se.role})`);
+ });
+ 
+ setSalesExecutives(salesExecs);
+ console.log('✅ Executive - Sales executives set successfully:', salesExecs.length);
  } else {
- console.error('Error fetching sales executives:', response.status);
+ console.error('❌ Executive - No sales executives found in API response');
+ setSalesExecutives([]);
+ }
+ } else {
+ const errorData = await response.json().catch(() => ({}));
+ console.error('❌ Executive - Failed to fetch sales executives:', {
+ status: response.status,
+ error: errorData
+ });
+ setSalesExecutives([]);
  }
  } catch (error) {
- console.error('Error fetching sales executives:', error);
+ console.error('❌ Executive - Error fetching sales executives:', error);
+ setSalesExecutives([]);
  }
  }, [API_BASE, token]);
 
