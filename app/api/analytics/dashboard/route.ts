@@ -180,10 +180,40 @@ async function getDashboardData(request: NextRequest, user: any) {
  }
 }
 
-// Temporarily disable authentication for testing
+// Get user from request headers
 export const GET = async (request: NextRequest) => {
  try {
- return await getDashboardData(request, { userId: 'temp', username: 'admin', name: 'Admin', role: 'admin' });
+ console.log('📥 GET request received for dashboard');
+ 
+ // Get user info from request headers (sent by frontend)
+ const userHeader = request.headers.get('X-User-Info');
+ console.log('📋 X-User-Info header:', userHeader);
+ 
+ let user: any = null;
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ const parsedUser = JSON.parse(userHeader);
+ if (parsedUser && parsedUser.role) {
+ user = parsedUser;
+ console.log('🔐 User from header:', JSON.stringify(user, null, 2));
+ }
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
+ // If no valid user, return error
+ if (!user || !user.role) {
+ console.error('❌ No valid user found in request');
+ return NextResponse.json({
+ success: false,
+ message: 'Authentication required'
+ }, { status: 401 });
+ }
+ 
+ console.log('✅ Using user:', JSON.stringify(user, null, 2));
+ return await getDashboardData(request, user);
  } catch (error) {
  console.error('Dashboard API error:', error);
  return NextResponse.json({

@@ -79,7 +79,7 @@ export default function ExecutiveChatHistoryPage() {
  setError('Authentication failed. Please login again.');
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 

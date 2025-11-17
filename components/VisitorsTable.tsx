@@ -38,10 +38,16 @@ export default function VisitorsTable() {
  const loadVisitors = async () => {
  try {
  setLoading(true);
+ const token = localStorage.getItem('ems_token');
+ const userStr = localStorage.getItem('ems_user');
+ const user = userStr ? JSON.parse(userStr) : null;
+ 
  const response = await fetch(`${API_BASE}/api/analytics/visitors-management`, {
  method: 'GET',
  headers: {
  'Content-Type': 'application/json',
+ 'Authorization': `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
  },
  });
 

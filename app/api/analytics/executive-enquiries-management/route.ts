@@ -1,16 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-export const dynamic = 'force-dynamic';
 import { connectMongo } from '@/lib/mongo';
 import Visitor from '@/lib/models/Visitor';
-import Enquiry from '@/lib/models/Enquiry';
-import { createAuthenticatedHandler, requireAdminOrExecutive } from '@/lib/middleware/auth';
-import MemoryStorage from '@/lib/memoryStorage';
-import { corsHeaders } from '@/lib/cors';
+import { createAuthenticatedHandler, requireAdminOrExecutive, getUserContext } from '@/lib/middleware/auth';
 
-async function getExecutiveEnquiriesManagement(request: NextRequest, user: any) {
+async function getEnquiriesManagementData(request: NextRequest, user: any) {
  try {
- console.log('🔄 GET /api/analytics/executive-enquiries-management - Fetching executive enquiries');
+ console.log('🔄 GET /api/analytics/enquiries-management - Fetching enquiries management data');
  
  await connectMongo();
  console.log('✅ Connected to MongoDB');
@@ -20,28 +15,28 @@ async function getExecutiveEnquiriesManagement(request: NextRequest, user: any) 
  const limit = parseInt(searchParams.get('limit') || '50');
  const search = searchParams.get('search') || '';
  const status = searchParams.get('status') || '';
- const executiveId = searchParams.get('executiveId') || '';
+ const source = searchParams.get('source') || '';
 
  const pageNum = Math.max(page, 1);
  const limitNum = Math.min(Math.max(limit, 1), 200);
 
- // Build filter for executive enquiries
+ // Get user context for role-based filtering
+ const userContext = getUserContext(user);
+ console.log('🔐 User context:', JSON.stringify(userContext, null, 2));
+ 
+ // Build filter with role-based access
  let filter: any = {};
  
- // Filter by executive if provided
- if (executiveId) {
- filter.$or = [
- { customerExecutive: executiveId },
- { salesExecutive: executiveId },
- { assignedAgent: executiveId }
- ];
+ // Apply role-based filtering - Sales executives see only their data
+ if (!userContext.canAccessAll && userContext.dataFilter) {
+ filter = userContext.dataFilter;
+ console.log('✅ Applied role-based filter:', JSON.stringify(filter, null, 2));
  }
  
  // Add search filters
  if (search) {
  const searchRegex = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
- const searchFilter = {
- $or: [
+ filter.$or = [
  { name: searchRegex },
  { email: searchRegex },
  { phone: searchRegex },
@@ -49,191 +44,113 @@ async function getExecutiveEnquiriesManagement(request: NextRequest, user: any) 
  { service: searchRegex },
  { enquiryDetails: searchRegex },
  { comments: searchRegex }
- ]
- };
- 
- if (Object.keys(filter).length > 0) {
- filter = { $and: [filter, searchFilter] };
- } else {
- filter = searchFilter;
- }
- }
- 
- // Add status filter
- if (status) {
- filter.status = status;
- }
-
- console.log('📊 Fetching executive enquiries with filter:', filter);
-
- // Fetch enquiries with pagination - join Visitor and Enquiry tables
- const [enquiries, totalCount] = await Promise.all([
- Enquiry.find(filter)
- .populate('visitorId', 'name email phone organization service source status createdAt')
- .sort({ createdAt: -1 })
- .skip((pageNum - 1) * limitNum)
- .limit(limitNum)
- .lean(),
- Enquiry.countDocuments(filter)
- ]);
-
- console.log(`📊 Found ${enquiries.length} executive enquiries (page ${pageNum}/${Math.ceil(totalCount / limitNum)})`);
-
- // Transform enquiries data for frontend
- const transformedEnquiries = enquiries.map((enquiry: any) => ({
- _id: enquiry._id.toString(),
- name: enquiry.visitorId?.name || enquiry.visitorName || '',
- email: enquiry.visitorId?.email || enquiry.email || '',
- phone: enquiry.visitorId?.phone || enquiry.phoneNumber || '',
- organization: enquiry.visitorId?.organization || '',
- service: enquiry.visitorId?.service || 'General Inquiry',
- enquiryType: enquiry.enquiryType || 'chatbot',
- enquiryDetails: enquiry.enquiryDetails || '',
- status: enquiry.status || 'new',
- priority: enquiry.priority || 'medium',
- createdAt: enquiry.createdAt,
- lastInteractionAt: enquiry.visitorId?.lastInteractionAt || enquiry.createdAt,
- isConverted: enquiry.visitorId?.isConverted || false,
- customerExecutive: enquiry.customerExecutive || null,
- salesExecutive: enquiry.salesExecutive || null,
- assignedAgent: enquiry.assignedAgent || null,
- comments: enquiry.comments || '',
- amount: enquiry.amount || 0,
- source: enquiry.visitorId?.source || 'chatbot'
- }));
-
- const response = NextResponse.json({
- success: true,
- enquiries: transformedEnquiries,
- pagination: {
- page: pageNum,
- limit: limitNum,
- total: totalCount,
- pages: Math.ceil(totalCount / limitNum)
- }
- });
- 
- // Add CORS headers
- Object.entries(corsHeaders).forEach(([key, value]) => {
- response.headers.set(key, value);
- });
- 
- return response;
-
- } catch (error) {
- console.error('❌ Executive enquiries management API error:', error);
- const response = NextResponse.json({
- success: false,
- message: 'Failed to load executive enquiries',
- error: error instanceof Error ? error.message : 'Unknown error'
- }, { status: 500 });
- 
- // Add CORS headers
- Object.entries(corsHeaders).forEach(([key, value]) => {
- response.headers.set(key, value);
- });
- 
- return response;
- }
-}
-
-// Real database implementation
-export const GET = async (request: NextRequest) => {
- try {
- console.log('🔄 GET /api/analytics/executive-enquiries-management - Fetching real data');
- 
- // Try to connect to MongoDB first
- try {
- await connectMongo();
- console.log('✅ Connected to MongoDB successfully');
- 
- const { searchParams } = new URL(request.url);
- const page = parseInt(searchParams.get('page') || '1');
- const limit = parseInt(searchParams.get('limit') || '50');
- const search = searchParams.get('search') || '';
- const status = searchParams.get('status') || '';
- const executiveId = searchParams.get('executiveId') || '';
-
- const pageNum = Math.max(page, 1);
- const limitNum = Math.min(Math.max(limit, 1), 200);
-
- // Build filter for enquiries
- let filter: any = {};
- 
- // Filter by executive if provided
- if (executiveId) {
- filter.$or = [
- { customerExecutive: executiveId },
- { salesExecutive: executiveId },
- { assignedAgent: executiveId }
  ];
  }
  
- // Add search filters
- if (search) {
- const searchRegex = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
- const searchFilter = {
- $or: [
- { visitorName: searchRegex },
- { email: searchRegex },
- { phoneNumber: searchRegex },
- { enquiryDetails: searchRegex },
- { comments: searchRegex }
- ]
- };
- 
- if (Object.keys(filter).length > 0) {
- filter = { $and: [filter, searchFilter] };
- } else {
- filter = searchFilter;
- }
- }
- 
- // Add status filter
+ // Add additional filters
  if (status) {
  filter.status = status;
+ }
+ if (source) {
+ filter.source = source;
  }
 
  console.log('📊 Fetching enquiries with filter:', filter);
 
- // Fetch enquiries from database
+ // Fetch enquiries with pagination
  const [enquiries, totalCount] = await Promise.all([
- Enquiry.find(filter)
- .populate('visitorId', 'name email phone organization service source status createdAt')
+ Visitor.find(filter)
  .sort({ createdAt: -1 })
  .skip((pageNum - 1) * limitNum)
  .limit(limitNum)
  .lean(),
- Enquiry.countDocuments(filter)
+ Visitor.countDocuments(filter)
  ]);
 
- console.log(`📊 Found ${enquiries.length} enquiries from database (page ${pageNum}/${Math.ceil(totalCount / limitNum)})`);
+ console.log(`📊 Found ${enquiries.length} enquiries (page ${pageNum}/${Math.ceil(totalCount / limitNum)})`);
 
  // Transform enquiries data for frontend
  const transformedEnquiries = enquiries.map((enquiry: any) => ({
  _id: enquiry._id.toString(),
- name: enquiry.visitorId?.name || enquiry.visitorName || '',
- email: enquiry.visitorId?.email || enquiry.email || '',
- phone: enquiry.visitorId?.phone || enquiry.phoneNumber || '',
- organization: enquiry.visitorId?.organization || '',
- service: enquiry.visitorId?.service || 'General Inquiry',
- enquiryType: enquiry.enquiryType || 'chatbot',
- enquiryDetails: enquiry.enquiryDetails || '',
- status: enquiry.status || 'new',
- priority: enquiry.priority || 'medium',
+ visitorName: enquiry.name || 'Unknown',
+ phoneNumber: enquiry.phone || '',
+ email: enquiry.email || '',
+ enquiryType: (['chatbot','email','calls','website'].includes(enquiry.source) ? enquiry.source : 'chatbot') as any,
+ enquiryDetails: enquiry.enquiryDetails || 'General enquiry',
  createdAt: enquiry.createdAt,
- lastInteractionAt: enquiry.visitorId?.lastInteractionAt || enquiry.createdAt,
- isConverted: enquiry.visitorId?.isConverted || false,
- customerExecutive: enquiry.customerExecutive || null,
- salesExecutive: enquiry.salesExecutive || null,
- assignedAgent: enquiry.assignedAgent || enquiry.agentName || null,
- agentName: enquiry.agentName || enquiry.assignedAgent || null,
+ status: enquiry.status || 'new',
+ assignedAgent: enquiry.agentName || enquiry.agent || 'Unassigned',
+ service: enquiry.service || 'General Inquiry',
+ subservice: enquiry.subservice || '',
+ organization: enquiry.organization || '',
+ region: enquiry.region || '',
+ salesExecutive: enquiry.salesExecutiveName || enquiry.salesExecutive || '',
  comments: enquiry.comments || '',
  amount: enquiry.amount || 0,
- source: enquiry.visitorId?.source || 'chatbot'
+ source: enquiry.source || 'chatbot',
+ isConverted: enquiry.isConverted || false,
+ lastInteractionAt: enquiry.lastInteractionAt
  }));
 
- const response = NextResponse.json({
+ // Get enquiry statistics
+ const enquiryStats = await Visitor.aggregate([
+ {
+ $group: {
+ _id: null,
+ total: { $sum: 1 },
+ byStatus: {
+ $push: {
+ status: '$status',
+ count: 1
+ }
+ },
+ bySource: {
+ $push: {
+ source: '$source',
+ count: 1
+ }
+ },
+ byService: {
+ $push: {
+ service: '$service',
+ count: 1
+ }
+ }
+ }
+ }
+ ]);
+
+ // Process statistics
+ const stats = {
+ total: totalCount,
+ byStatus: {} as any,
+ bySource: {} as any,
+ byService: {} as any
+ };
+
+ if (enquiryStats.length > 0) {
+ const stat = enquiryStats[0];
+ 
+ // Count by status
+ stat.byStatus.forEach((item: any) => {
+ const status = item.status || 'Unknown';
+ stats.byStatus[status] = (stats.byStatus[status] || 0) + 1;
+ });
+ 
+ // Count by source
+ stat.bySource.forEach((item: any) => {
+ const source = item.source || 'Unknown';
+ stats.bySource[source] = (stats.bySource[source] || 0) + 1;
+ });
+ 
+ // Count by service
+ stat.byService.forEach((item: any) => {
+ const service = item.service || 'Unknown';
+ stats.byService[service] = (stats.byService[service] || 0) + 1;
+ });
+ }
+
+ return NextResponse.json({
  success: true,
  enquiries: transformedEnquiries,
  pagination: {
@@ -242,87 +159,62 @@ export const GET = async (request: NextRequest) => {
  total: totalCount,
  pages: Math.ceil(totalCount / limitNum)
  },
- message: 'Data fetched from database successfully'
- });
- 
- // Add CORS headers
- Object.entries(corsHeaders).forEach(([key, value]) => {
- response.headers.set(key, value);
- });
- 
- return response;
-
- } catch (mongoError) {
- console.log('⚠️ MongoDB connection failed, trying memory storage fallback');
- 
- // Fallback to memory storage when MongoDB is not available
- const memoryStorage = MemoryStorage.getInstance();
- const { searchParams } = new URL(request.url);
- const page = parseInt(searchParams.get('page') || '1');
- const limit = parseInt(searchParams.get('limit') || '50');
- const search = searchParams.get('search') || '';
- 
- const filter: any = {};
- if (search) {
- filter.search = search;
+ stats,
+ userContext: {
+ role: userContext.userRole,
+ canAccessAll: userContext.canAccessAll
  }
- 
- const { enquiries, count } = memoryStorage.getEnquiries(filter, page, limit);
- 
- console.log('📊 Memory storage enquiries retrieved:', enquiries.length);
- 
- // Transform enquiries data for frontend
- const transformedEnquiries = enquiries.map((enquiry: any) => ({
- _id: enquiry._id.toString(),
- name: enquiry.visitorId?.name || enquiry.visitorName || '',
- email: enquiry.visitorId?.email || enquiry.email || '',
- phone: enquiry.visitorId?.phone || enquiry.phoneNumber || '',
- organization: enquiry.visitorId?.organization || '',
- service: enquiry.visitorId?.service || 'General Inquiry',
- enquiryType: enquiry.enquiryType || 'chatbot',
- enquiryDetails: enquiry.enquiryDetails || '',
- status: enquiry.status || 'new',
- priority: enquiry.priority || 'medium',
- createdAt: enquiry.createdAt,
- lastInteractionAt: enquiry.visitorId?.lastInteractionAt || enquiry.createdAt,
- isConverted: enquiry.visitorId?.isConverted || false,
- customerExecutive: enquiry.customerExecutive || null,
- salesExecutive: enquiry.salesExecutive || null,
- assignedAgent: enquiry.assignedAgent || enquiry.agentName || null,
- agentName: enquiry.agentName || enquiry.assignedAgent || null,
- comments: enquiry.comments || '',
- amount: enquiry.amount || 0,
- source: enquiry.visitorId?.source || 'chatbot'
- }));
- 
- const response = NextResponse.json({
- success: true,
- enquiries: transformedEnquiries,
- count: count,
- message: 'Data from memory storage - MongoDB unavailable'
  });
- 
- // Add CORS headers
- Object.entries(corsHeaders).forEach(([key, value]) => {
- response.headers.set(key, value);
- });
- 
- return response;
- }
 
  } catch (error) {
- console.error('❌ Executive enquiries management API error:', error);
- const response = NextResponse.json({
+ console.error('❌ Enquiries management API error:', error);
+ return NextResponse.json({
  success: false,
- message: 'Failed to load executive enquiries',
+ message: 'Failed to load enquiries management data',
  error: error instanceof Error ? error.message : 'Unknown error'
  }, { status: 500 });
+ }
+}
+
+// Get user from request headers
+export const GET = async (request: NextRequest) => {
+ try {
+ console.log('📥 GET request received for enquiries-management');
  
- // Add CORS headers
- Object.entries(corsHeaders).forEach(([key, value]) => {
- response.headers.set(key, value);
- });
+ // Get user info from request headers (sent by frontend)
+ const userHeader = request.headers.get('X-User-Info');
+ console.log('📋 X-User-Info header:', userHeader);
  
- return response;
+ let user: any = null;
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ const parsedUser = JSON.parse(userHeader);
+ if (parsedUser && parsedUser.role) {
+ user = parsedUser;
+ console.log('🔐 User from header:', JSON.stringify(user, null, 2));
+ }
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
+ // If no valid user, return error
+ if (!user || !user.role) {
+ console.error('❌ No valid user found in request');
+ return NextResponse.json({
+ success: false,
+ message: 'Authentication required'
+ }, { status: 401 });
+ }
+ 
+ console.log('✅ Using user:', JSON.stringify(user, null, 2));
+ return await getEnquiriesManagementData(request, user);
+ } catch (error) {
+ console.error('Enquiries management API error:', error);
+ return NextResponse.json({
+ success: false,
+ message: 'Failed to load enquiries management data'
+ }, { status: 500 });
  }
 };

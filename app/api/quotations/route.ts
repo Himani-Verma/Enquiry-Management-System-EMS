@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectMongo } from '@/lib/mongo';
 import Quotation from '@/lib/models/Quotation';
 import { corsHeaders } from '@/lib/cors';
+import { getUserContext } from '@/lib/middleware/auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,25 +21,57 @@ export async function GET(request: NextRequest) {
  
  await connectMongo();
  
- // Build filter
+ // Get user info from request headers for role-based filtering
+ const userHeader = request.headers.get('X-User-Info');
+ let user: any = null;
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ user = JSON.parse(userHeader);
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
+ // Build filter with role-based access
  const filter: any = {};
+ 
+ // Apply role-based filtering for sales executives
+ if (user && user.role === 'sales-executive') {
+ // Sales executives see only quotations they created
+ filter.createdBy = user.id || user.userId;
+ console.log('✅ Applied sales executive filter - createdBy:', filter.createdBy);
+ }
  
  // Search by quotation number or customer name
  if (search) {
- filter.$or = [
+ const searchFilter = {
+ $or: [
  { quotationNo: { $regex: search, $options: 'i' } },
  { customerName: { $regex: search, $options: 'i' } },
  { contactPerson: { $regex: search, $options: 'i' } }
- ];
+ ]
+ };
+ 
+ if (Object.keys(filter).length > 0) {
+ filter.$and = [{ createdBy: filter.createdBy }, searchFilter];
+ delete filter.createdBy;
+ } else {
+ Object.assign(filter, searchFilter);
+ }
  }
  
  // Filter by status
  if (status) {
+ if (filter.$and) {
+ filter.$and.push({ status });
+ } else if (Object.keys(filter).length > 0 && !filter.$or) {
+ filter.$and = [{ createdBy: filter.createdBy }, { status }];
+ delete filter.createdBy;
+ } else {
  filter.status = status;
  }
- 
- // No role-based filtering - everyone sees all quotations
- // Removed filtering so all users can see all quotations
+ }
  
  // Count total documents
  const total = await Quotation.countDocuments(filter);

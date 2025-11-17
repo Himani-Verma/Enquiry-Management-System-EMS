@@ -59,16 +59,23 @@ export default function ExecutiveDashboard() {
  setLoading(true);
  setError(null);
 
+ // Fetch data with user context in headers
+ const headers = {
+ 'Authorization': `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
+
  const [summaryData, dailyDataResult, recentData, activeData] = await Promise.all([
- getSummary(),
- getDaily(),
- getRecent(5),
- getActive(5)
+ fetch('/api/analytics/summary', { headers }).then(r => r.json()),
+ fetch('/api/analytics/daily-visitors?range=7d', { headers }).then(r => r.json()),
+ fetch('/api/analytics/recent-conversations?limit=5', { headers }).then(r => r.json()),
+ fetch('/api/analytics/active-conversations?limit=5', { headers }).then(r => r.json())
  ]);
 
- console.log('📊 AdminDashboard - Daily data received:', dailyDataResult);
- console.log('📊 AdminDashboard - Daily data length:', dailyDataResult?.length);
- console.log('📊 AdminDashboard - Summary data:', summaryData);
+ console.log('📊 SalesExecutiveDashboard - Daily data received:', dailyDataResult);
+ console.log('📊 SalesExecutiveDashboard - Daily data length:', dailyDataResult?.length);
+ console.log('📊 SalesExecutiveDashboard - Summary data:', summaryData);
+ console.log('👤 SalesExecutiveDashboard - User:', user);
 
  setSummary(summaryData);
  setDailyData(dailyDataResult);
@@ -81,7 +88,7 @@ export default function ExecutiveDashboard() {
  } finally {
  setLoading(false);
  }
- }, [token]);
+ }, [token, user]);
 
  // Real-time event handler
  const handleRealtimeEvent = useCallback((event: string, data?: any) => {

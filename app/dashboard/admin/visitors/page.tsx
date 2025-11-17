@@ -367,7 +367,8 @@ export default function AdminVisitorsPage() {
  try {
  const headers = { 
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json' 
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  };
  
  // Build query parameters
@@ -418,7 +419,7 @@ export default function AdminVisitorsPage() {
  } finally {
  setLoading(false);
  }
- }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status]);
+ }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user, token]);
 
  useEffect(() => {
  // Get user info from localStorage
@@ -430,10 +431,15 @@ export default function AdminVisitorsPage() {
  console.error('Error parsing user data:', e);
  }
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load visitors after user is set
+ if (user) {
  loadVisitors();
  fetchAgents();
- }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, loadVisitors, fetchAgents]);
+ }
+ }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user, loadVisitors, fetchAgents]);
 
  // Auto-refresh every 30 seconds to sync with real-time changes
  useEffect(() => {

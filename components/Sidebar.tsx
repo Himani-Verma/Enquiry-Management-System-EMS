@@ -91,8 +91,20 @@ export default function Sidebar({ userRole, userName }: SidebarProps) {
  { href: '/dashboard/customer-executive/profile', label: 'Profile', icon: <User className="w-5 h-5" /> },
  ];
 
+ const salesExecutiveLinks = [
+ { href: '/dashboard/sales-executive/overview', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
+ { href: '/dashboard/executive/visitors', label: 'Visitors', icon: <User className="w-5 h-5" /> },
+ { href: '/dashboard/sales-executive/enquiries', label: 'Enquiries', icon: <ClipboardList className="w-5 h-5" /> },
+ { href: '/dashboard/sales-executive/quotations', label: 'Quotations', icon: <FileText className="w-5 h-5" /> },
+ { href: '/dashboard/executive/chats', label: 'Chat History', icon: <MessageSquare className="w-5 h-5" /> },
+ { href: '/dashboard/executive/analytics', label: 'Analytics', icon: <BarChart3 className="w-5 h-5" /> },
+ { href: '/dashboard/sales-executive/profile', label: 'Profile', icon: <User className="w-5 h-5" /> },
+ ];
+
  const links = userRole === 'admin' 
  ? adminLinks 
+ : userRole === 'sales-executive'
+ ? salesExecutiveLinks
  : userRole === 'customer-executive' 
  ? customerExecutiveLinks 
  : executiveLinks;

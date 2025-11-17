@@ -110,7 +110,10 @@ export default function AdminEnquiriesPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  
  // Build query parameters
  const params = new URLSearchParams({
@@ -128,7 +131,7 @@ export default function AdminEnquiriesPage() {
  setError('Authentication failed. Please login again.');
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 
@@ -198,34 +201,40 @@ export default function AdminEnquiriesPage() {
  console.error('No authentication token or user data found');
  setError('Please login to access this page.');
  setTimeout(() => {
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  }, 2000);
  return;
  }
 
  // Get user info from localStorage
  try {
- setUser(JSON.parse(userStr));
+ const parsedUser = JSON.parse(userStr);
+ setUser(parsedUser);
  } catch (e) {
  console.error('Error parsing user data:', e);
  setError('Invalid user data. Please login again.');
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
  setTimeout(() => {
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  }, 2000);
  return;
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load enquiries after user is set
+ if (user && token) {
  loadEnquiries();
- }, [API_BASE, token, pagination.page, pagination.limit, filters.status, filters.enquiryType]);
+ }
+ }, [API_BASE, token, pagination.page, pagination.limit, filters.status, filters.enquiryType, user]);
 
  const addEnquiry = async (formData: EnquiryFormData) => {
  if (!token) {
  console.error('No authentication token found');
  setError('No authentication token found. Please login again.');
  // Redirect to login page
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 
@@ -278,7 +287,7 @@ export default function AdminEnquiriesPage() {
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
  setTimeout(() => {
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  }, 2000);
  } else {
  let errorMessage = 'Unknown error';
@@ -516,7 +525,7 @@ export default function AdminEnquiriesPage() {
  console.error('No authentication token found');
  alert('No authentication token found. Please login again.');
  setError('No authentication token found. Please login again.');
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 
@@ -581,7 +590,7 @@ export default function AdminEnquiriesPage() {
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
  setTimeout(() => {
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  }, 2000);
  } else {
  const errorData = await response.json().catch(() => ({}));

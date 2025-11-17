@@ -157,10 +157,14 @@ export default function ExecutiveAnalyticsPage() {
  console.error('Error parsing user data:', e);
  }
  }
+ }, []);
 
+ useEffect(() => {
  const loadAnalyticsData = async () => {
+ if (!token || !user) {
  if (!token) {
  setError('No authentication token found. Please login again.');
+ }
  setLoading(false);
  return;
  }
@@ -168,7 +172,10 @@ export default function ExecutiveAnalyticsPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
 
  // Only fetch from working endpoints
  const [
@@ -195,7 +202,7 @@ export default function ExecutiveAnalyticsPage() {
  setError('Authentication failed. Please login again.');
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 
@@ -603,8 +610,10 @@ export default function ExecutiveAnalyticsPage() {
  }
  };
 
+ if (user && token) {
  loadAnalyticsData();
- }, [API_BASE, token, timeRange]);
+ }
+ }, [API_BASE, token, timeRange, user]);
 
  // Chart options
  const chartOptions = {

@@ -7,18 +7,39 @@ import mongoose from 'mongoose';
 
 export const dynamic = 'force-dynamic';
 
-// Temporarily disable authentication for testing
+// Get user from request headers
 export const GET = async (request: NextRequest) => {
  try {
  console.log('🔄 GET /api/analytics/agent-performance - Fetching REAL agent performance data from DB');
  
+ // Get user info from request headers
+ const userHeader = request.headers.get('X-User-Info');
+ let currentUser: any = null;
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ currentUser = JSON.parse(userHeader);
+ console.log('🔐 Current user:', JSON.stringify(currentUser, null, 2));
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
  await connectMongo();
  console.log('✅ Connected to MongoDB');
 
- // Fetch all executives/agents - include all agent roles
- const agents = await User.find({ 
+ // Fetch agents based on user role
+ let agentFilter: any = { 
  role: { $in: ['executive', 'sales-executive', 'customer-executive'] }
- }).select('-password').lean();
+ };
+ 
+ // Sales executives see only their own performance
+ if (currentUser && currentUser.role === 'sales-executive') {
+ agentFilter._id = new mongoose.Types.ObjectId(currentUser.id || currentUser.userId);
+ console.log('✅ Sales executive filter - showing only own performance');
+ }
+ 
+ const agents = await User.find(agentFilter).select('-password').lean();
  console.log(`👥 Found ${agents.length} agents`);
 
  // Calculate REAL performance metrics for each agent from database

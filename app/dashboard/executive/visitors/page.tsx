@@ -89,9 +89,6 @@ export default function ExecutiveVisitorsPage() {
  const [loading, setLoading] = useState(true);
  const [error, setError] = useState<string | null>(null);
  const [user, setUser] = useState<{ id: string; name: string; role: string } | null>(null);
-const [salesExecutives, setSalesExecutives] = useState<Array<{ _id?: string; id?: string; name: string; username: string; email: string; role?: string }>>([]);
- const [showSalesExecutiveDropdown, setShowSalesExecutiveDropdown] = useState(false);
- const [salesExecutiveSearchTerm, setSalesExecutiveSearchTerm] = useState('');
  const [searchTerm, setSearchTerm] = useState('');
  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
  const [selectedVisitor, setSelectedVisitor] = useState<Visitor | null>(null);
@@ -108,7 +105,8 @@ const [salesExecutives, setSalesExecutives] = useState<Array<{ _id?: string; id?
  const [showTimeFilter, setShowTimeFilter] = useState(false);
  const [showMonthPicker, setShowMonthPicker] = useState(false);
  const [assignedServices, setAssignedServices] = useState<string[]>([]);
-const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: string; username: string; email: string; role?: string }>>([]);
+ const [agents, setAgents] = useState<{ _id: string; name: string; username: string; email: string; role: string }[]>([]);
+ const [salesExecutives, setSalesExecutives] = useState<any[]>([]);
  const [assigningAgent, setAssigningAgent] = useState<string | null>(null);
  const [assigningSalesExecutive, setAssigningSalesExecutive] = useState<string | null>(null);
  
@@ -182,10 +180,10 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
 
  // Debug logging for agents and sales executives
  useEffect(() => {
- console.log('🔍 Executive - Current agents state:', agents.length, agents);
- console.log('🔍 Executive - Current sales executives state:', salesExecutives.length, salesExecutives);
- console.log('🔍 Executive - Token available:', !!token);
- console.log('🔍 Executive - API Base:', API_BASE);
+ console.log('🔍 Customer Executive - Current agents state:', agents.length, agents);
+ console.log('🔍 Customer Executive - Current sales executives state:', salesExecutives.length, salesExecutives);
+ console.log('🔍 Customer Executive - Token available:', !!token);
+ console.log('🔍 Customer Executive - API Base:', API_BASE);
  }, [agents, salesExecutives, token, API_BASE]);
 
  // Real data will be fetched from the API
@@ -210,12 +208,12 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  // Fetch agents (executives) for display
  const fetchAgents = useCallback(async () => {
  try {
- console.log('🔄 Executive - Fetching agents...');
- console.log('🔑 Executive - Token:', token ? 'Present' : 'Missing');
- console.log('🌐 Executive - API Base:', API_BASE);
+ console.log('🔄 Customer Executive - Fetching agents...');
+ console.log('🔑 Customer Executive - Token:', token ? 'Present' : 'Missing');
+ console.log('🌐 Customer Executive - API Base:', API_BASE);
  
  if (!token) {
- console.error('❌ Executive - No token available for fetching agents');
+ console.error('❌ Customer Executive - No token available for fetching agents');
  return;
  }
  
@@ -226,85 +224,95 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  if (agentsResponse.ok) {
  const agentsData = await agentsResponse.json();
  
- console.log('✅ Executive - Agents API response:', agentsData);
+ console.log('✅ Customer Executive - Agents API response:', agentsData);
  
  if (agentsData.success && agentsData.agents) {
  const agents = agentsData.agents;
  
- console.log('🎯 Executive - Found agents:', agents.length);
+ console.log('🎯 Customer Executive - Found agents:', agents.length);
  agents.forEach((agent: any) => {
  console.log(`- ${agent.name || agent.username} (${agent.role})`);
  });
  
  setAgents(agents);
- console.log('✅ Executive - Agents set successfully:', agents.length);
- console.log('✅ Executive - Agents data:', agents);
+ console.log('✅ Customer Executive - Agents set successfully:', agents.length);
+ console.log('✅ Customer Executive - Agents data:', agents);
  } else {
- console.error('❌ Executive - No agents found in API response');
+ console.error('❌ Customer Executive - No agents found in API response');
  setAgents([]);
  }
  } else {
  const errorData = await agentsResponse.json().catch(() => ({}));
- console.error('❌ Executive - Failed to fetch agents:', {
+ console.error('❌ Customer Executive - Failed to fetch agents:', {
  status: agentsResponse.status,
  error: errorData
  });
  setAgents([]);
  }
  } catch (error) {
- console.error('❌ Executive - Error fetching agents:', error);
+ console.error('❌ Customer Executive - Error fetching agents:', error);
  setAgents([]);
  }
  }, [API_BASE, token]);
 
- // Fetch sales executives for dropdown
+ // Fetch sales executives
  const fetchSalesExecutives = useCallback(async () => {
  try {
- console.log('🔄 Executive - Fetching sales executives...');
- console.log('🔑 Executive - Token:', token ? 'Present' : 'Missing');
- console.log('🌐 Executive - API Base:', API_BASE);
- 
- if (!token) {
- console.error('❌ Executive - No token available for fetching sales executives');
- return;
- }
- 
- const response = await fetch(`${API_BASE}/api/auth/sales-executives`, { 
- headers: { Authorization: `Bearer ${token}` } 
+ const response = await fetch(`${API_BASE}/api/auth/sales-executives`, {
+ headers: { Authorization: `Bearer ${token}` }
  });
- 
- console.log('📡 Executive - Sales executives response status:', response.status);
  
  if (response.ok) {
  const data = await response.json();
- console.log('✅ Executive - Sales executives API response:', data);
- 
  if (data.success && data.salesExecutives) {
- const salesExecs = data.salesExecutives;
- console.log('🎯 Executive - Found sales executives:', salesExecs.length);
- salesExecs.forEach((se: any) => {
- console.log(`- ${se.name || se.username} (${se.role})`);
- });
- 
- setSalesExecutives(salesExecs);
- console.log('✅ Executive - Sales executives set successfully:', salesExecs.length);
+ setSalesExecutives(data.salesExecutives);
+ console.log('Sales executives fetched successfully:', data.salesExecutives.length);
  } else {
- console.error('❌ Executive - No sales executives found in API response');
  setSalesExecutives([]);
  }
  } else {
- const errorData = await response.json().catch(() => ({}));
- console.error('❌ Executive - Failed to fetch sales executives:', {
- status: response.status,
- error: errorData
- });
  setSalesExecutives([]);
  }
  } catch (error) {
- console.error('❌ Executive - Error fetching sales executives:', error);
+ console.error('Error fetching sales executives:', error);
  setSalesExecutives([]);
  }
  }, [API_BASE, token]);
+
+ // Assign sales executive to visitor
+ const assignSalesExecutiveToVisitor = async (visitorId: string, salesExecutiveId: string, salesExecutiveName: string) => {
+ if (!token) return;
+
+ try {
+ const response = await fetch(`${API_BASE}/api/analytics/assign-sales-executive`, {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ 'Authorization': `Bearer ${token}`
+ },
+ body: JSON.stringify({
+ visitorId,
+ salesExecutiveId,
+ salesExecutiveName
+ })
+ });
+
+ if (response.ok) {
+ const updatedVisitor = await response.json();
+ setVisitors(prev => prev.map(v => 
+ v._id === visitorId ? { ...v, ...updatedVisitor } : v
+ ));
+ setAssigningSalesExecutive(null);
+ console.log('Sales executive assigned successfully');
+ } else {
+ const errorData = await response.json().catch(() => ({}));
+ setError(`Failed to assign sales executive: ${errorData.message || 'Unknown error'}`);
+ }
+ } catch (error) {
+ console.error('Error assigning sales executive:', error);
+ setError('Error assigning sales executive. Please try again.');
+ }
+ };
 
  // Debounce search term
  useEffect(() => {
@@ -323,6 +331,12 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  return;
  }
  
+ if (!user) {
+ console.log('⏳ User not loaded yet, skipping API call');
+ setLoading(false);
+ return;
+ }
+ 
  if (isRefresh) {
  setIsRefreshing(true);
  } else {
@@ -331,7 +345,10 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  
  // Build query parameters
  const params = new URLSearchParams({
@@ -344,27 +361,20 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  const response = await fetch(`${API_BASE}/api/analytics/visitors-management?${params}`, { headers });
 
  if (response.status === 401) {
- console.error('❌ 401 Authentication failed. Response:', response);
  setError('Authentication failed. Please login again.');
  localStorage.removeItem('ems_token');
  localStorage.removeItem('ems_user');
- window.location.href = '/auth/login';
+ window.location.href = '/login';
  return;
  }
 
  if (!response.ok) {
- console.error('❌ API Error:', response.status, response.statusText);
- const errorText = await response.text();
- console.error('❌ Error response:', errorText);
- setError(`API Error: ${response.status} - ${response.statusText}`);
- return;
+ throw new Error(`API request failed: ${response.status}`);
  }
 
  const responseData = await response.json();
  console.log('📊 Executive visitors data received:', responseData.visitors);
  console.log('📊 Total visitors:', responseData.pagination?.total);
- console.log('📊 Full response data:', responseData);
- console.log('👤 Current user:', user);
  
  setVisitors(responseData.visitors || []);
  setPagination(responseData.pagination || {
@@ -388,44 +398,29 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  setLoading(false);
  }
  }
- }, [API_BASE, token, pagination.page, pagination.limit, debouncedSearchTerm, filters.status]);
+ }, [API_BASE, token, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user]);
 
  useEffect(() => {
- // Check authentication first
- const token = localStorage.getItem('ems_token');
- if (!token) {
- window.location.href = '/auth/login';
- return;
- }
-
  // Get user info from localStorage
  const userStr = localStorage.getItem('ems_user');
  if (userStr) {
  try {
- const userData = JSON.parse(userStr);
- console.log('👤 User data loaded:', userData);
- setUser(userData);
+ setUser(JSON.parse(userStr));
  } catch (e) {
  console.error('Error parsing user data:', e);
- // Clear invalid data and redirect to login
- localStorage.removeItem('ems_token');
- localStorage.removeItem('ems_user');
- window.location.href = '/auth/login';
- return;
  }
- } else {
- // No user data, redirect to login
- console.log('❌ No user data found in localStorage');
- localStorage.removeItem('ems_token');
- window.location.href = '/auth/login';
- return;
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load visitors after user is set
+ if (user) {
  loadVisitors();
  fetchAssignedServices();
  fetchAgents();
  fetchSalesExecutives();
- }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, loadVisitors, fetchAgents, fetchAssignedServices, fetchSalesExecutives]);
+ }
+ }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user, loadVisitors, fetchAgents, fetchAssignedServices, fetchSalesExecutives]);
 
  // Auto-refresh every 30 seconds to sync with admin changes
  useEffect(() => {
@@ -459,10 +454,6 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  setShowTimeFilter(false);
  }
  
- if (showSalesExecutiveDropdown && !target.closest('.sales-executive-dropdown')) {
- setShowSalesExecutiveDropdown(false);
- }
- 
  if (showMonthPicker && !target.closest('.month-picker')) {
  setShowMonthPicker(false);
  }
@@ -477,41 +468,23 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  const updateVisitorStatus = async (visitorId: string, status: string, notes?: string) => {
  if (!token) return;
 
- console.log('🔄 updateVisitorStatus called with:', { visitorId, status, notes });
-
  try {
  const headers = { 
  'Authorization': `Bearer ${token}`,
  'Content-Type': 'application/json'
  };
- 
- const requestBody = { visitorId, status, notes };
- console.log('📤 Sending request to backend:', requestBody);
- 
  const response = await fetch(`${API_BASE}/api/analytics/update-visitor-status`, {
  method: 'PUT',
  headers,
- body: JSON.stringify(requestBody)
+ body: JSON.stringify({ visitorId, status, notes })
  });
 
  if (response.ok) {
- console.log('✅ Status updated successfully:', { visitorId, status, notes });
+ console.log('Status updated successfully:', { visitorId, status });
  
  // Get the updated visitor data from the response
  const updatedVisitor = await response.json();
- console.log('📥 Updated visitor data from backend:', updatedVisitor);
- console.log('📝 Pipeline history from backend:', updatedVisitor.pipelineHistory);
- 
- // Debug: Check if notes are in the pipeline history
- if (updatedVisitor.pipelineHistory && updatedVisitor.pipelineHistory.length > 0) {
- const latestEntry = updatedVisitor.pipelineHistory[updatedVisitor.pipelineHistory.length - 1];
- console.log('🔍 Latest pipeline entry:', {
- status: latestEntry.status,
- notes: latestEntry.notes,
- hasNotes: !!latestEntry.notes,
- notesLength: latestEntry.notes?.length
- });
- }
+ console.log('Updated visitor data:', updatedVisitor);
  
  // Update local state with the complete updated visitor data
  setVisitors(prev => prev.map(v => 
@@ -522,8 +495,7 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  if (selectedVisitor?._id === visitorId) {
  setSelectedVisitor(prev => {
  const updated = prev ? { ...prev, ...updatedVisitor } : null;
- console.log('🔄 Updated selectedVisitor:', updated);
- console.log('📝 SelectedVisitor pipeline history:', updated?.pipelineHistory);
+ console.log('Updated selectedVisitor:', updated);
  return updated;
  });
  }
@@ -596,41 +568,6 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  setError(`Failed to assign agent: ${error instanceof Error ? error.message : 'Unknown error'}`);
  } finally {
  setAssigningAgent(null);
- }
- };
-
- // Assign sales executive to visitor
- const assignSalesExecutiveToVisitor = async (visitorId: string, salesExecutiveId: string, salesExecutiveName: string) => {
- if (!token) return;
-
- try {
- const response = await fetch(`${API_BASE}/api/analytics/assign-sales-executive`, {
- method: 'POST',
- headers: {
- 'Content-Type': 'application/json',
- 'Authorization': `Bearer ${token}`
- },
- body: JSON.stringify({
- visitorId,
- salesExecutiveId,
- salesExecutiveName
- })
- });
-
- if (response.ok) {
- const updatedVisitor = await response.json();
- setVisitors(prev => prev.map(v => 
- v._id === visitorId ? { ...v, ...updatedVisitor } : v
- ));
- setAssigningSalesExecutive(null);
- console.log('Sales executive assigned successfully');
- } else {
- const errorData = await response.json().catch(() => ({}));
- setError(`Failed to assign sales executive: ${errorData.message || 'Unknown error'}`);
- }
- } catch (error) {
- console.error('Error assigning sales executive:', error);
- setError('Error assigning sales executive. Please try again.');
  }
  };
 
@@ -871,7 +808,7 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  // Handle create quotation from visitor
  const handleCreateQuotation = (visitor: Visitor) => {
  // Navigate to quotations page with visitor ID parameter
- const userRole = user?.role || 'executive';
+ const userRole = user?.role || 'customer-executive';
  console.log('🚀 Creating quotation for visitor:', visitor._id);
  router.push(`/dashboard/${userRole}/quotations?action=create&visitorId=${visitor._id}`);
  };
@@ -1056,7 +993,7 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <div className="flex h-screen bg-gray-100">
  <Sidebar userRole="executive" userName={user?.name} />
  
- <div className="flex-1 flex flex-col overflow-hidden">
+ <div className="flex-1 flex flex-col overflow-hidden md:ml-0 ml-0">
  <DashboardHeader userRole="executive" userName={user?.name} />
  
  <div className="flex-1 p-3 sm:p-4 md:p-6 overflow-y-auto bg-gradient-to-br from-gray-50 to-gray-100">
@@ -1626,52 +1563,49 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  </thead>
  <tbody className="bg-white divide-y divide-gray-200">
  {filteredVisitors.map((visitor, index) => (
- <tr key={`visitor-${visitor._id || index}-${index}`} className="hover:bg-gray-50">
+ <tr key={visitor._id} className="hover:bg-gray-50">
  {/* Sr.no. */}
  {visibleColumns['Sr.no.'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
  {index + 1}
  </td>
  )}
  
  {/* Name of Client */}
  {visibleColumns['Name of Client'] && (
- <td className="px-2 py-2 whitespace-nowrap">
+ <td className="px-3 py-4 whitespace-nowrap">
  <div className="flex items-center">
- <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2">
- <span className="text-blue-600 font-medium text-xs">
+ <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+ <span className="text-blue-600 font-medium text-sm">
  {visitor.name ? visitor.name.charAt(0).toUpperCase() : visitor.email.charAt(0).toUpperCase()}
  </span>
  </div>
- <div className="text-xs font-medium text-gray-900">{visitor.name || 'Anonymous'}</div>
+ <div className="text-sm font-medium text-gray-900">{visitor.name || 'Anonymous'}</div>
  </div>
  </td>
  )}
  
  {/* Agent */}
  {visibleColumns['Agent'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
  <div className="relative">
- {visitor.agentName && !visitor.assignedAgent ? (
- // Show agent name as text if assigned but no ObjectId
- <div className="px-1 py-1 text-xs text-gray-900 font-medium">
- {visitor.agentName}
- </div>
- ) : (
  <select
- className="w-full px-1 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+ className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:scale-105"
  value={visitor.assignedAgent || ''}
  onChange={(e) => {
- const selectedAgent = agents.find(agent => (agent._id || agent.id) === e.target.value);
+ const selectedAgent = agents.find(agent => agent._id === e.target.value);
  if (selectedAgent) {
- const agentId = selectedAgent._id || selectedAgent.id;
+ const agentId = selectedAgent._id;
  const agentName = selectedAgent.name || selectedAgent.username;
+ 
  if (!agentId || !agentName) {
  setError('Invalid agent data selected');
  return;
  }
+ 
  assignAgentToVisitor(visitor._id, agentId, agentName);
  } else if (e.target.value === '') {
+ // Handle unassigning
  assignAgentToVisitor(visitor._id, '', '');
  }
  }}
@@ -1679,9 +1613,9 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <option value="">Unassigned</option>
  {agents.length > 0 ? (
  agents.map(agent => {
- console.log('🎯 Executive - Rendering agent option:', agent);
+ console.log('🎯 Rendering agent option:', agent);
  return (
- <option key={agent._id || agent.id} value={agent._id || agent.id}>
+ <option key={agent._id} value={agent._id}>
  {agent.name || agent.username || 'Unknown Agent'}
  </option>
  );
@@ -1692,23 +1626,16 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  </option>
  )}
  </select>
- )}
  </div>
  </td>
  )}
  
  {/* Sales Executive */}
  {visibleColumns['Sales Executive'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
  <div className="relative">
- {visitor.salesExecutiveName && !visitor.salesExecutive ? (
- // Show sales executive name as text if assigned but no ObjectId
- <div className="px-1 py-1 text-xs text-gray-900 font-medium">
- {visitor.salesExecutiveName}
- </div>
- ) : (
  <select
- className="w-full px-1 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+ className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:scale-105"
  value={visitor.salesExecutive || ''}
  onChange={(e) => {
  const selectedSalesExecutiveId = e.target.value;
@@ -1744,20 +1671,19 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <option value="" disabled>Loading sales executives...</option>
  )}
  </select>
- )}
  </div>
  </td>
  )}
  
  {/* Status */}
  {visibleColumns['Status'] && (
- <td className="px-2 py-2 whitespace-nowrap">
+ <td className="px-3 py-4 whitespace-nowrap">
  <button
  onClick={() => {
  setSelectedVisitor(visitor);
  setShowPipeline(true);
  }}
- className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-800 hover:bg-blue-200"
+ className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-all duration-200 hover:scale-105"
  >
  {visitor.status === 'enquiry_required' ? 'Enquiry Received' : (visitor.status?.replace(/_/g, ' ') || 'Unknown')}
  </button>
@@ -1766,28 +1692,28 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  
  {/* Date & Time */}
  {visibleColumns['Date & Time'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-800">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-800">
  {formatDate(visitor.createdAt)}
  </td>
  )}
  
  {/* Service */}
  {visibleColumns['Service'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
  {visitor.service || 'General Inquiry'}
  </td>
  )}
  
  {/* Sub-service */}
  {visibleColumns['Sub-service'] && (
- <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
+ <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
  {visitor.subservice || '-'}
  </td>
  )}
  
  {/* Enquiry Details */}
  {visibleColumns['Enquiry Details'] && (
- <td className="px-2 py-2 text-xs text-gray-900 max-w-xs">
+ <td className="px-3 py-4 text-sm text-gray-900 max-w-xs">
  <div className="truncate" title={visitor.enquiryDetails || 'No details provided'}>
  {visitor.enquiryDetails || '-'}
  </div>
@@ -2138,7 +2064,7 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <select
  value={formData.assignedAgent}
  onChange={(e) => {
- const selectedAgent = agents.find(agent => (agent._id || agent.id) === e.target.value);
+ const selectedAgent = agents.find(agent => agent._id === e.target.value);
  if (selectedAgent) {
  handleFormChange('assignedAgent', e.target.value);
  handleFormChange('agentName', selectedAgent.name || selectedAgent.username || '');
@@ -2148,7 +2074,7 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  >
  <option value="">Unassigned</option>
  {agents.map(agent => (
- <option key={agent._id || agent.id} value={agent._id || agent.id}>
+ <option key={agent._id} value={agent._id}>
  {agent.name || agent.username || 'Unknown Agent'}
  </option>
  ))}
@@ -2156,89 +2082,19 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  </div>
  
  {/* Sales Executive */}
- <div className="relative sales-executive-dropdown">
+ <div>
  <label className="block text-sm font-medium text-black mb-1">Sales Executive</label>
- <div className="relative">
  <input
  type="text"
  value={formData.salesExecutiveName}
  onChange={(e) => {
- const value = e.target.value;
- handleFormChange('salesExecutiveName', value);
- setSalesExecutiveSearchTerm(value);
- setShowSalesExecutiveDropdown(true);
+ handleFormChange('salesExecutiveName', e.target.value);
  // Clear the salesExecutive ID when typing manually
  handleFormChange('salesExecutive', '');
  }}
- onFocus={() => setShowSalesExecutiveDropdown(true)}
- placeholder="Type to search or enter new name"
+ placeholder="Enter sales executive name"
  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black transition-all duration-200 hover:scale-105"
  />
- 
- {/* Dropdown Arrow */}
- <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
- <svg className="w-4 h-4 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
- </svg>
- </div>
- 
- {/* Dropdown List */}
- {showSalesExecutiveDropdown && (
- <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
- {/* Filtered sales executives */}
- {salesExecutives
- .filter(exec => 
- exec.name.toLowerCase().includes(salesExecutiveSearchTerm.toLowerCase()) ||
- exec.username.toLowerCase().includes(salesExecutiveSearchTerm.toLowerCase())
- )
- .filter(exec => exec.role === 'sales-executive') // Only show actual sales executives
- .map((exec, index) => (
- <div
- key={`exec-${exec._id || index}-${index}`}
- className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-black"
- onClick={() => {
- handleFormChange('salesExecutiveName', exec.name);
- handleFormChange('salesExecutive', exec._id || exec.id || '');
- setSalesExecutiveSearchTerm(exec.name);
- setShowSalesExecutiveDropdown(false);
- }}
- >
- <div className="font-medium">{exec.name}</div>
- <div className="text-sm text-gray-800">{exec.email}</div>
- </div>
- ))}
- 
- {/* Show "Create new" option if no exact match */}
- {salesExecutiveSearchTerm && 
- !salesExecutives.some(exec => 
- exec.name.toLowerCase() === salesExecutiveSearchTerm.toLowerCase()
- ) && (
- <div
- className="px-3 py-2 hover:bg-blue-50 cursor-pointer text-blue-600 border-t border-gray-200"
- onClick={() => {
- handleFormChange('salesExecutiveName', salesExecutiveSearchTerm);
- handleFormChange('salesExecutive', ''); // No ID for new executives
- setShowSalesExecutiveDropdown(false);
- }}
- >
- <div className="font-medium">Create new: "{salesExecutiveSearchTerm}"</div>
- <div className="text-sm text-gray-800">This will create a new sales executive</div>
- </div>
- )}
- 
- {/* No results */}
- {salesExecutiveSearchTerm && 
- salesExecutives.filter(exec => 
- exec.name.toLowerCase().includes(salesExecutiveSearchTerm.toLowerCase()) ||
- exec.username.toLowerCase().includes(salesExecutiveSearchTerm.toLowerCase())
- ).length === 0 && (
- <div className="px-3 py-2 text-gray-800 text-sm">
- No existing sales executives found
- </div>
- )}
- </div>
- )}
- </div>
  </div>
  
  {/* Service */}

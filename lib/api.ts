@@ -11,9 +11,13 @@ const API_BASE = (() => {
 // Helper function to get auth headers
 export function getAuthHeaders(): HeadersInit {
   const token = localStorage.getItem('ems_token');
+  const userStr = localStorage.getItem('ems_user');
+  const user = userStr ? JSON.parse(userStr) : null;
+  
   return {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` })
+    ...(token && { 'Authorization': `Bearer ${token}` }),
+    ...(user && { 'X-User-Info': JSON.stringify(user) })
   };
 }
 

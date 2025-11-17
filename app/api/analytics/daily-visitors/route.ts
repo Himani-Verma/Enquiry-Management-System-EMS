@@ -1,14 +1,44 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { connectMongo } from "@/lib/mongo";
 import Visitor from "@/lib/models/Visitor";
-import { addEventDateStage } from "@/lib/mongoDate";
+import { getUserContext } from "@/lib/middleware/auth";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
  try {
  console.log('📊 Daily Visitors API: Attempting to fetch data...');
+ 
+ // Get user info from request headers
+ const userHeader = request.headers.get('X-User-Info');
+ let user: any = { userId: 'temp', username: 'admin', name: 'Admin', role: 'admin' };
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ const parsedUser = JSON.parse(userHeader);
+ if (parsedUser && parsedUser.role) {
+ user = parsedUser;
+ console.log('🔐 User from header:', user);
+ }
+ } catch (e) {
+ console.error('❌ Failed to parse user header, using default:', e);
+ }
+ }
+ 
  await connectMongo();
+
+ // Get user context for role-based filtering
+ const userContext = getUserContext(user);
+ console.log('🔐 User context:', userContext);
+ console.log('🔍 Data filter:', userContext.dataFilter);
+ 
+ // Build base filter from user context
+ let baseFilter: any = {};
+ 
+ // Apply role-based filtering
+ if (!userContext.canAccessAll && userContext.dataFilter) {
+ baseFilter = userContext.dataFilter;
+ }
 
  // Get time range from query params (default to 7 days)
  const { searchParams } = new URL(request.url);
@@ -46,12 +76,20 @@ export async function GET(request: Request) {
 
  console.log('📊 Fetching visitors from:', start.toISOString(), 'to now');
 
+ // Build match filter combining date range and user filter
+ const matchFilter: any = {
+ createdAt: { $gte: start, $lte: end }
+ };
+ 
+ // Add user-specific filter if applicable
+ if (Object.keys(baseFilter).length > 0) {
+ matchFilter.$and = [baseFilter];
+ }
+
  // Simple aggregation using createdAt field directly
  const pipeline = [
  {
- $match: {
- createdAt: { $gte: start, $lte: end }
- }
+ $match: matchFilter
  },
  {
  $group: {
