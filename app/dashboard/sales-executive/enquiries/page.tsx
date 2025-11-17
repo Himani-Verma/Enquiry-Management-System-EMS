@@ -180,15 +180,27 @@ export default function ExecutiveEnquiriesPage() {
  setLoading(false);
  return;
  }
+ 
+ if (!user) {
+ console.log('⏳ User not loaded yet, skipping enquiries load');
+ setLoading(false);
+ return;
+ }
+ 
  setLoading(true);
  setError(null);
  
  try {
+ console.log('🔄 Sales Executive - Loading enquiries for user:', user);
  const headers = { 
  Authorization: `Bearer ${token}`,
  'X-User-Info': JSON.stringify(user)
  };
+ 
+ console.log('📡 Fetching from:', `${API_BASE}/api/analytics/customer-executive-enquiries-management`);
  const response = await fetch(`${API_BASE}/api/analytics/customer-executive-enquiries-management`, { headers });
+
+ console.log('📊 Response status:', response.status);
 
  if (response.status === 401) {
  setError('Authentication failed. Please login again.');
@@ -199,10 +211,13 @@ export default function ExecutiveEnquiriesPage() {
  }
 
  if (!response.ok) {
- throw new Error('Failed to load enquiries');
+ const errorText = await response.text();
+ console.error('❌ API Error:', errorText);
+ throw new Error(`Failed to load enquiries: ${response.status} ${errorText}`);
  }
 
  const responseData = await response.json();
+ console.log('✅ Sales Executive - Received enquiries:', responseData);
  const enquiriesList = responseData.enquiries || [];
  
  // Map the API response to the frontend Enquiry type
@@ -260,8 +275,9 @@ export default function ExecutiveEnquiriesPage() {
  }
 
  } catch (e: any) {
- console.error('Error loading enquiries:', e);
- setError(e.message || 'Failed to load enquiries');
+ console.error('❌ Error loading enquiries:', e);
+ const errorMessage = e.message || 'Failed to load enquiries';
+ setError(`Unable to load enquiries: ${errorMessage}. Please check console for details.`);
  } finally {
  setLoading(false);
  }
