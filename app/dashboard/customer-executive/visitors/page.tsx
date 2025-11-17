@@ -339,7 +339,10 @@ export default function ExecutiveVisitorsPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  
  // Build query parameters
  const params = new URLSearchParams({
@@ -389,7 +392,7 @@ export default function ExecutiveVisitorsPage() {
  setLoading(false);
  }
  }
- }, [API_BASE, token, pagination.page, pagination.limit, debouncedSearchTerm, filters.status]);
+ }, [API_BASE, token, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user]);
 
  useEffect(() => {
  // Get user info from localStorage
@@ -401,12 +404,17 @@ export default function ExecutiveVisitorsPage() {
  console.error('Error parsing user data:', e);
  }
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load visitors after user is set
+ if (user) {
  loadVisitors();
  fetchAssignedServices();
  fetchAgents();
  fetchSalesExecutives();
- }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, loadVisitors, fetchAgents, fetchAssignedServices, fetchSalesExecutives]);
+ }
+ }, [API_BASE, pagination.page, pagination.limit, debouncedSearchTerm, filters.status, user, loadVisitors, fetchAgents, fetchAssignedServices, fetchSalesExecutives]);
 
  // Auto-refresh every 30 seconds to sync with admin changes
  useEffect(() => {

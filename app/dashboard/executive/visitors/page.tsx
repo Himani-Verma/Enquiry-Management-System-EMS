@@ -331,7 +331,11 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ // Add user info to headers for role-based filtering
+ const headers: Record<string, string> = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  
  // Build query parameters
  const params = new URLSearchParams({

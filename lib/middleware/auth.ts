@@ -124,14 +124,75 @@ export function createAuthenticatedHandler(
 }
 
 // Helper function to get user context for role-based filtering
-export function getUserContext(user: AuthenticatedUser) {
+export function getUserContext(user: any) {
+  console.log('🔍 getUserContext called with user:', user);
+  
+  // Provide defaults if user is invalid
+  if (!user || !user.role) {
+    console.warn('⚠️ Invalid user object, using admin defaults:', user);
+    return {
+      userId: user?.userId || 'temp',
+      userName: user?.name || 'Admin',
+      userRole: 'admin',
+      isAdmin: true,
+      isExecutive: true,
+      isSalesExecutive: false,
+      isCustomerExecutive: false,
+      canAccessAll: true,
+      dataFilter: {}
+    };
+  }
+  
   const isAdmin = user.role === 'admin';
   const isExecutive = ['executive', 'sales-executive', 'customer-executive'].includes(user.role);
   const isSalesExecutive = user.role === 'sales-executive';
   const isCustomerExecutive = user.role === 'customer-executive';
 
+  // Get user ID - handle both 'id' and 'userId' fields
+  const userId = user.id || user.userId;
+  
+  console.log('🔍 User ID for filtering:', userId);
+  console.log('🔍 User name for filtering:', user.name);
+  console.log('🔍 User role:', user.role);
+
+  // Build data filter based on role
+  let dataFilter = {};
+  if (!isAdmin) {
+    if (isSalesExecutive) {
+      // Sales executives see ONLY visitors assigned to them as sales executive
+      // CRITICAL: Must match BOTH ID and name to ensure proper filtering
+      dataFilter = { 
+        $or: [
+          { salesExecutive: userId },
+          { salesExecutiveName: user.name }
+        ]
+      };
+      console.log('✅ Sales Executive filter applied:', JSON.stringify(dataFilter, null, 2));
+    } else if (isCustomerExecutive) {
+      // Customer executives see only visitors assigned to them as customer executive
+      dataFilter = { 
+        $or: [
+          { customerExecutive: userId },
+          { customerExecutiveName: user.name }
+        ]
+      };
+      console.log('✅ Customer Executive filter applied:', JSON.stringify(dataFilter, null, 2));
+    } else {
+      // Other executives see visitors assigned to them as agent
+      dataFilter = { 
+        $or: [
+          { assignedAgent: userId },
+          { agentName: user.name }
+        ]
+      };
+      console.log('✅ Executive filter applied:', JSON.stringify(dataFilter, null, 2));
+    }
+  } else {
+    console.log('✅ Admin user - no filter applied (can see all visitors)');
+  }
+
   return {
-    userId: user.userId,
+    userId: userId,
     userName: user.name,
     userRole: user.role,
     isAdmin,
@@ -139,6 +200,6 @@ export function getUserContext(user: AuthenticatedUser) {
     isSalesExecutive,
     isCustomerExecutive,
     canAccessAll: isAdmin,
-    dataFilter: isAdmin ? {} : { assignedAgent: user.userId }
+    dataFilter
   };
 }

@@ -61,7 +61,10 @@ export default function ExecutiveEnquiriesPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  const response = await fetch(`${API_BASE}/api/analytics/customer-executive-enquiries-management`, { headers });
 
  if (response.status === 401) {
@@ -151,9 +154,14 @@ export default function ExecutiveEnquiriesPage() {
  console.error('Error parsing user data:', e);
  }
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load enquiries after user is set
+ if (user && token) {
  loadEnquiries();
- }, [API_BASE, token]);
+ }
+ }, [API_BASE, token, user]);
 
  const addEnquiry = async (formData: EnquiryFormData) => {
  if (!token) {

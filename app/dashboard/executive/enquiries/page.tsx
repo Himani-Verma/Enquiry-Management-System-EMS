@@ -184,7 +184,10 @@ export default function ExecutiveEnquiriesPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  const response = await fetch(`${API_BASE}/api/analytics/executive-enquiries-management`, { headers });
 
  if (response.status === 401) {
@@ -651,7 +654,12 @@ export default function ExecutiveEnquiriesPage() {
  phoneNumber: phoneNumber,
  email: email,
  enquiryType: formData.get('enquiryType') as 'chatbot' | 'email' | 'calls' | 'website',
- enquiryDetails: formData.get('enquiryDetails') as string
+ enquiryDetails: formData.get('enquiryDetails') as string,
+ service: formData.get('service') as string || 'General Inquiry',
+ subservice: formData.get('subservice') as string || '',
+ organization: formData.get('organization') as string || '',
+ region: formData.get('region') as string || '',
+ assignedAgent: formData.get('assignedAgent') as string || 'Unassigned'
  });
  }}
  >

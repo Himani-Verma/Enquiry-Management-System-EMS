@@ -110,7 +110,10 @@ export default function AdminEnquiriesPage() {
  setError(null);
  
  try {
- const headers = { Authorization: `Bearer ${token}` };
+ const headers = { 
+ Authorization: `Bearer ${token}`,
+ 'X-User-Info': JSON.stringify(user)
+ };
  
  // Build query parameters
  const params = new URLSearchParams({
@@ -205,7 +208,8 @@ export default function AdminEnquiriesPage() {
 
  // Get user info from localStorage
  try {
- setUser(JSON.parse(userStr));
+ const parsedUser = JSON.parse(userStr);
+ setUser(parsedUser);
  } catch (e) {
  console.error('Error parsing user data:', e);
  setError('Invalid user data. Please login again.');
@@ -216,9 +220,14 @@ export default function AdminEnquiriesPage() {
  }, 2000);
  return;
  }
+ }, []);
 
+ useEffect(() => {
+ // Only load enquiries after user is set
+ if (user && token) {
  loadEnquiries();
- }, [API_BASE, token, pagination.page, pagination.limit, filters.status, filters.enquiryType]);
+ }
+ }, [API_BASE, token, pagination.page, pagination.limit, filters.status, filters.enquiryType, user]);
 
  const addEnquiry = async (formData: EnquiryFormData) => {
  if (!token) {

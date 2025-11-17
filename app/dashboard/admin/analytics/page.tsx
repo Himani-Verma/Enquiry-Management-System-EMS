@@ -78,8 +78,14 @@ export default function AdminAnalyticsPage() {
  console.error('Error parsing user data:', e);
  }
  }
+ }, []);
+
+ useEffect(() => {
+ // Only load analytics after user is set
+ if (user) {
  loadAnalyticsData();
- }, [timeRange]);
+ }
+ }, [timeRange, user]);
 
  const loadAnalyticsData = async () => {
  try {
@@ -87,7 +93,8 @@ export default function AdminAnalyticsPage() {
  const token = localStorage.getItem('ems_token');
  const headers: Record<string, string> = token ? { 
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  } : { 'Content-Type': 'application/json' };
 
  const [visitorsRes, agentsRes] = await Promise.all([
