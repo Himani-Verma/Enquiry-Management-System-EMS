@@ -1598,31 +1598,37 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <tr key={`visitor-${visitor._id || index}-${index}`} className="hover:bg-gray-50">
  {/* Sr.no. */}
  {visibleColumns['Sr.no.'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  {index + 1}
  </td>
  )}
  
  {/* Name of Client */}
  {visibleColumns['Name of Client'] && (
- <td className="px-3 py-4 whitespace-nowrap">
+ <td className="px-2 py-2 whitespace-nowrap">
  <div className="flex items-center">
- <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
- <span className="text-blue-600 font-medium text-sm">
+ <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2">
+ <span className="text-blue-600 font-medium text-xs">
  {visitor.name ? visitor.name.charAt(0).toUpperCase() : visitor.email.charAt(0).toUpperCase()}
  </span>
  </div>
- <div className="text-sm font-medium text-gray-900">{visitor.name || 'Anonymous'}</div>
+ <div className="text-xs font-medium text-gray-900">{visitor.name || 'Anonymous'}</div>
  </div>
  </td>
  )}
  
  {/* Agent */}
  {visibleColumns['Agent'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  <div className="relative">
+ {visitor.agentName && !visitor.assignedAgent ? (
+ // Show agent name as text if assigned but no ObjectId
+ <div className="px-1 py-1 text-xs text-gray-900 font-medium">
+ {visitor.agentName}
+ </div>
+ ) : (
  <select
- className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:scale-105"
+ className="w-full px-1 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
  value={visitor.assignedAgent || ''}
  onChange={(e) => {
  const selectedAgent = agents.find(agent => (agent._id || agent.id) === e.target.value);
@@ -1655,16 +1661,23 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  </option>
  )}
  </select>
+ )}
  </div>
  </td>
  )}
  
  {/* Sales Executive */}
  {visibleColumns['Sales Executive'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  <div className="relative">
+ {visitor.salesExecutiveName && !visitor.salesExecutive ? (
+ // Show sales executive name as text if assigned but no ObjectId
+ <div className="px-1 py-1 text-xs text-gray-900 font-medium">
+ {visitor.salesExecutiveName}
+ </div>
+ ) : (
  <select
- className="w-full px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 hover:scale-105"
+ className="w-full px-1 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
  value={visitor.salesExecutive || ''}
  onChange={(e) => {
  const selectedSalesExecutiveId = e.target.value;
@@ -1700,19 +1713,20 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  <option value="" disabled>Loading sales executives...</option>
  )}
  </select>
+ )}
  </div>
  </td>
  )}
  
  {/* Status */}
  {visibleColumns['Status'] && (
- <td className="px-3 py-4 whitespace-nowrap">
+ <td className="px-2 py-2 whitespace-nowrap">
  <button
  onClick={() => {
  setSelectedVisitor(visitor);
  setShowPipeline(true);
  }}
- className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 hover:bg-blue-200 transition-all duration-200 hover:scale-105"
+ className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-800 hover:bg-blue-200"
  >
  {visitor.status === 'enquiry_required' ? 'Enquiry Received' : (visitor.status?.replace(/_/g, ' ') || 'Unknown')}
  </button>
@@ -1721,28 +1735,28 @@ const [agents, setAgents] = useState<Array<{ _id?: string; id?: string; name: st
  
  {/* Date & Time */}
  {visibleColumns['Date & Time'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-800">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-800">
  {formatDate(visitor.createdAt)}
  </td>
  )}
  
  {/* Service */}
  {visibleColumns['Service'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  {visitor.service || 'General Inquiry'}
  </td>
  )}
  
  {/* Sub-service */}
  {visibleColumns['Sub-service'] && (
- <td className="px-3 py-4 whitespace-nowrap text-sm text-gray-900">
+ <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-900">
  {visitor.subservice || '-'}
  </td>
  )}
  
  {/* Enquiry Details */}
  {visibleColumns['Enquiry Details'] && (
- <td className="px-3 py-4 text-sm text-gray-900 max-w-xs">
+ <td className="px-2 py-2 text-xs text-gray-900 max-w-xs">
  <div className="truncate" title={visitor.enquiryDetails || 'No details provided'}>
  {visitor.enquiryDetails || '-'}
  </div>

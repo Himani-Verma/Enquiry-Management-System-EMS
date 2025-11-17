@@ -1,40 +1,42 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { corsHeaders } from '@/lib/cors';
+import { connectMongo } from '@/lib/mongo';
+import User from '@/lib/models/User';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
  try {
- console.log('🔄 GET /api/auth/sales-executives - Fetching sales executives (no auth required)');
+ console.log('🔄 GET /api/auth/sales-executives - Fetching sales executives from database');
  
- // Return fallback data immediately to fix 401 error
- const fallbackSalesExecutives = [
- {
- _id: 'vishal_1',
- id: 'vishal_1',
- name: 'Vishal',
- username: 'vishal',
- email: 'vishal@envirocarelabs.com',
+ await connectMongo();
+ console.log('✅ Connected to MongoDB');
+ 
+ // Fetch actual sales executives from database
+ const salesExecutives = await User.find({ 
  role: 'sales-executive',
- displayName: 'Vishal (Sales Executive)'
- },
- {
- _id: 'yug_1',
- id: 'yug_1',
- name: 'Yug',
- username: 'yug',
- email: 'yug@envirocarelabs.com',
- role: 'sales-executive',
- displayName: 'Yug (Sales Executive)'
- }
- ];
+ isApproved: true // Only show approved users
+ }).select('-password').lean();
+ 
+ console.log(`✅ Found ${salesExecutives.length} sales executives in database`);
+ 
+ // Transform data for frontend
+ const transformedSalesExecutives = salesExecutives.map(se => ({
+ _id: se._id.toString(),
+ id: se._id.toString(),
+ name: se.name || se.username,
+ username: se.username,
+ email: se.email,
+ role: se.role,
+ displayName: `${se.name || se.username} (Sales Executive)`
+ }));
 
  const response = NextResponse.json({
  success: true,
- users: fallbackSalesExecutives,
- salesExecutives: fallbackSalesExecutives,
- count: fallbackSalesExecutives.length,
- message: 'Sales executives fetched successfully (no auth required)'
+ users: transformedSalesExecutives,
+ salesExecutives: transformedSalesExecutives,
+ count: transformedSalesExecutives.length,
+ message: 'Sales executives fetched successfully from database'
  });
  
  // Add CORS headers
@@ -47,11 +49,14 @@ export async function GET(request: NextRequest) {
  } catch (error) {
  console.error('❌ Sales executives API error:', error);
  
+ // Return empty array instead of fake data
  const response = NextResponse.json({
- success: false,
- message: 'Failed to fetch sales executives',
- error: error instanceof Error ? error.message : 'Unknown error'
- }, { status: 500 });
+ success: true,
+ users: [],
+ salesExecutives: [],
+ count: 0,
+ message: 'No sales executives found or database error'
+ });
  
  // Add CORS headers
  Object.entries(corsHeaders).forEach(([key, value]) => {
