@@ -188,7 +188,7 @@ export default function ExecutiveEnquiriesPage() {
  Authorization: `Bearer ${token}`,
  'X-User-Info': JSON.stringify(user)
  };
- const response = await fetch(`${API_BASE}/api/analytics/executive-enquiries-management`, { headers });
+ const response = await fetch(`${API_BASE}/api/analytics/customer-executive-enquiries-management`, { headers });
 
  if (response.status === 401) {
  setError('Authentication failed. Please login again.');
