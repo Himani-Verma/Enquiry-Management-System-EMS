@@ -77,39 +77,106 @@ export async function GET(request: NextRequest) {
     ]);
 
     // Additional fallbacks (in case teams use booleans/dates instead of strings)
-    const leadFlagsFilter = Object.keys(baseFilter).length > 0
-      ? { $and: [baseFilter, {
-          $or: [
-            { isConverted: true },
-            { converted: true },
-            { convertedAt: { $exists: true, $ne: null } },
-            { result: /won|converted|success/i },
-            { disposition: /won|converted|interested|booked/i },
-          ]
-        }] }
-      : {
-          $or: [
-            { isConverted: true },
-            { converted: true },
-            { convertedAt: { $exists: true, $ne: null } },
-            { result: /won|converted|success/i },
-            { disposition: /won|converted|interested|booked/i },
-          ]
-        };
+    let leadFlagsFilter: any;
+    if (userContext.canAccessAll) {
+      // Admin sees all conversions
+      leadFlagsFilter = Object.keys(baseFilter).length > 0
+        ? { $and: [baseFilter, {
+            $or: [
+              { isConverted: true },
+              { converted: true },
+              { convertedAt: { $exists: true, $ne: null } },
+              { result: /won|converted|success/i },
+              { disposition: /won|converted|interested|booked/i },
+            ]
+          }] }
+        : {
+            $or: [
+              { isConverted: true },
+              { converted: true },
+              { convertedAt: { $exists: true, $ne: null } },
+              { result: /won|converted|success/i },
+              { disposition: /won|converted|interested|booked/i },
+            ]
+          };
+    } else {
+      // Non-admin users only see conversions they made
+      const userConversionFilter = {
+        $or: [
+          { convertedBy: user.name },
+          { convertedBy: user.username },
+          { convertedBy: user.id },
+          { convertedBy: user.userId }
+        ]
+      };
+      
+      leadFlagsFilter = Object.keys(baseFilter).length > 0
+        ? { $and: [baseFilter, {
+            $or: [
+              { isConverted: true },
+              { converted: true },
+              { convertedAt: { $exists: true, $ne: null } },
+              { result: /won|converted|success/i },
+              { disposition: /won|converted|interested|booked/i },
+            ]
+          }, userConversionFilter] }
+        : {
+            $and: [{
+              $or: [
+                { isConverted: true },
+                { converted: true },
+                { convertedAt: { $exists: true, $ne: null } },
+                { result: /won|converted|success/i },
+                { disposition: /won|converted|interested|booked/i },
+              ]
+            }, userConversionFilter]
+          };
+    }
     
-    const convertedFilter = Object.keys(baseFilter).length > 0
-      ? { $and: [baseFilter, {
-          $or: [
-            { isConverted: true },
-            { status: regexFromSet(LEAD_SET) }
-          ]
-        }] }
-      : {
-          $or: [
-            { isConverted: true },
-            { status: regexFromSet(LEAD_SET) }
-          ]
-        };
+    // For conversions, filter by who converted them (except for admins)
+    let convertedFilter: any;
+    if (userContext.canAccessAll) {
+      // Admin sees all conversions
+      convertedFilter = Object.keys(baseFilter).length > 0
+        ? { $and: [baseFilter, {
+            $or: [
+              { isConverted: true },
+              { status: regexFromSet(LEAD_SET) }
+            ]
+          }] }
+        : {
+            $or: [
+              { isConverted: true },
+              { status: regexFromSet(LEAD_SET) }
+            ]
+          };
+    } else {
+      // Non-admin users only see conversions they made
+      const userConversionFilter = {
+        $or: [
+          { convertedBy: user.name },
+          { convertedBy: user.username },
+          { convertedBy: user.id },
+          { convertedBy: user.userId }
+        ]
+      };
+      
+      convertedFilter = Object.keys(baseFilter).length > 0
+        ? { $and: [baseFilter, {
+            $or: [
+              { isConverted: true },
+              { status: regexFromSet(LEAD_SET) }
+            ]
+          }, userConversionFilter] }
+        : {
+            $and: [{
+              $or: [
+                { isConverted: true },
+                { status: regexFromSet(LEAD_SET) }
+              ]
+            }, userConversionFilter]
+          };
+    }
 
     const [leadsByFlags, convertedVisitors] = await Promise.all([
       Enquiry.countDocuments(leadFlagsFilter),

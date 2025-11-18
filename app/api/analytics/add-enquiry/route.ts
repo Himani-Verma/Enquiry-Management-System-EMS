@@ -9,6 +9,19 @@ export async function POST(request: NextRequest) {
  try {
  console.log('🔄 POST /api/analytics/add-enquiry - Adding new enquiry');
  
+ // Get user info from request headers
+ const userHeader = request.headers.get('X-User-Info');
+ let user: any = null;
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ user = JSON.parse(userHeader);
+ console.log('🔐 User creating enquiry:', user);
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
  const body = await request.json();
  console.log('📝 Request body:', body);
 
@@ -61,6 +74,24 @@ export async function POST(request: NextRequest) {
  }
 
  if (!visitor) {
+ // Auto-assign based on user role
+ let autoAssignmentData: any = {};
+ if (user) {
+ if (user.role === 'sales-executive') {
+ autoAssignmentData.salesExecutive = user.id || user.userId;
+ autoAssignmentData.salesExecutiveName = user.name || user.username;
+ console.log('🎯 Auto-assigned to sales executive:', user.name);
+ } else if (user.role === 'customer-executive') {
+ autoAssignmentData.customerExecutive = user.id || user.userId;
+ autoAssignmentData.customerExecutiveName = user.name || user.username;
+ console.log('🎯 Auto-assigned to customer executive:', user.name);
+ } else if (user.role === 'executive') {
+ autoAssignmentData.assignedAgent = user.id || user.userId;
+ autoAssignmentData.agentName = user.name || user.username;
+ console.log('🎯 Auto-assigned to executive:', user.name);
+ }
+ }
+ 
  // Create new visitor
  const visitorData = {
  name: visitorName,
@@ -78,8 +109,10 @@ export async function POST(request: NextRequest) {
  leadScore: 0,
  priority: 'medium',
  pipelineHistory: [],
- agentName: assignedAgent || '',
- salesExecutiveName: ''
+ agentName: assignedAgent || autoAssignmentData.agentName || '',
+ salesExecutiveName: autoAssignmentData.salesExecutiveName || '',
+ customerExecutiveName: autoAssignmentData.customerExecutiveName || '',
+ ...autoAssignmentData
  };
  
  visitor = new Visitor(visitorData);
@@ -101,8 +134,26 @@ export async function POST(request: NextRequest) {
  if (region) {
  visitor.location = region;
  }
+ 
+ // Auto-assign if not already assigned and user info is available
+ if (user) {
+ if (user.role === 'sales-executive' && !visitor.salesExecutive) {
+ visitor.salesExecutive = user.id || user.userId;
+ visitor.salesExecutiveName = user.name || user.username;
+ console.log('🎯 Auto-assigned existing visitor to sales executive:', user.name);
+ } else if (user.role === 'customer-executive' && !visitor.customerExecutive) {
+ visitor.customerExecutive = user.id || user.userId;
+ visitor.customerExecutiveName = user.name || user.username;
+ console.log('🎯 Auto-assigned existing visitor to customer executive:', user.name);
+ } else if (user.role === 'executive' && !visitor.assignedAgent) {
+ visitor.assignedAgent = user.id || user.userId;
+ visitor.agentName = user.name || user.username;
+ console.log('🎯 Auto-assigned existing visitor to executive:', user.name);
+ }
+ }
+ 
  await visitor.save();
- console.log('✅ Existing visitor updated with service:', visitor._id);
+ console.log('✅ Existing visitor updated with service and assignment:', visitor._id);
  }
 
  // Now create the enquiry record

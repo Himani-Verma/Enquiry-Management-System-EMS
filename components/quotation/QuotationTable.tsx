@@ -1,18 +1,18 @@
 'use client'
 
 import { useState } from 'react'
-import { Eye, Edit, Trash2, Download } from 'lucide-react'
+import { Edit, Trash2, Download } from 'lucide-react'
 import { SavedQuotation, QuotationStatus } from '@/lib/types/quotation'
 
 interface QuotationTableProps {
  quotations: SavedQuotation[]
  onEdit: (id: string) => void
- onView: (id: string) => void
  onDelete: (id: string) => void
  onPreview: (quotation: any) => void
  onDownload: (id: string) => void
  onStatusChange?: (id: string, newStatus: QuotationStatus) => void
  userRole?: 'admin' | 'executive' | 'sales-executive' | 'customer-executive'
+ currentUser?: { name: string; username: string; id: string; role: string }
 }
 
 const getStatusColor = (status: QuotationStatus) => {
@@ -51,15 +51,27 @@ const formatDate = (dateString: string) => {
 export default function QuotationTable({ 
  quotations, 
  onEdit, 
- onView, 
  onDelete, 
  onPreview,
  onDownload,
  onStatusChange,
- userRole = 'admin'
+ userRole = 'admin',
+ currentUser
 }: QuotationTableProps) {
  const [sortField, setSortField] = useState<keyof SavedQuotation>('date')
  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+
+ // Check if current user can edit the quotation status
+ const canEditStatus = (quotation: SavedQuotation) => {
+ if (!currentUser) return false
+ 
+ // Admin can edit all quotations
+ if (currentUser.role === 'admin') return true
+ 
+ // Check if current user is the creator
+ const createdByName = quotation.createdByName || ''
+ return createdByName === currentUser.name || createdByName === currentUser.username
+ }
 
  const handleSort = (field: keyof SavedQuotation) => {
  if (sortField === field) {
@@ -203,6 +215,7 @@ export default function QuotationTable({
  </span>
  </td>
  <td className="py-4 px-6">
+ {canEditStatus(quotation) ? (
  <select
  value={quotation.status}
  onChange={(e) => {
@@ -220,20 +233,18 @@ export default function QuotationTable({
  <option value="rejected">Rejected</option>
  <option value="expired">Expired</option>
  </select>
+ ) : (
+ <span
+ className={`px-3 py-1.5 rounded-lg text-xs font-semibold ${getStatusColor(quotation.status)}`}
+ style={{ minWidth: '100px', display: 'inline-block', textAlign: 'center' }}
+ title="Only the creator can edit the status"
+ >
+ {quotation.status.charAt(0).toUpperCase() + quotation.status.slice(1)}
+ </span>
+ )}
  </td>
  <td className="py-4 px-6">
  <div className="flex items-center justify-center gap-1">
- <button
- onClick={() => onView(quotation.id)}
- className="p-2 rounded-lg hover:bg-blue-100 transition-all text-gray-900 hover:text-blue-600 hover:scale-110 relative group/btn"
- title="View Quotation"
- aria-label="View quotation details"
- >
- <Eye className="w-4 h-4" />
- <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover/btn:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
- View Details
- </span>
- </button>
  <button
  onClick={() => onEdit(quotation.id)}
  className="p-2 rounded-lg hover:bg-green-100 transition-all text-gray-900 hover:text-green-600 hover:scale-110 relative group/btn"

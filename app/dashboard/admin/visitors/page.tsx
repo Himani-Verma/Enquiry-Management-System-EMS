@@ -521,7 +521,8 @@ export default function AdminVisitorsPage() {
  try {
  const headers = {
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  };
  const response = await fetch(`${API_BASE}/api/analytics/update-visitor-status`, {
  method: 'PUT',
@@ -1671,7 +1672,24 @@ export default function AdminVisitorsPage() {
  {visitor.name ? visitor.name.charAt(0).toUpperCase() : visitor.email.charAt(0).toUpperCase()}
  </span>
  </div>
- <div className="text-xs font-semibold text-gray-900 truncate">{visitor.name || 'Anonymous'}</div>
+ <div className="text-xs font-semibold text-gray-900 truncate">
+ {(() => {
+ let displayName = visitor.name || '';
+ if (!displayName || displayName === 'Unknown') {
+ if (visitor.email) {
+ // Extract name from email (e.g., "john.doe@example.com" -> "John Doe")
+ const emailName = visitor.email.split('@')[0];
+ displayName = emailName
+ .split(/[._-]/)
+ .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+ .join(' ');
+ } else {
+ displayName = 'Anonymous';
+ }
+ }
+ return displayName;
+ })()}
+ </div>
  </div>
  </td>
  )}
@@ -1965,7 +1983,21 @@ export default function AdminVisitorsPage() {
  <div className="sticky top-0 bg-white border-b border-gray-200 px-5 py-4 rounded-t-xl transition-all duration-200 hover:scale-105">
  <div className="flex items-center justify-between">
  <h3 className="text-xl font-bold text-gray-900">
- Pipeline Tracking: {selectedVisitor.name || 'Anonymous'}
+ Pipeline Tracking: {(() => {
+ let displayName = selectedVisitor.name || '';
+ if (!displayName || displayName === 'Unknown') {
+ if (selectedVisitor.email) {
+ const emailName = selectedVisitor.email.split('@')[0];
+ displayName = emailName
+ .split(/[._-]/)
+ .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+ .join(' ');
+ } else {
+ displayName = 'Anonymous';
+ }
+ }
+ return displayName;
+ })()}
  </h3>
  <button
  onClick={() => {

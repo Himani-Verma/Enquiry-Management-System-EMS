@@ -64,17 +64,17 @@ export default function CustomerExecutiveProfilePage() {
  <Sidebar userRole="customer-executive" userName={user?.name} />
  
  {/* Main Content */}
- <div className="flex-1 ml-64 flex flex-col overflow-hidden">
+ <div className="flex-1 flex flex-col overflow-hidden md:ml-0 ml-0">
  <DashboardHeader 
  userRole="customer-executive"
  userName={user?.name}
  />
  
- <main className="flex-1 overflow-y-auto pr-8 py-6 pl-2">
- <div className="max-w-full">
+ <main className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 bg-gradient-to-br from-gray-50 to-gray-100">
+ <div className="max-w-5xl mx-auto">
  <div className="mb-6">
  <h1 className="text-3xl font-bold text-gray-900">Profile Settings</h1>
- <p className="text-gray-600 mt-2">
+ <p className="text-gray-900 mt-2">
  Manage your personal information and account settings.
  </p>
  </div>

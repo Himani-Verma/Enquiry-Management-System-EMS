@@ -85,7 +85,7 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
  Wagle Industrial Estate, Thane<br />
  Maharashtra- 400604
  </p>
- <a href="http://www.envitocarelabs.com" className="text-[7px] text-blue-600">www.envitocarelabs.com</a>
+ <a href="http://www.envirocarelabs.com" className="text-[7px] text-blue-600">www.envirocarelabs.com</a>
  </div>
  <div className="col-span-3 p-1 border border-[#00C853]">
  <h2 className="text-[8px] font-bold text-center text-[#00C853] pb-0.5 mb-0.5">Our Services</h2>
@@ -252,7 +252,7 @@ export default function QuotationPreview({ quotation }: QuotationPreviewProps) {
  {/* Terms & Conditions */}
  <div className="p-0.5 border-x border-b border-black bg-white">
  <h3 className="font-bold text-[8px] border-b border-[#1976D2] pb-0.5 mb-0.5 inline-block">
- General Terms & Conditions (Detailed Terms & Conditions visit: www.envirocarelab.com/terms)
+ General Terms & Conditions (Detailed Terms & Conditions visit: www.envirocarelabs.com/terms)
  </h3>
  <div className="text-[7px] leading-tight whitespace-pre-line pl-1 border-l-2 border-blue-300">
 {`1. Validity: 30 days from the date of this offer. Our LIMS is designed to enhance customer satisfaction and necessitates for collection and / or testing of samples to be carried out only after receipt & punching of a commercially clear purchase order.

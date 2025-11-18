@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { X, Download, FileText } from 'lucide-react'
+import { X, Download } from 'lucide-react'
 import { QuotationDraft } from '@/lib/types/quotation'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-import { Document, Packer, Paragraph, TextRun, Table, TableCell, TableRow, WidthType, AlignmentType, HeadingLevel, BorderStyle } from 'docx'
+
 
 interface PreviewDrawerProps {
  isOpen: boolean
@@ -89,261 +89,7 @@ export default function PreviewDrawer({ isOpen, quotation, onClose }: PreviewDra
  }
  }
 
- const handleExportDOCX = async () => {
- if (!quotation) return
 
- try {
- const doc = new Document({
- sections: [{
- properties: {
- page: {
- margin: { top: 720, right: 720, bottom: 720, left: 720 },
- },
- },
- children: [
- // Company Header removed per branding request
- new Paragraph({
- children: [new TextRun({ text: "QUOTATION", bold: true, size: 28, color: "2563eb" })],
- alignment: AlignmentType.CENTER,
- spacing: { after: 300 },
- }),
- 
- // Quotation Details
- new Paragraph({
- children: [
- new TextRun({ text: "Quotation No: ", bold: true }),
- new TextRun({ text: quotation.quotationNo, color: "2563eb" }),
- ],
- spacing: { after: 100 },
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "Date: ", bold: true }),
- new TextRun(formatDate(quotation.date)),
- ],
- spacing: { after: 200 },
- }),
- 
- // Bill To Section
- new Paragraph({
- children: [new TextRun({ text: "BILL TO:", bold: true, size: 24 })],
- spacing: { before: 200, after: 100 },
- }),
- new Paragraph({
- children: [new TextRun({ text: quotation.billTo.name, bold: true, color: "000000" })],
- }),
- new Paragraph({ text: quotation.billTo.address1 || '' }),
- new Paragraph({ text: quotation.billTo.address2 || '' }),
- new Paragraph({ text: `${quotation.billTo.city}, ${quotation.billTo.state} - ${quotation.billTo.pin}` }),
- 
- // Contact Person
- ...(quotation.contact.name ? [
- new Paragraph({
- children: [
- new TextRun({ text: "Contact: ", bold: true }),
- new TextRun(quotation.contact.name),
- ],
- spacing: { before: 100 },
- }),
- ] : []),
- 
- // Scope of Service Header
- new Paragraph({
- children: [new TextRun({ text: "SCOPE OF SERVICE", bold: true, color: "ffffff" })],
- alignment: AlignmentType.CENTER,
- shading: { fill: "2563eb" },
- spacing: { before: 300, after: 100 },
- }),
- 
- // Items Table
- new Table({
- width: { size: 100, type: WidthType.PERCENTAGE },
- borders: {
- top: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- bottom: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- left: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- right: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- insideHorizontal: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- insideVertical: { style: BorderStyle.SINGLE, size: 1, color: "000000" },
- },
- rows: [
- // Header Row with blue background
- new TableRow({
- children: [
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "S.No", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "Sample Name", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "Test Parameters", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "No. of Samples", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "Unit Price (INR)", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: "Total Price (INR)", bold: true, color: "ffffff" })], alignment: AlignmentType.CENTER })],
- shading: { fill: "2563eb" },
- }),
- ],
- }),
- // Data Rows with alternating colors
- ...quotation.items.map((item, index) => 
- new TableRow({
- children: [
- new TableCell({ 
- children: [new Paragraph({ text: item.sNo.toString(), alignment: AlignmentType.CENTER })],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: item.sampleName, bold: true })] })],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- new TableCell({ 
- children: [new Paragraph(item.testParameters || '')],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- new TableCell({ 
- children: [new Paragraph({ text: item.noOfSamples.toString(), alignment: AlignmentType.CENTER })],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- new TableCell({ 
- children: [new Paragraph({ text: item.unitPrice.toLocaleString('en-IN'), alignment: AlignmentType.RIGHT })],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- new TableCell({ 
- children: [new Paragraph({ children: [new TextRun({ text: item.total.toLocaleString('en-IN'), bold: true })], alignment: AlignmentType.RIGHT })],
- shading: { fill: index % 2 === 0 ? "eff6ff" : "ffffff" },
- }),
- ],
- })
- ),
- ],
- }),
- 
- // Financial Summary
- new Paragraph({ text: "", spacing: { before: 300 } }),
- new Paragraph({
- children: [
- new TextRun({ text: "Subtotal: ", bold: true }),
- new TextRun(`₹${quotation.subtotal.toLocaleString('en-IN')}`),
- ],
- alignment: AlignmentType.RIGHT,
- spacing: { after: 100 },
- }),
- new Paragraph({
- children: [
- new TextRun({ text: `CGST (${quotation.taxes.cgstRate}%): `, bold: true }),
- new TextRun(`₹${quotation.taxes.cgstAmount.toLocaleString('en-IN')}`),
- ],
- alignment: AlignmentType.RIGHT,
- spacing: { after: 100 },
- }),
- new Paragraph({
- children: [
- new TextRun({ text: `SGST (${quotation.taxes.sgstRate}%): `, bold: true }),
- new TextRun(`₹${quotation.taxes.sgstAmount.toLocaleString('en-IN')}`),
- ],
- alignment: AlignmentType.RIGHT,
- spacing: { after: 200 },
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "Grand Total: ", bold: true, size: 32, color: "16a34a" }),
- new TextRun({ text: `₹${quotation.grandTotal.toLocaleString('en-IN')}`, bold: true, size: 32, color: "16a34a" }),
- ],
- alignment: AlignmentType.RIGHT,
- spacing: { after: 200 },
- }),
- 
- // Amount in Words
- ...(quotation.amountInWords ? [
- new Paragraph({
- children: [
- new TextRun({ text: "Amount in Words: ", bold: true }),
- new TextRun(quotation.amountInWords),
- ],
- spacing: { after: 300 },
- }),
- ] : []),
- 
- // Bank Details
- new Paragraph({
- children: [new TextRun({ text: "BANK DETAILS", bold: true, color: "ffffff" })],
- alignment: AlignmentType.CENTER,
- shading: { fill: "2563eb" },
- spacing: { before: 300, after: 100 },
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "Account Name: ", bold: true }),
- new TextRun(quotation.bankDetails.accountName),
- ],
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "Account Number: ", bold: true }),
- new TextRun(quotation.bankDetails.accountNumber),
- ],
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "IFSC Code: ", bold: true }),
- new TextRun(quotation.bankDetails.ifsc),
- ],
- }),
- new Paragraph({
- children: [
- new TextRun({ text: "Bank: ", bold: true }),
- new TextRun(quotation.bankDetails.bankNameBranch),
- ],
- spacing: { after: 300 },
- }),
- 
- // Terms & Conditions
- new Paragraph({
- children: [new TextRun({ text: "TERMS & CONDITIONS", bold: true, color: "ffffff" })],
- alignment: AlignmentType.CENTER,
- shading: { fill: "2563eb" },
- spacing: { before: 300, after: 100 },
- }),
- new Paragraph({
- text: quotation.terms,
- spacing: { after: 200 },
- }),
- 
- // Footer
- new Paragraph({
- children: [new TextRun({ text: "Thank you for choosing Envirocare Labs!", bold: true, color: "16a34a" })],
- alignment: AlignmentType.CENTER,
- spacing: { before: 300 },
- }),
- ],
- }],
- })
-
- const blob = await Packer.toBlob(doc)
- const link = document.createElement('a')
- link.href = URL.createObjectURL(blob)
- link.download = `quotation-${quotation.quotationNo}.docx`
- document.body.appendChild(link)
- link.click()
- document.body.removeChild(link)
- URL.revokeObjectURL(link.href)
- } catch (error) {
- console.error('Error generating DOCX:', error)
- alert('Error generating DOCX. Please try again.')
- }
- }
 
 
 
@@ -382,13 +128,7 @@ export default function PreviewDrawer({ isOpen, quotation, onClose }: PreviewDra
  <Download className="w-4 h-4" />
  PDF
  </button>
- <button
- onClick={handleExportDOCX}
- className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors text-gray-700"
- >
- <FileText className="w-4 h-4" />
- DOCX
- </button>
+
  <button
  onClick={onClose}
  className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-gray-700"
@@ -426,10 +166,10 @@ export default function PreviewDrawer({ isOpen, quotation, onClose }: PreviewDra
  {/* Company Details */}
  <div className="text-xs text-gray-700 max-w-xs leading-tight">
  <p className="font-bold">Envirocare Labs Private Limited</p>
- <p>Saiyan House, A6/A7, MIDC Main Road,</p>
+ <p>Enviro House, A8/A7, MIDC Main Road,</p>
  <p>Wagle Industrial Estate, Thane</p>
  <p>Maharashtra- 400604</p>
- <p className="text-blue-600">www.envirocarelab.com</p>
+ <p className="text-blue-600">www.envirocarelabs.com</p>
  </div>
 
  {/* Services Box - no green background, just border and green heading */}
@@ -691,7 +431,7 @@ export default function PreviewDrawer({ isOpen, quotation, onClose }: PreviewDra
  {/* Terms and Conditions */}
  <div className="border border-gray-400">
  <div className="bg-blue-600 text-white text-center py-1 px-2 font-bold leading-tight" style={{ fontSize: '10px' }}>
- General Terms & Conditions (Detailed Terms & Conditions visit: www.envirocarelab.com/terms)
+ General Terms & Conditions (Detailed Terms & Conditions visit: www.envirocarelabs.com/terms)
  </div>
  <div className="p-1.5 text-xs leading-tight whitespace-pre-line">
  {`1. Validity: 30 days from the date of this offer. Our LIMS is designed to enhance customer satisfaction and necessitates for collection and / or testing of samples to be carried out only after receipt & punching of a commercially clear purchase order.

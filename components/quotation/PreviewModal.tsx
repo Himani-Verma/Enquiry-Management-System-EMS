@@ -1,12 +1,11 @@
 'use client'
 
 import { QuotationDraft } from '@/lib/types/quotation'
-import { X, Printer, Download, FileSpreadsheet } from 'lucide-react'
+import { X, Printer, Download } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas'
-import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, AlignmentType, WidthType, BorderStyle } from 'docx'
-import { saveAs } from 'file-saver'
+
 
 interface PreviewModalProps {
  isOpen: boolean
@@ -113,100 +112,7 @@ export default function PreviewModal({ isOpen, quotation, onClose }: PreviewModa
  }
  };
 
- const handleDownloadDocx = async () => {
- if (!quotation) return;
- try {
- const heading = new Paragraph({
- children: [
- new TextRun({ text: 'Quotation', bold: true, size: 28 }),
- new TextRun({ text: ` • ${quotation.quotationNo}`, size: 24 }),
- ],
- });
 
- const billTo = new Paragraph({
- children: [
- new TextRun({ text: 'Bill to: ', bold: true }),
- new TextRun(`${quotation.billTo.name}\n${quotation.billTo.address1 || ''}\n${quotation.billTo.address2 || ''}\n${quotation.billTo.city || ''}`),
- ],
- });
- const shipTo = new Paragraph({
- children: [
- new TextRun({ text: 'Ship to: ', bold: true }),
- new TextRun(`${quotation.shipTo.name || quotation.billTo.name}\n${quotation.shipTo.address1 || quotation.billTo.address1 || ''}\n${quotation.shipTo.address2 || quotation.billTo.address2 || ''}\n${quotation.shipTo.city || quotation.billTo.city || ''}`),
- ],
- });
-
- const itemsHeader = new TableRow({
- tableHeader: true,
- children: ['S.No', 'Sample Name', 'Test Parameters', 'No Of Samples', 'Unit Price (INR)', 'Total Price (INR)'].map((t) =>
- new TableCell({
- children: [new Paragraph({ children: [new TextRun({ text: t, bold: true })] })],
- borders: { top: { style: BorderStyle.SINGLE, size: 1, color: '000000' }, bottom: { style: BorderStyle.SINGLE, size: 1, color: '000000' }, left: { style: BorderStyle.SINGLE, size: 1, color: '000000' }, right: { style: BorderStyle.SINGLE, size: 1, color: '000000' } },
- })
- ),
- });
-
- const itemRows = quotation.items.map((item) =>
- new TableRow({
- children: [
- `${item.sNo}`, item.sampleName, item.description || '', `${item.quantity}`, formatCurrency(item.unitPrice), formatCurrency(item.total),
- ].map((v) =>
- new TableCell({
- children: [new Paragraph(String(v))],
- borders: { top: { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' }, bottom: { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' }, left: { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' }, right: { style: BorderStyle.SINGLE, size: 1, color: 'CCCCCC' } },
- })
- ),
- })
- );
-
- const table = new Table({
- width: { size: 100, type: WidthType.PERCENTAGE },
- rows: [itemsHeader, ...itemRows],
- alignment: AlignmentType.CENTER,
- });
-
- const totals = new Paragraph({
- children: [
- new TextRun({ text: `Subtotal: ${formatCurrency(quotation.subtotal)}\n`, bold: true }),
- ...(quotation.taxes.sgstEnabled ? [new TextRun(`SGST ${quotation.taxes.sgstRate}%: ${formatCurrency(quotation.taxes.sgstAmount)}\n`)] : []),
- ...(quotation.taxes.cgstEnabled ? [new TextRun(`CGST ${quotation.taxes.cgstRate}%: ${formatCurrency(quotation.taxes.cgstAmount)}\n`)] : []),
- ...(quotation.taxes.igstEnabled ? [new TextRun(`IGST ${quotation.taxes.igstRate}%: ${formatCurrency(quotation.taxes.igstAmount)}\n`)] : []),
- new TextRun({ text: `Grand Total: ${formatCurrency(quotation.grandTotal)}`, bold: true }),
- ],
- });
-
- const terms = quotation.terms
- ? new Paragraph({ children: [new TextRun({ text: `Terms & Conditions:\n${quotation.terms}`, size: 20 })] })
- : undefined;
-
- const doc = new Document({
- sections: [
- {
- children: [
- heading,
- new Paragraph({ children: [new TextRun({ text: `Date: ${formatDate(quotation.date)}` })] }),
- new Paragraph(' '),
- billTo,
- shipTo,
- new Paragraph(' '),
- table,
- new Paragraph(' '),
- totals,
- new Paragraph(' '),
- new Paragraph({ children: [new TextRun({ text: `Amount (Words): ${numberToWords(Math.floor(quotation.grandTotal))} Rupees Only.` })] }),
- ...(terms ? [new Paragraph(' '), terms] : []),
- ],
- },
- ],
- });
-
- const blob = await Packer.toBlob(doc);
- saveAs(blob, `quotation-${quotation.quotationNo}.docx`);
- } catch (error) {
- console.error('Error generating DOCX:', error);
- alert('Error generating DOCX. Please try again.');
- }
- };
 
  return (
  <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
@@ -229,12 +135,7 @@ export default function PreviewModal({ isOpen, quotation, onClose }: PreviewModa
  >
  <Download className="w-4 h-4" /> PDF
  </button>
- <button
- onClick={handleDownloadDocx}
- className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors"
- >
- <FileSpreadsheet className="w-4 h-4" /> DOCX
- </button>
+
  <button
  onClick={() => window.print()}
  className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border border-gray-300 hover:bg-gray-50 transition-colors"

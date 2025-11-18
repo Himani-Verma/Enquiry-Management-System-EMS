@@ -174,7 +174,8 @@ export default function ExecutiveEnquiriesPage() {
  try {
  const headers = { 
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  };
  const response = await fetch(`${API_BASE}/api/analytics/add-enquiry`, {
  method: 'POST',

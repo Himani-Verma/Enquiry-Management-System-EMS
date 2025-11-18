@@ -39,12 +39,23 @@ async function updateVisitorStatus(request: NextRequest, user: any) {
  }, { status: 404 });
  }
 
+ // Check if this is a conversion (status changed to 'converted')
+ const isConversion = status === 'converted' && visitor.status !== 'converted';
+ 
  // Prepare update data
  const updateData: any = {
  status,
  lastModifiedBy: user.username || 'admin',
  lastModifiedAt: new Date()
  };
+
+ // If this is a conversion, track who converted it
+ if (isConversion) {
+ updateData.isConverted = true;
+ updateData.convertedBy = user.name || user.username || 'admin';
+ updateData.convertedAt = new Date();
+ console.log('🎯 Visitor converted by:', updateData.convertedBy);
+ }
 
  // Add to pipeline history
  const historyEntry = {
@@ -97,7 +108,9 @@ async function updateVisitorStatus(request: NextRequest, user: any) {
  amount: updatedVisitor.amount,
  pipelineHistory: updatedVisitor.pipelineHistory,
  lastModifiedBy: updatedVisitor.lastModifiedBy,
- lastModifiedAt: updatedVisitor.lastModifiedAt
+ lastModifiedAt: updatedVisitor.lastModifiedAt,
+ convertedBy: updatedVisitor.convertedBy,
+ convertedAt: updatedVisitor.convertedAt
  });
 
  } catch (error) {
@@ -110,10 +123,30 @@ async function updateVisitorStatus(request: NextRequest, user: any) {
  }
 }
 
-// Temporarily disable authentication for testing
 export const PUT = async (request: NextRequest) => {
  try {
- return await updateVisitorStatus(request, { userId: 'temp', username: 'admin', name: 'Admin', role: 'admin' });
+ console.log('📥 PUT request received for update-visitor-status');
+ 
+ // Get user info from request headers (sent by frontend)
+ const userHeader = request.headers.get('X-User-Info');
+ console.log('📋 X-User-Info header:', userHeader);
+ 
+ let user: any = { userId: 'temp', username: 'admin', name: 'Admin', role: 'admin' };
+ 
+ if (userHeader && userHeader !== 'null' && userHeader !== 'undefined') {
+ try {
+ const parsedUser = JSON.parse(userHeader);
+ if (parsedUser && parsedUser.role) {
+ user = parsedUser;
+ console.log('🔐 User from header:', JSON.stringify(user, null, 2));
+ }
+ } catch (e) {
+ console.error('❌ Failed to parse user header:', e);
+ }
+ }
+ 
+ console.log('✅ Using user for status update:', JSON.stringify(user, null, 2));
+ return await updateVisitorStatus(request, user);
  } catch (error) {
  console.error('Update visitor status API error:', error);
  return NextResponse.json({

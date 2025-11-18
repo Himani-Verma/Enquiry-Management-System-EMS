@@ -248,7 +248,8 @@ export default function AdminEnquiriesPage() {
  
  const headers = { 
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  };
  
  console.log('🔍 Request headers:', headers);

@@ -70,9 +70,22 @@ async function getEnquiriesManagementData(request: NextRequest, user: any) {
     console.log(`📊 Found ${enquiries.length} enquiries (page ${pageNum}/${Math.ceil(totalCount / limitNum)})`);
 
     // Transform enquiries data for frontend
-    const transformedEnquiries = enquiries.map((enquiry: any) => ({
+    const transformedEnquiries = enquiries.map((enquiry: any) => {
+      // Extract name from email if name is not available
+      let visitorName = enquiry.name || '';
+      if (!visitorName && enquiry.email) {
+        // Extract name from email (e.g., "john.doe@example.com" -> "John Doe")
+        const emailName = enquiry.email.split('@')[0];
+        visitorName = emailName
+          .split(/[._-]/)
+          .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(' ');
+      }
+      if (!visitorName) visitorName = 'Unknown';
+      
+      return {
       _id: enquiry._id.toString(),
-      visitorName: enquiry.name || 'Unknown',
+      visitorName: visitorName,
       phoneNumber: enquiry.phone || '',
       email: enquiry.email || '',
       enquiryType: (['chatbot','email','calls','website'].includes(enquiry.source) ? enquiry.source : 'chatbot') as any,
@@ -90,7 +103,8 @@ async function getEnquiriesManagementData(request: NextRequest, user: any) {
       source: enquiry.source || 'chatbot',
       isConverted: enquiry.isConverted || false,
       lastInteractionAt: enquiry.lastInteractionAt
-    }));
+    };
+    });
 
     // Get enquiry statistics
     const enquiryStats = await Visitor.aggregate([

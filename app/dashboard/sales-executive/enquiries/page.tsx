@@ -49,33 +49,6 @@ export default function ExecutiveEnquiriesPage() {
  const [serviceOptions, setServiceOptions] = useState<string[]>([]);
 
  const subserviceOptions = {
- 'Environmental Consulting': [
- 'Environmental Impact Assessment',
- 'Compliance Auditing',
- 'Sustainability Planning',
- 'Green Building Certification',
- 'Environmental Risk Assessment'
- ],
- 'Waste Management': [
- 'Recycling Programs',
- 'Waste Reduction Strategies',
- 'Hazardous Waste Disposal',
- 'Composting Solutions',
- 'Waste Audit Services'
- ],
- 'Air Quality Monitoring': [
- 'Indoor Air Quality Testing',
- 'Outdoor Air Quality Monitoring',
- 'Industrial Emissions Testing',
- 'Vehicle Emissions Testing',
- 'Air Purification Systems'
- ],
- 'Water Testing': [
- 'Drinking Water Testing',
- 'FSSAI Compliance Water Testing',
- 'Swimming Pool Water Testing',
- 'Others'
- ],
  'Food Testing': [
  'Cereals, Pulses, and By-Products',
  'Milk and Dairy Products',
@@ -95,41 +68,22 @@ export default function ExecutiveEnquiriesPage() {
  'Feed and Fodder',
  'Others'
  ],
- 'Soil Testing': [
- 'Agricultural Soil Testing',
- 'Contaminated Site Assessment',
- 'Soil Fertility Analysis',
- 'Heavy Metal Testing',
- 'Soil Remediation Planning'
+ 'Water Testing': [
+ 'Drinking Water Testing',
+ 'FSSAI Compliance Water Testing',
+ 'Swimming Pool Water Testing',
+ 'Others'
  ],
- 'Noise Monitoring': [
- 'Industrial Noise Assessment',
- 'Traffic Noise Analysis',
- 'Construction Noise Monitoring',
- 'Residential Noise Testing',
- 'Noise Control Solutions'
+ 'Environmental Testing': [
+ 'Air Quality Monitoring',
+ 'Soil Testing',
+ 'Noise Level Monitoring',
+ 'Stack Emission Testing',
+ 'Ambient Air Quality',
+ 'Indoor Air Quality',
+ 'Others'
  ],
- 'Sustainability Consulting': [
- 'Carbon Footprint Analysis',
- 'Energy Efficiency Audits',
- 'Renewable Energy Planning',
- 'Sustainable Business Practices',
- 'Green Certification Support'
- ],
- 'Environmental Impact Assessment': [
- 'Project Impact Analysis',
- 'Regulatory Compliance',
- 'Stakeholder Consultation',
- 'Mitigation Planning',
- 'Monitoring Programs'
- ],
- 'General Inquiry': [
- 'Information Request',
- 'Service Inquiry',
- 'Pricing Inquiry',
- 'Consultation Request',
- 'Other'
- ]
+ 'Others': []
  };
 
  const [agentOptions, setAgentOptions] = useState<string[]>(['Unassigned']);
@@ -376,7 +330,8 @@ export default function ExecutiveEnquiriesPage() {
  try {
  const headers = { 
  'Authorization': `Bearer ${token}`,
- 'Content-Type': 'application/json'
+ 'Content-Type': 'application/json',
+ 'X-User-Info': JSON.stringify(user)
  };
  const response = await fetch(`${API_BASE}/api/analytics/add-enquiry`, {
  method: 'POST',
@@ -915,7 +870,24 @@ export default function ExecutiveEnquiriesPage() {
  </td>
  <td className="px-6 py-4 whitespace-nowrap">
  <div>
- <div className="text-sm font-medium text-gray-900">{enquiry.visitorName || 'N/A'}</div>
+ <div className="text-sm font-medium text-gray-900">
+ {(() => {
+ let displayName = enquiry.visitorName || '';
+ if (!displayName || displayName === 'Unknown') {
+ if (enquiry.email) {
+ // Extract name from email (e.g., "john.doe@example.com" -> "John Doe")
+ const emailName = enquiry.email.split('@')[0];
+ displayName = emailName
+ .split(/[._-]/)
+ .map((part: string) => part.charAt(0).toUpperCase() + part.slice(1))
+ .join(' ');
+ } else {
+ displayName = 'N/A';
+ }
+ }
+ return displayName;
+ })()}
+ </div>
  <div className="text-sm text-gray-800">{enquiry.email || 'N/A'}</div>
  <div className="text-sm text-gray-800">{enquiry.phoneNumber || 'N/A'}</div>
  </div>

@@ -171,11 +171,7 @@ export default function SalesExecutiveQuotationsPage() {
  setIsModalOpen(true)
  }
 
- const handleView = (id: string) => {
- setModalMode('view')
- setSelectedQuotationId(id)
- setIsModalOpen(true)
- }
+
 
  const handleDelete = async (id: string) => {
  if (confirm('Are you sure you want to delete this quotation?')) {
@@ -234,17 +230,17 @@ export default function SalesExecutiveQuotationsPage() {
  
  if (modalMode === 'create') {
  if (!quotation.items || quotation.items.length === 0) {
- alert('⚠️ Please add at least one item to the quotation before saving.')
+ alert('⚠️ Please add at least one item to the quotation before saving.\n\nGo to the "Scope & Items" tab to add items.')
  return
  }
  
  if (!quotation.billTo.name) {
- alert('⚠️ Please enter customer name in Bill To section.')
+ alert('⚠️ Please enter customer name in Bill To section.\n\nGo to the "Header & Parties" tab to fill in customer details.')
  return
  }
  
  if (!quotation.contact.name) {
- alert('⚠️ Please enter contact person name.')
+ alert('⚠️ Please enter contact person name.\n\nGo to the "Header & Parties" tab to fill in contact details.')
  return
  }
  
@@ -307,23 +303,19 @@ export default function SalesExecutiveQuotationsPage() {
  setSuccessMessage('Quotation updated successfully!')
  setTimeout(() => setSuccessMessage(null), 3000)
  loadQuotations()
+ setIsModalOpen(false)
  }
  } else {
  alert('Failed to update quotation')
  }
  }
- 
- setIsModalOpen(false)
  } catch (error) {
  console.error('Error saving quotation:', error)
  alert('Error saving quotation. Please try again.')
  }
  }
 
- const handlePreview = (quotation: QuotationDraft) => {
- setPreviewQuotation(quotation)
- setIsPreviewOpen(true)
- }
+
 
  const handleTablePreview = (quotation: any) => {
  if (quotation.fullData) {
@@ -478,12 +470,12 @@ export default function SalesExecutiveQuotationsPage() {
  <QuotationTable
  quotations={quotations}
  onEdit={handleEdit}
- onView={handleView}
  onDelete={handleDelete}
  onPreview={handleTablePreview}
  onDownload={handleDownload}
  onStatusChange={handleStatusChange}
  userRole="sales-executive"
+ currentUser={user ? { name: user.name || '', username: user.name || '', id: user.id || '', role: user.role || '' } : undefined}
  />
  </div>
  </div>
@@ -501,7 +493,7 @@ export default function SalesExecutiveQuotationsPage() {
  setIsModalOpen(false)
  setVisitorData(null) // Clear visitor data when modal closes
  }}
- onPreview={handlePreview}
+
  />
 
  {previewQuotation && (

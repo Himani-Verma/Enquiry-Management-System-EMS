@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { X, Save, Eye, ChevronRight, ChevronLeft } from 'lucide-react'
+import { X, Save, ChevronRight, ChevronLeft } from 'lucide-react'
 import { QuotationDraft, FormStep, ValidationErrors } from '@/lib/types/quotation'
 import { computeRowTotal, computeSubtotal, computeTaxes, formatINR, amountToWordsIndian, generateId, generateQuotationNo } from '@/lib/quotation-calculations'
 import { ENVIROCARE_BANK_DETAILS } from '@/lib/constants/bankDetails'
@@ -13,7 +13,7 @@ import ItemsTab from './tabs/ItemsTab'
 import TaxesSummaryTab from './tabs/TaxesSummaryTab'
 import PreparedByTab from './tabs/PreparedByTab'
 import TermsTab from './tabs/TermsTab'
-import QuotationPreview from './QuotationPreview'
+
 
 interface QuotationFormModalProps {
  isOpen: boolean
@@ -23,7 +23,7 @@ interface QuotationFormModalProps {
  visitorData?: any // Visitor data for auto-fill
  onSave: (quotation: QuotationDraft) => void
  onClose: () => void
- onPreview: (quotation: QuotationDraft) => void
+
 }
 
 // Zod validation schema
@@ -207,10 +207,10 @@ export default function QuotationFormModal({
  visitorData,
  onSave,
  onClose,
- onPreview
+
 }: QuotationFormModalProps) {
  const [currentStep, setCurrentStep] = useState<FormStep>('header')
- const [showPreview, setShowPreview] = useState(false)
+
 
  const form = useForm<QuotationDraft>({
  resolver: zodResolver(quotationSchema) as any,
@@ -326,6 +326,11 @@ export default function QuotationFormModal({
  if (quotationData) {
  console.log('📄 Loading quotation for editing:', quotationData.quotationNo)
  form.reset(quotationData)
+ 
+ // Explicitly set items to ensure they're properly loaded with correct sample names
+ if (quotationData.items && quotationData.items.length > 0) {
+ setValue('items', quotationData.items)
+ }
  } else {
  console.log('⚠️ No quotation data provided, using default')
  form.reset({ ...initialQuotation, quotationNo: generateQuotationNo() })
@@ -334,7 +339,7 @@ export default function QuotationFormModal({
  form.reset({ ...initialQuotation, quotationNo: generateQuotationNo() })
  }
  
- setShowPreview(false)
+
  }
  }, [isOpen, form, mode, quotationId, quotationData, visitorData])
 
@@ -366,11 +371,7 @@ export default function QuotationFormModal({
  }
  }
 
- const handlePreview = () => {
- if (isValid) {
- setShowPreview(true)
- }
- }
+
 
  const handleNext = () => {
  const stepIndex = formSteps.findIndex(step => step.key === currentStep)
@@ -554,53 +555,14 @@ export default function QuotationFormModal({
  </button>
  )}
  
- <button
- onClick={handlePreview}
- className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold transition-all hover:bg-indigo-700"
- title="Preview and export as PDF or Excel"
- >
- <Eye className="w-3 h-3" />
- <span>Preview & Export</span>
- </button>
+
  </div>
  </div>
  </div>
  </div>
 
  {/* Preview Modal */}
- {showPreview && (
- <div className="fixed inset-0 z-[60] overflow-y-auto bg-black/70 backdrop-blur-sm">
- <div className="flex min-h-full items-center justify-center p-4">
- <div 
- className="fixed inset-0"
- onClick={() => setShowPreview(false)}
- />
- 
- <div className="relative w-full max-w-6xl bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
- <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-5 border-b border-gray-200">
- <div className="flex items-center justify-between">
- <h2 className="text-2xl font-bold text-white">
- 👁️ Quotation Preview
- </h2>
- <button
- onClick={() => setShowPreview(false)}
- className="p-2 rounded-lg hover:bg-white/20 transition-all text-white hover:scale-110"
- title="Close Preview"
- >
- <X className="w-6 h-6" />
- </button>
- </div>
- </div>
- 
- <div className="p-6 max-h-[80vh] overflow-y-auto bg-gray-50">
- <div className="bg-white rounded-lg shadow-lg p-6">
- <QuotationPreview quotation={watchedValues} />
- </div>
- </div>
- </div>
- </div>
- </div>
- )}
+
  </div>
  )
 }

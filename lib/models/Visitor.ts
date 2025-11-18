@@ -33,6 +33,8 @@ const VisitorSchema = new mongoose.Schema(
     comments: String,
     amount: { type: Number, default: 0 },
     isConverted: { type: Boolean, default: false },
+    convertedBy: String, // User ID or name of who converted this visitor
+    convertedAt: Date, // When the visitor was converted
     
     // Tracking
     lastInteractionAt: Date,

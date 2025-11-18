@@ -113,7 +113,8 @@ export const SERVICE_SUBSERVICE_MAP: { [key: string]: string[] } = {
     'Noise Level Monitoring',
     'Stack Emission Testing',
     'Ambient Air Quality',
-    'Indoor Air Quality'
+    'Indoor Air Quality',
+    'Others'
   ],
   'Others': []
 };
