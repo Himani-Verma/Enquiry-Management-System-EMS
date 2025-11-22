@@ -154,29 +154,23 @@ export function getUserContext(user: any) {
   console.log('🔍 User ID for filtering:', userId);
   console.log('🔍 User name for filtering:', user.name);
   console.log('🔍 User role:', user.role);
+  console.log('🔍 Full user object:', JSON.stringify(user, null, 2));
 
   // Build data filter based on role
   let dataFilter = {};
   if (!isAdmin) {
     if (isSalesExecutive) {
-      // Sales executives see ONLY visitors assigned to them as sales executive
-      // CRITICAL: Must match BOTH ID and name to ensure proper filtering
-      dataFilter = { 
-        $or: [
-          { salesExecutive: userId },
-          { salesExecutiveName: user.name }
-        ]
-      };
-      console.log('✅ Sales Executive filter applied:', JSON.stringify(dataFilter, null, 2));
+      // Sales executives can see all visitors in the system
+      dataFilter = {};
+      console.log('✅ Sales Executive - showing ALL visitors (no filter applied)');
+      console.log('🔍 User name:', user.name);
+      console.log('🔍 User ID:', userId);
     } else if (isCustomerExecutive) {
-      // Customer executives see only visitors assigned to them as customer executive
-      dataFilter = { 
-        $or: [
-          { customerExecutive: userId },
-          { customerExecutiveName: user.name }
-        ]
-      };
-      console.log('✅ Customer Executive filter applied:', JSON.stringify(dataFilter, null, 2));
+      // Customer executives see all visitors in the system (same as sales executives)
+      dataFilter = {};
+      console.log('✅ Customer Executive - showing ALL visitors (no filter applied)');
+      console.log('🔍 User name:', user.name);
+      console.log('🔍 User ID:', userId);
     } else {
       // Other executives see visitors assigned to them as agent
       dataFilter = { 
@@ -199,7 +193,7 @@ export function getUserContext(user: any) {
     isExecutive,
     isSalesExecutive,
     isCustomerExecutive,
-    canAccessAll: isAdmin,
+    canAccessAll: isAdmin || isSalesExecutive || isCustomerExecutive, // Sales executives and customer executives can access all visitor data
     dataFilter
   };
 }

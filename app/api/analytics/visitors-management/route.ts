@@ -103,15 +103,6 @@ async function getVisitorsManagement(request: NextRequest, user: any) {
     ]);
 
     console.log(`📊 Found ${visitors.length} visitors (total: ${totalCount})`);
-    
-    // Log first few visitors for debugging
-    if (visitors.length > 0) {
-      console.log('📋 First visitor:', {
-        name: visitors[0].name,
-        salesExecutiveName: visitors[0].salesExecutiveName,
-        salesExecutive: visitors[0].salesExecutive
-      });
-    }
 
     // Transform visitors data for frontend
     const transformedVisitors = visitors.map((v: any) => {

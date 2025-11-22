@@ -93,7 +93,7 @@ export default function Sidebar({ userRole, userName }: SidebarProps) {
 
  const salesExecutiveLinks = [
  { href: '/dashboard/sales-executive/overview', label: 'Dashboard', icon: <LayoutDashboard className="w-5 h-5" /> },
- { href: '/dashboard/executive/visitors', label: 'Visitors', icon: <User className="w-5 h-5" /> },
+ { href: '/dashboard/sales-executive/visitors', label: 'Visitors', icon: <User className="w-5 h-5" /> },
  { href: '/dashboard/sales-executive/enquiries', label: 'Enquiries', icon: <ClipboardList className="w-5 h-5" /> },
  { href: '/dashboard/sales-executive/quotations', label: 'Quotations', icon: <FileText className="w-5 h-5" /> },
  { href: '/dashboard/executive/chats', label: 'Chat History', icon: <MessageSquare className="w-5 h-5" /> },
